@@ -8,7 +8,7 @@ public class Person {
     //@Validation(required = true)
     String lastName;
 
-   // @Validation(required = true)
+    @Validation(required = true)
     String address;
 
     @Validation(required = true,

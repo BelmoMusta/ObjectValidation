@@ -1,17 +1,34 @@
-import musta.belmo.validation.*;
+import junit.framework.TestCase;
+import musta.belmo.validation.Person;
+import musta.belmo.validation.Validator;
 
-public class Main {
-    public static void main(String[] args) throws IllegalAccessException {
+public class Main extends TestCase {
 
+    public void testValidationByAge() throws IllegalAccessException {
         Validator validator = new Validator();
-
         Person person = new Person();
-
-        person.setName("hvbn");
-        person.setLastName("gfjhghj");
+        person.setName("mustapha");
+        person.setLastName("Belmokhtar");
         person.setAge(-1);
+        assertFalse(validator.validate(person));
+        System.out.println(validator.getValidationReport(person));
+        person.setAge(40);
+        assertTrue(validator.validate(person));
+        System.out.println(validator.getValidationReport(person));
+    }
 
-        System.out.println(validator.validate(person));
+    public void testValidationByaddress() throws IllegalAccessException {
+        Validator validator = new Validator();
+        Person person = new Person();
+        person.setName("mustapha");
+        person.setLastName("Belmokhtar");
+        person.setAge(40);
+
+        assertFalse(validator.validate(person));
+        System.out.println(validator.getValidationReport(person));
+
+        person.setAddress("a non-null address ! ");
+        assertTrue(validator.validate(person));
         System.out.println(validator.getValidationReport(person));
     }
 
