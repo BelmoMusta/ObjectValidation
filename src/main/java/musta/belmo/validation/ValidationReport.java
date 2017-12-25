@@ -5,7 +5,6 @@ public class ValidationReport {
 
     private String className;
     private boolean valide;
-    private Operator operator;
     private boolean required;
     private Object found;
     private Object expected;
@@ -70,9 +69,9 @@ public class ValidationReport {
 
             if (assertion.value() != null) {
 
-                if (Operator.operatorMap.containsKey(operator))
+                if (Operator.operatorMap.containsKey(assertion.operator()))
 
-                    stringBuilder.append(Operator.operatorMap.get(operator));
+                    stringBuilder.append(Operator.operatorMap.get(assertion.operator()));
                 stringBuilder.append(assertion.value());
 
             } else
@@ -87,14 +86,6 @@ public class ValidationReport {
         return stringBuilder.toString();
     }
 
-    public void setOperator(Operator operator) {
-        this.operator = operator;
-    }
-
-    public Operator getOperator() {
-        return operator;
-    }
-
     public void setExpected(Object expected) {
         this.expected = expected;
     }
@@ -105,7 +96,6 @@ public class ValidationReport {
 
     public void setAssertion(Assertion assertion) {
         this.assertion = assertion;
-        this.operator = assertion.operator();
     }
 
     public Assertion getAssertion() {
