@@ -9,12 +9,16 @@ public class Main extends TestCase {
         Person person = new Person();
         person.setName("mustapha");
         person.setLastName("Belmokhtar");
-        person.setAge(-1);
-        assertFalse(validator.validate(person));
+      //  person.setAge(-1);
+
+        System.out.println(validator.checkValidation(person));
+        System.out.println(validator.getValidationReport(person));
+
+        /*assertFalse(validator.checkValidation(person));
         System.out.println(validator.getValidationReport(person));
         person.setAge(40);
-        assertTrue(validator.validate(person));
-        System.out.println(validator.getValidationReport(person));
+        assertTrue(validator.checkValidation(person));
+        System.out.println(validator.getValidationReport(person));*/
     }
 
     public void testValidationByaddress() throws IllegalAccessException {
@@ -24,11 +28,11 @@ public class Main extends TestCase {
         person.setLastName("Belmokhtar");
         person.setAge(40);
 
-        assertFalse(validator.validate(person));
+        assertFalse(validator.checkValidation(person));
         System.out.println(validator.getValidationReport(person));
 
         person.setAddress("a non-null address ! ");
-        assertTrue(validator.validate(person));
+        assertTrue(validator.checkValidation(person));
         System.out.println(validator.getValidationReport(person));
     }
 

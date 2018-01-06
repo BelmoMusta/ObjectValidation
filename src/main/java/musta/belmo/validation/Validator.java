@@ -10,9 +10,7 @@ import java.util.*;
  * @author Belmokhtar
  */
 public class Validator {
-
-    public static final String EXCEPTION_MESSAGE = "Cannot apply this validation to this type of Object, field %s of type: %s, validation: %s";
-    public static final String NULL_OBJECT_MSG = "object is null, cannot validate its fields!";
+    public static final String NULL_OBJECT_MSG = "Object is null, cannot validate its fields!";
 
     /**
      * Check the validity of a given object.
@@ -22,15 +20,15 @@ public class Validator {
      * @return true if the object is valid, false otherwise.
      * @throws IllegalAccessException
      */
-    public <T> boolean validate(T object) throws IllegalAccessException {
+    public <T> boolean checkValidation(T object) throws IllegalAccessException {
         Map<String, ValidationReport> validationReport = getValidationReport(object);
         Iterator<Map.Entry<String, ValidationReport>> iterator = validationReport.entrySet().iterator();
-        boolean isValide = true;
-        while (iterator.hasNext() && isValide) {
+        boolean isValid = true;
+        while (iterator.hasNext() && isValid) {
             Map.Entry<String, ValidationReport> item = iterator.next();
-            isValide = item.getValue().isValide();
+            isValid = item.getValue().isValide();
         }
-        return isValide;
+        return isValid;
     }
 
     /**
@@ -42,24 +40,24 @@ public class Validator {
      * @return true if the number is valid, false otherwise.
      */
     private boolean checkNumber(Number number, Operator operator, String value) {
-        boolean retVal = true;
+        boolean valid = true;
         switch (operator) {
             case GREATER:
-                retVal = number.doubleValue() > Double.parseDouble(value);
+                valid = number.doubleValue() > Double.parseDouble(value);
                 break;
             case LESS:
-                retVal = number.doubleValue() < Double.parseDouble(value);
+                valid = number.doubleValue() < Double.parseDouble(value);
                 break;
             case GREATER_OR_EQUALS:
-                retVal = number.doubleValue() >= Double.parseDouble(value);
+                valid = number.doubleValue() >= Double.parseDouble(value);
                 break;
             case LESS_OR_EQUALS:
-                retVal = number.doubleValue() <= Double.parseDouble(value);
+                valid = number.doubleValue() <= Double.parseDouble(value);
                 break;
             default:
                 break;
         }
-        return retVal;
+        return valid;
     }
 
     /**
@@ -71,65 +69,78 @@ public class Validator {
      * @throws IllegalAccessException
      */
     public <T> Map<String, ValidationReport> getValidationReport(T object) throws IllegalAccessException {
-        Map<String, ValidationReport> validationReportMap = new LinkedHashMap<String, ValidationReport>();
+        final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<String, ValidationReport>();
 
-        if (object == null) {
+        if (Objects.isNull(object)) {
             throw new IllegalArgumentException(NULL_OBJECT_MSG);
         }
+
         List<Field> annotatedFields = getAnnotatedFields(object);
-
         for (Field field : annotatedFields) {
-
-            ValidationReport validationReport = new ValidationReport();
-            validationReport.setClassName(field.getType().getCanonicalName());
-            Object currentValue = field.get(object);
-            validationReport.setFound(currentValue);
-
+            final ValidationReport validationReport = new ValidationReport();
+            final Object currentValue = field.get(object);
             final Validation validation = field.getAnnotation(Validation.class);
             final Assertion assertion = validation.assertion();
-            validationReport.setAssertion(assertion);
             final Operator operator = assertion.operator();
             final String expected = assertion.value();
             final boolean required = validation.required();
 
-            boolean valid = true;
+            validationReport.setAssertion(assertion);
+            validationReport.setFound(currentValue);
+            validationReport.setClassName(field.getType().getCanonicalName());
             validationReport.setRequired(required);
+
+            boolean valid = true;
             if (required) {
-                switch (operator) {
-                    case NOT_NULL:
-                        if (currentValue == null) {
-                            valid = false;
-                        }
-                        break;
-
-                    case EQUALS:
-                        valid = expected.equals(currentValue);
-                        break;
-
-                    case REGEX:
-                        if (!object.toString().matches(expected)) {
-                            valid = false;
-                        }
-
-                        break;
-
-                    case GREATER:
-                    case LESS:
-                    case LESS_OR_EQUALS:
-                    case GREATER_OR_EQUALS:
-                        if (currentValue instanceof Number) {
-                            valid = checkNumber((Number) currentValue, operator, expected);
-                        } else
-                            throw new IllegalArgumentException(String.format(EXCEPTION_MESSAGE, field.getName(), currentValue.getClass(), operator));
-                        break;
-                    default:
-                        break;
-                }
-                validationReport.setValide(valid);
+                valid = checkValidation(object, currentValue, operator, expected);
             }
+            validationReport.setValide(valid);
             validationReportMap.put(field.getName(), validationReport);
         }
         return validationReportMap;
+    }
+
+    /**
+     * Method to refactor the validation process.
+     *
+     * @param object       the object to validate.
+     * @param currentValue the current value of the field.
+     * @param operator     the wanted operator.
+     * @param expected     the expected value.
+     * @param <T>          the type of object to validate
+     * @return true if the object is valid, false otherwise.
+     */
+    private <T> boolean checkValidation(T object, Object currentValue, Operator operator, String expected) {
+        boolean valid = true;
+        switch (operator) {
+            case NOT_NULL:
+                if (Objects.isNull(currentValue)) {
+                    valid = false;
+                }
+                break;
+
+            case EQUALS:
+                valid = expected.equals(currentValue);
+                break;
+
+            case REGEX:
+                if (!object.toString().matches(expected)) {
+                    valid = false;
+                }
+                break;
+
+            case GREATER:
+            case LESS:
+            case LESS_OR_EQUALS:
+            case GREATER_OR_EQUALS:
+                if (currentValue instanceof Number) {
+                    valid = checkNumber((Number) currentValue, operator, expected);
+                }
+                break;
+            default:
+                break;
+        }
+        return valid;
     }
 
     /**
@@ -144,7 +155,6 @@ public class Validator {
         List<Field> fields = new ArrayList<Field>();
 
         for (Field field : fs) {
-
             /**
              * private fields need to be set to be accessible before processing
              */
@@ -159,7 +169,6 @@ public class Validator {
             }
         }
         return fields;
-
     }
 }
 

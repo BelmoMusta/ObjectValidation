@@ -1,7 +1,9 @@
 package musta.belmo.validation;
 
+/**
+ * The validation Report as the result of the Validation process.
+ */
 public class ValidationReport {
-
 
     private String className;
     private boolean valide;
@@ -57,10 +59,12 @@ public class ValidationReport {
             stringBuilder
                     .append(", found=");
 
-            if (found != null)
+            if (found != null) {
                 stringBuilder.append(found);
-            else
+            }
+            else {
                 stringBuilder.append("{null}");
+            }
 
             stringBuilder.append(", expected=");
 
@@ -69,7 +73,6 @@ public class ValidationReport {
                 stringBuilder.append(assertion.value());
 
             } else {
-
                 stringBuilder.append("{null}");
             }
 

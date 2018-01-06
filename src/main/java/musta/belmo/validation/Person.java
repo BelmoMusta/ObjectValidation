@@ -1,18 +1,21 @@
 package musta.belmo.validation;
 
+/**
+ * A Person class wrapping fields to  be used as samples in validation.
+ */
 public class Person {
 
-  ///  @Validation(required = true)
+   @Validation(required = true)
     String name;
 
-    //@Validation(required = true)
+    @Validation(required = true)
     String lastName;
 
-    @Validation(required = true)
+   // @Validation(required = true)
     String address;
 
-    @Validation(required = true,
-            assertion = @Assertion(operator = Operator.GREATER, value = "1"))
+  //  @Validation(required = true,
+   //         assertion = @Assertion(operator = Operator.GREATER, value = "1"))
     private int age;
 
 

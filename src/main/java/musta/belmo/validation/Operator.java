@@ -11,7 +11,6 @@ public enum Operator {
 
     private String operatorLabel;
 
-
     Operator(String operatorLabel) {
         this.operatorLabel = operatorLabel;
     }
