@@ -1,4 +1,8 @@
-package musta.belmo.validation;
+package musta.belmo.validation.bean;
+
+import musta.belmo.validation.annotation.Assertion;
+import musta.belmo.validation.annotation.Validation;
+import musta.belmo.validation.enumeration.Operator;
 
 /**
  * A Person class wrapping fields to  be used as samples in validation.
@@ -19,7 +23,7 @@ public class Person {
     private int age;
 
     @Validation(assertion = @Assertion(operator = Operator.REGEX, value = "\\d{10}"))
-    private String phoneNumber;
+    private Object phoneNumber;
 
 
     public String getName() {
@@ -54,11 +58,11 @@ public class Person {
         return age;
     }
 
-    public String getPhoneNumber() {
+    public Object getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(Object phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }

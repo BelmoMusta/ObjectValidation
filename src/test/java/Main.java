@@ -1,10 +1,11 @@
 import junit.framework.TestCase;
-import musta.belmo.validation.Person;
+import musta.belmo.validation.bean.Person;
+import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.Validator;
 
 public class Main extends TestCase {
 
-    public void testValidationByAge() throws IllegalAccessException {
+    public void testValidationByAge() throws ValidationException {
         Validator validator = new Validator();
         Person person = new Person();
         person.setName("Mustapha");
@@ -21,7 +22,7 @@ public class Main extends TestCase {
         System.out.println(validator.getValidationReport(person));
     }
 
-    public void testValidationByaddress() throws IllegalAccessException {
+    public void testValidationByaddress() throws ValidationException {
         Validator validator = new Validator();
         Person person = new Person();
         person.setName("mustapha");
@@ -36,16 +37,12 @@ public class Main extends TestCase {
         System.out.println(validator.getValidationReport(person));
     }
 
-    public void testregexValidation() throws IllegalAccessException {
+    public void testRegexValidation() throws ValidationException {
         Validator validator = new Validator();
         Person person = new Person();
-        person.setPhoneNumber("2010153010");
+        person.setPhoneNumber(null);
         assertTrue(validator.checkValidation(person));
         System.out.println(validator.getValidationReport(person));
-
-
     }
-
-
 }
 

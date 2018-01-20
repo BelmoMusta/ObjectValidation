@@ -1,5 +1,10 @@
 package musta.belmo.validation;
 
+import musta.belmo.validation.annotation.Assertion;
+import musta.belmo.validation.annotation.Validation;
+import musta.belmo.validation.enumeration.ErrorMessage;
+import musta.belmo.validation.enumeration.Operator;
+import musta.belmo.validation.exception.ValidationException;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -10,17 +15,15 @@ import java.util.*;
  * @author Belmokhtar
  */
 public class Validator {
-    public static final String NULL_OBJECT_MSG = "Object is null, cannot validate its fields!";
-
     /**
      * Check the validity of a given object.
      *
      * @param object the instance to check.
      * @param <T>    the explicit type of the instance.
      * @return true if the object is valid, false otherwise.
-     * @throws IllegalAccessException
+     * @throws ValidationException
      */
-    public <T> boolean checkValidation(T object) throws IllegalAccessException {
+    public <T> boolean checkValidation(T object) throws ValidationException {
         Map<String, ValidationReport> validationReport = getValidationReport(object);
         Iterator<Map.Entry<String, ValidationReport>> iterator = validationReport.entrySet().iterator();
         boolean isValid = true;
@@ -66,19 +69,24 @@ public class Validator {
      * @param object the object to generate the report for.
      * @param <T>    the Type of the object
      * @return a validation report containing details for the object fields.
-     * @throws IllegalAccessException
+     * @throws ValidationException
      */
-    public <T> Map<String, ValidationReport> getValidationReport(T object) throws IllegalAccessException {
-        final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<String, ValidationReport>();
+    public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
+        final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
 
         if (Objects.isNull(object)) {
-            throw new IllegalArgumentException(NULL_OBJECT_MSG);
+            throw new IllegalArgumentException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
 
         List<Field> annotatedFields = getAnnotatedFields(object);
         for (Field field : annotatedFields) {
             final ValidationReport validationReport = new ValidationReport();
-            final Object currentValue = field.get(object);
+            Object currentValue = null;
+            try {
+                currentValue = field.get(object);
+            } catch (IllegalAccessException e) {
+                throw new ValidationException(e);
+            }
             final Validation validation = field.getAnnotation(Validation.class);
             final Assertion assertion = validation.assertion();
             final Operator operator = assertion.operator();
@@ -108,7 +116,7 @@ public class Validator {
      * @param expected     the expected value
      * @return true if the object is valid, false otherwise.
      */
-    private  boolean checkValidation(Object currentValue, Operator operator, String expected) {
+    private boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {
         boolean valid = true;
         switch (operator) {
             case NOT_NULL:
@@ -122,8 +130,15 @@ public class Validator {
                 break;
 
             case REGEX:
-                if (!currentValue.toString().matches(expected)) {
-                    valid = false;
+                if (currentValue != null && currentValue.getClass() == String.class) {
+                    valid = currentValue.toString().matches(expected);
+
+                } else if (currentValue != null) {
+                    final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), currentValue.getClass().getCanonicalName());
+                    throw new ValidationException(message);
+                } else {
+                    throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());
+
                 }
                 break;
 
@@ -131,8 +146,12 @@ public class Validator {
             case LESS:
             case LESS_OR_EQUALS:
             case GREATER_OR_EQUALS:
-                if (currentValue instanceof Number) {
+                if (currentValue != null && currentValue instanceof Number) {
                     valid = checkNumber((Number) currentValue, operator, expected);
+                } else if (currentValue == null) {
+                    throw new ValidationException(ErrorMessage.ARITHMETIC_ON_NULL.getLabel());
+                } else {
+                    throw new ValidationException(ErrorMessage.NOT_A_NUMBER.getLabel());
                 }
                 break;
             default:
@@ -150,7 +169,7 @@ public class Validator {
     private <T> List<Field> getAnnotatedFields(T t) {
         Class cls = t.getClass();
         Field[] fs = cls.getDeclaredFields();
-        List<Field> fields = new ArrayList<Field>();
+        List<Field> fields = new ArrayList<>();
 
         for (Field field : fs) {
             /**

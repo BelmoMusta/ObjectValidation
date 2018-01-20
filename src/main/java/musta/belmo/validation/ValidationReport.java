@@ -1,5 +1,7 @@
 package musta.belmo.validation;
 
+import musta.belmo.validation.annotation.Assertion;
+
 /**
  * The validation Report as the result of the Validation process.
  */
@@ -69,7 +71,7 @@ public class ValidationReport {
             stringBuilder.append(", expected=");
 
             if (assertion.value() != null) {
-                stringBuilder.append(assertion.operator().getOperatorLabel());
+                stringBuilder.append(assertion.operator().getLabel());
                 stringBuilder.append(assertion.value());
 
             } else {
