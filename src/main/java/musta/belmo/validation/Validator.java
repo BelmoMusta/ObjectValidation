@@ -29,7 +29,7 @@ public class Validator {
         boolean isValid = true;
         while (iterator.hasNext() && isValid) {
             Map.Entry<String, ValidationReport> item = iterator.next();
-            isValid = item.getValue().isValide();
+            isValid = item.getValue().isValid();
         }
         return isValid;
     }
@@ -102,7 +102,7 @@ public class Validator {
             if (required) {
                 valid = checkValidation(currentValue, operator, expected);
             }
-            validationReport.setValide(valid);
+            validationReport.setValid(valid);
             validationReportMap.put(field.getName(), validationReport);
         }
         return validationReportMap;

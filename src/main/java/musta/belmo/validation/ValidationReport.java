@@ -8,13 +8,13 @@ import musta.belmo.validation.annotation.Assertion;
 public class ValidationReport {
 
     private String className;
-    private boolean valide;
+    private boolean valid;
     private boolean required;
     private Object found;
     private Assertion assertion;
 
     public ValidationReport() {
-        valide = true;
+        valid = true;
     }
 
     public String getClassName() {
@@ -25,12 +25,12 @@ public class ValidationReport {
         this.className = className;
     }
 
-    public boolean isValide() {
-        return valide;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setValide(boolean valide) {
-        this.valide = valide;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     public boolean isRequired() {
@@ -63,23 +63,18 @@ public class ValidationReport {
 
             if (found != null) {
                 stringBuilder.append(found);
-            }
-            else {
-                stringBuilder.append("{null}");
-            }
-
-            stringBuilder.append(", expected=");
-
-            if (assertion.value() != null) {
-                stringBuilder.append(assertion.operator().getLabel());
-                stringBuilder.append(assertion.value());
-
             } else {
                 stringBuilder.append("{null}");
             }
 
-            stringBuilder.append(", valide=")
-                    .append(valide);
+            stringBuilder.append(", expected=")
+                    .append(assertion.operator().getLabel())
+                    .append(':')
+                    .append('[')
+                    .append(assertion.value())
+                    .append(']')
+                    .append(", valid=")
+                    .append(valid);
         }
         stringBuilder.append('|');
         return stringBuilder.toString();

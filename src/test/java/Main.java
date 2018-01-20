@@ -40,7 +40,7 @@ public class Main extends TestCase {
     public void testRegexValidation() throws ValidationException {
         Validator validator = new Validator();
         Person person = new Person();
-        person.setPhoneNumber(null);
+        person.setPhoneNumber("0123456789");
         assertTrue(validator.checkValidation(person));
         System.out.println(validator.getValidationReport(person));
     }
