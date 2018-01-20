@@ -5,18 +5,21 @@ package musta.belmo.validation;
  */
 public class Person {
 
-  ///  @Validation(required = true)
+    //@Validation
     String name;
 
-    //@Validation(required = true)
+    //@Validation
     String lastName;
 
-    @Validation(required = true)
+    //@Validation
     String address;
 
-    @Validation(required = true,
-            assertion = @Assertion(operator = Operator.GREATER, value = "1"))
+    //@Validation(required = true,
+      //      assertion = @Assertion(operator = Operator.GREATER, value = "1"))
     private int age;
+
+    @Validation(assertion = @Assertion(operator = Operator.REGEX, value = "\\d{10}"))
+    private String phoneNumber;
 
 
     public String getName() {
@@ -49,5 +52,13 @@ public class Person {
 
     public int getAge() {
         return age;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

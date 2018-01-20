@@ -7,7 +7,7 @@ public class Main extends TestCase {
     public void testValidationByAge() throws IllegalAccessException {
         Validator validator = new Validator();
         Person person = new Person();
-        person.setName("mustapha");
+        person.setName("Mustapha");
         person.setLastName("Belmokhtar");
         person.setAge(-1);
 
@@ -34,6 +34,16 @@ public class Main extends TestCase {
         person.setAddress("a non-null address ! ");
         assertTrue(validator.checkValidation(person));
         System.out.println(validator.getValidationReport(person));
+    }
+
+    public void testregexValidation() throws IllegalAccessException {
+        Validator validator = new Validator();
+        Person person = new Person();
+        person.setPhoneNumber("2010153010");
+        assertTrue(validator.checkValidation(person));
+        System.out.println(validator.getValidationReport(person));
+
+
     }
 
 

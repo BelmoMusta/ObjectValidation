@@ -92,7 +92,7 @@ public class Validator {
 
             boolean valid = true;
             if (required) {
-                valid = checkValidation(object, currentValue, operator, expected);
+                valid = checkValidation(currentValue, operator, expected);
             }
             validationReport.setValide(valid);
             validationReportMap.put(field.getName(), validationReport);
@@ -103,14 +103,12 @@ public class Validator {
     /**
      * Method to refactor the validation process.
      *
-     * @param object       the object to validate.
      * @param currentValue the current value of the field.
      * @param operator     the wanted operator.
-     * @param expected     the expected value.
-     * @param <T>          the type of object to validate
+     * @param expected     the expected value
      * @return true if the object is valid, false otherwise.
      */
-    private <T> boolean checkValidation(T object, Object currentValue, Operator operator, String expected) {
+    private  boolean checkValidation(Object currentValue, Operator operator, String expected) {
         boolean valid = true;
         switch (operator) {
             case NOT_NULL:
@@ -124,7 +122,7 @@ public class Validator {
                 break;
 
             case REGEX:
-                if (!object.toString().matches(expected)) {
+                if (!currentValue.toString().matches(expected)) {
                     valid = false;
                 }
                 break;
