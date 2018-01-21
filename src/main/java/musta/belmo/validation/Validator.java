@@ -2,6 +2,7 @@ package musta.belmo.validation;
 
 import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.annotation.Validation;
+import musta.belmo.validation.bean.ValidationReport;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;

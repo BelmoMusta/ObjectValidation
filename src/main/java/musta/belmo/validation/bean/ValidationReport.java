@@ -1,4 +1,4 @@
-package musta.belmo.validation;
+package musta.belmo.validation.bean;
 
 import musta.belmo.validation.annotation.Assertion;
 
