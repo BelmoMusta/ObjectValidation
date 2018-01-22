@@ -3,6 +3,7 @@ package musta.belmo.validation;
 import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.bean.ValidationReport;
+import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
@@ -24,7 +25,7 @@ public class Validator {
      * @return true if the object is valid, false otherwise.
      * @throws ValidationException
      */
-    public <T> boolean checkValidation(T object) throws ValidationException {
+    public <T> boolean check(T object) throws ValidationException {
         Map<String, ValidationReport> validationReport = getValidationReport(object);
         Iterator<Map.Entry<String, ValidationReport>> iterator = validationReport.entrySet().iterator();
         boolean isValid = true;
@@ -33,6 +34,35 @@ public class Validator {
             isValid = item.getValue().isValid();
         }
         return isValid;
+    }
+
+    /**
+     * @param object
+     * @param criteria
+     * @param <T>
+     * @return
+     * @throws ValidationException
+     */
+    public <T> boolean check(T object, List<Criteria> criteria) throws ValidationException {
+        boolean ret = true;
+        if (object == null) {
+            return false;
+        }
+
+        for (Criteria criterion : criteria) {
+            String fieldName = criterion.getFieldName();
+            try {
+                Field declaredField = object.getClass().getDeclaredField(fieldName);
+                declaredField.setAccessible(true);
+                Object currentValue = declaredField.get(object);
+                Object value = String.valueOf(criterion.getValue());
+                ret = checkValidation(currentValue, criterion.getOperator(), value.toString());
+
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new ValidationException(e);
+            }
+        }
+        return ret;
     }
 
     /**
@@ -46,10 +76,10 @@ public class Validator {
     private boolean checkNumber(Number number, Operator operator, String value) {
         boolean valid = true;
         switch (operator) {
-            case GREATER:
+            case GREATER_THAN:
                 valid = number.doubleValue() > Double.parseDouble(value);
                 break;
-            case LESS:
+            case LESS_THAN:
                 valid = number.doubleValue() < Double.parseDouble(value);
                 break;
             case GREATER_OR_EQUALS:
@@ -76,13 +106,13 @@ public class Validator {
         final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
 
         if (Objects.isNull(object)) {
-            throw new IllegalArgumentException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
 
         List<Field> annotatedFields = getAnnotatedFields(object);
         for (Field field : annotatedFields) {
             final ValidationReport validationReport = new ValidationReport();
-            Object currentValue = null;
+            Object currentValue;
             try {
                 currentValue = field.get(object);
             } catch (IllegalAccessException e) {
@@ -108,6 +138,53 @@ public class Validator {
         }
         return validationReportMap;
     }
+
+
+    /**
+     * Constructs a validation report of the object according to the criteria in params.
+     *
+     * @param object   the object to generate the report for.
+     * @param <T>      the Type of the object
+     * @param criteria the criteria to validate to object against
+     * @return a validation report containing details for the object fields.
+     * @throws ValidationException
+     */
+    public <T> Map<String, ValidationReport> getValidationReport(T object, List<Criteria> criteria) throws ValidationException {
+        final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
+
+        if (Objects.isNull(object)) {
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
+        }
+        for (Criteria criterion : criteria) {
+            String fieldName = criterion.getFieldName();
+            try {
+                Field declaredField = object.getClass().getDeclaredField(fieldName);
+                declaredField.setAccessible(true);
+                Object currentValue = declaredField.get(object);
+                Object value = String.valueOf(criterion.getValue());
+                checkValidation(currentValue, criterion.getOperator(), value.toString());
+                final ValidationReport validationReport = new ValidationReport();
+                validationReport.setCriterion(criterion);
+
+                try {
+                    currentValue = declaredField.get(object);
+                } catch (IllegalAccessException e) {
+                    throw new ValidationException(e);
+                }
+                final Operator operator = criterion.getOperator();
+                final String expected = String.valueOf(criterion.getValue());
+                validationReport.setFound(currentValue);
+                validationReport.setRequired(true);
+                boolean valid = checkValidation(currentValue, operator, expected);
+                validationReport.setValid(valid);
+                validationReportMap.put(criterion.getFieldName(), validationReport);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new ValidationException(e);
+            }
+        }
+        return validationReportMap;
+    }
+
 
     /**
      * Method to refactor the validation process.
@@ -143,8 +220,8 @@ public class Validator {
                 }
                 break;
 
-            case GREATER:
-            case LESS:
+            case GREATER_THAN:
+            case LESS_THAN:
             case LESS_OR_EQUALS:
             case GREATER_OR_EQUALS:
                 if (currentValue != null && currentValue instanceof Number) {

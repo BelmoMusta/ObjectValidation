@@ -1,6 +1,8 @@
 package musta.belmo.validation.bean;
 
+import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.annotation.Assertion;
+import musta.belmo.validation.enumeration.Operator;
 
 /**
  * The validation Report as the result of the Validation process.
@@ -12,6 +14,7 @@ public class ValidationReport {
     private boolean required;
     private Object found;
     private Assertion assertion;
+    Criteria criteria;
 
     public ValidationReport() {
         valid = true;
@@ -52,6 +55,27 @@ public class ValidationReport {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
+        String value;
+        Operator operator;
+        Object foundVal;
+
+        if (assertion != null) {
+            value = assertion.value();
+        } else {
+            value = String.valueOf(criteria.getValue());
+        }
+
+        if (assertion != null) {
+            operator = assertion.operator();
+        } else {
+            operator = criteria.getOperator();
+        }
+
+        if (found != null) {
+            foundVal = found;
+        } else {
+            foundVal = "{null}";
+        }
 
         stringBuilder.append('|')
                 .append("required=")
@@ -59,19 +83,13 @@ public class ValidationReport {
 
         if (required) {
             stringBuilder
-                    .append(", found=");
-
-            if (found != null) {
-                stringBuilder.append(found);
-            } else {
-                stringBuilder.append("{null}");
-            }
-
-            stringBuilder.append(", expected=")
-                    .append(assertion.operator().getLabel())
+                    .append(", found=")
+                    .append(foundVal)
+                    .append(", expected=")
+                    .append(operator.getLabel())
                     .append(':')
                     .append('[')
-                    .append(assertion.value())
+                    .append(value)
                     .append(']')
                     .append(", valid=")
                     .append(valid);
@@ -86,5 +104,13 @@ public class ValidationReport {
 
     public Assertion getAssertion() {
         return assertion;
+    }
+
+    public void setCriterion(Criteria criteria) {
+        this.criteria = criteria;
+    }
+
+    public Criteria getCriteria() {
+        return criteria;
     }
 }

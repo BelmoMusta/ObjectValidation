@@ -3,8 +3,8 @@ package musta.belmo.validation.enumeration;
 public enum Operator {
     NOT_NULL("{!=null}"),
     EQUALS("{==}"),
-    GREATER("{>}"),
-    LESS("{<}"),
+    GREATER_THAN("{>}"),
+    LESS_THAN("{<}"),
     GREATER_OR_EQUALS("{>=}"),
     LESS_OR_EQUALS("{<=}"),
     REGEX("{REGEX}");

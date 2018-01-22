@@ -3,6 +3,8 @@
 Developed in order to check if an instance of a class is valid according to the predicates
 given as annotations on its fields.
 
+The fields to be validated can also be put on a list of criteria, this can be done without the annotatoins aspect.
+
 It prevents the classic control flow like the if-else blocks.
 
 ## Example of use :
@@ -40,3 +42,7 @@ class Person {
   ```Console
    true
    {name=|required=true, found=mustapha, expected={!=null}, valide=true|, lastName=|required=true, found=Belmokhtar, expected={!=null}, valide=true|}
+
+   ##TODO
+
+   Validate objects with nested objects and lists/arrays/collections fields.
