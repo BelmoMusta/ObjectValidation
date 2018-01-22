@@ -42,7 +42,7 @@ class Person {
   ```Console
    true
    {name=|required=true, found=mustapha, expected={!=null}, valide=true|, lastName=|required=true, found=Belmokhtar, expected={!=null}, valide=true|}
-
+   ```
    ## TODO:
 
    Validate objects with nested objects and lists/arrays/collections fields.
