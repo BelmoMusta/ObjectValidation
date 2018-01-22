@@ -45,4 +45,4 @@ class Person {
    ```
    ## TODO:
 
-   Validate objects with nested objects and lists/arrays/collections fields.
+   Validate objects with nested  and/or lists/arrays/collections fields.
