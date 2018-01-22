@@ -1,4 +1,5 @@
 import junit.framework.TestCase;
+import musta.belmo.validation.bean.Student;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.Validator;
 import musta.belmo.validation.bean.Person;
@@ -11,69 +12,85 @@ import java.util.List;
 import java.util.Map;
 
 public class Main extends TestCase {
+    Person person;
+    Student student ;
 
-    public void testValidationByAge() throws ValidationException {
-        Validator validator = new Validator();
-        Person person = new Person();
+
+    public Main() {
+        super();
+        person = new Person();
         person.setName("Mustapha");
         person.setLastName("Belmokhtar");
-        person.setAge(-1);
-
-        validator.check(person);
-        validator.getValidationReport(person);
-
-        assertFalse(validator.check(person));
-        System.out.println(validator.getValidationReport(person));
-        person.setAge(40);
-        assertTrue(validator.check(person));
-        System.out.println(validator.getValidationReport(person));
-    }
-
-    public void testValidationByaddress() throws ValidationException {
-        Validator validator = new Validator();
-        Person person = new Person();
-        person.setName("mustapha");
-        person.setLastName("Belmokhtar");
-        person.setAge(40);
-
-        assertFalse(validator.check(person));
-        System.out.println(validator.getValidationReport(person));
-
-        person.setAddress("a non-null address ! ");
-        assertTrue(validator.check(person));
-        System.out.println(validator.getValidationReport(person));
-    }
-
-    public void testRegexValidation() throws ValidationException {
-        Validator validator = new Validator();
-        Person person = new Person();
         person.setPhoneNumber("0123456789");
-        assertTrue(validator.check(person));
-        System.out.println(validator.getValidationReport(person));
+        person.setAddress("a non-null address ! ");
+        person.setAge(25);
+
+
+        student = new Student();
     }
 
+    public void testArithmeticOperation() throws ValidationException {
+        Validator validator = new Validator();
+
+        person.setAge(-1);
+        validator.getValidationReport(person);
+        System.out.println(validator.getValidationReport(person));
+         assertFalse(validator.check(person));
+
+        person.setAge(40);
+        System.out.println(validator.getValidationReport(person));
+        assertTrue(validator.check(person));
+    }
+
+    public void testNonNull() throws ValidationException {
+        Validator validator = new Validator();
+
+        System.out.println(validator.getValidationReport(person));
+        assertTrue(validator.check(person));
+
+        person.setAddress(null);
+        System.out.println(validator.getValidationReport(person));
+        assertFalse(validator.check(person));
+    }
+
+    public void testRegex() throws ValidationException {
+        Validator validator = new Validator();
+
+        System.out.println(validator.getValidationReport(person));
+        assertTrue(validator.check(person));
+
+        person.setPhoneNumber("0123456789_");
+        System.out.println(validator.getValidationReport(person));
+        assertFalse(validator.check(person));
+    }
+
+    /**
+     * Test the validation by criteria on the given object
+     *
+     * @throws ValidationException
+     */
     public void testValidationByCriteria() throws ValidationException {
 
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("name").operator(Operator.EQUALS).value("mustapha"));
+        criteria.add(Criteria.of("name").equal("mustapha"));
         Criteria crit = new Criteria();
-        crit.field("address").operator(Operator.NOT_NULL);
+        crit.field("address").notNull();
         criteria.add(crit);
-        criteria.add(Criteria.of("age").operator(Operator.GREATER_THAN).value(4));
-        criteria.add(Criteria.of("phoneNumber").operator(Operator.REGEX).value("\\d{10}"));
+        criteria.add(Criteria.of("age").greatherThan(4));
+        criteria.add(Criteria.of("age").lessThan(4));
+        criteria.add(Criteria.of("phoneNumber").regex("\\d{10}"));
 
         Validator validator = new Validator();
-        Person person = new Person();
 
-        person.setName("mustapha");
-        person.setAddress("wall street");
-        person.setAge(5);
-        person.setPhoneNumber("1234567890");
-        assertTrue(validator.check(person, criteria));
-        Map<String, ValidationReport> validationReport = validator.getValidationReport(person, criteria);
+
+        student.setName("mustapha");
+        student.setAddress("wall street");
+        student.setAge(5);
+        student.setPhoneNumber("1234567890");
+        assertTrue(validator.check(student, criteria));
+        Map<String, ValidationReport> validationReport = validator.getValidationReport(student, criteria);
         System.out.println(validationReport);
-        assertEquals(validationReport.size(), criteria.size());
     }
 }
 

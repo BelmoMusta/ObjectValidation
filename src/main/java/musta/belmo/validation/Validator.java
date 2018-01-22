@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class Validator {
     /**
-     * Check the validity of a given object.
+     * Check the validity of a given object by annotations.
      *
      * @param object the instance to check.
      * @param <T>    the explicit type of the instance.
@@ -26,27 +26,51 @@ public class Validator {
      * @throws ValidationException
      */
     public <T> boolean check(T object) throws ValidationException {
-        Map<String, ValidationReport> validationReport = getValidationReport(object);
-        Iterator<Map.Entry<String, ValidationReport>> iterator = validationReport.entrySet().iterator();
-        boolean isValid = true;
-        while (iterator.hasNext() && isValid) {
-            Map.Entry<String, ValidationReport> item = iterator.next();
-            isValid = item.getValue().isValid();
+        boolean valid = true;
+        if (Objects.isNull(object)) {
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        return isValid;
+        final List<Criteria> criteria = new ArrayList<>();
+        final List<Field> annotatedFields = getAnnotatedFields(object);
+        for (Field field : annotatedFields) {
+            final Object currentValue;
+            try {
+                currentValue = field.get(object);
+            } catch (IllegalAccessException e) {
+                throw new ValidationException(e);
+            }
+            final Validation validation = field.getAnnotation(Validation.class);
+            final Assertion assertion = validation.assertion();
+            final Operator operator = assertion.operator();
+            final String expected = assertion.value();
+            final boolean required = validation.required();
+            final Criteria cr = Criteria
+                    .of(field.getName())
+                    .operator(operator)
+                    .value(currentValue)
+                    .expected(expected)
+                    .required(required);
+            criteria.add(cr);
+            if (required) {
+                valid = check(object, criteria);
+            }
+        }
+        return valid;
     }
 
     /**
-     * @param object
-     * @param criteria
-     * @param <T>
-     * @return
+     * Checks the validity of the given object by criteria
+     *
+     * @param object   the object to validate
+     * @param criteria the criteria to be respected
+     * @param <T>      the generic type of the object
+     * @return true if the obect meets the given criteria, false otherwise.
      * @throws ValidationException
      */
     public <T> boolean check(T object, List<Criteria> criteria) throws ValidationException {
-        boolean ret = true;
-        if (object == null) {
-            return false;
+        boolean valid = true;
+        if (Objects.isNull(object)) {
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
 
         for (Criteria criterion : criteria) {
@@ -55,14 +79,14 @@ public class Validator {
                 Field declaredField = object.getClass().getDeclaredField(fieldName);
                 declaredField.setAccessible(true);
                 Object currentValue = declaredField.get(object);
-                Object value = String.valueOf(criterion.getValue());
-                ret = checkValidation(currentValue, criterion.getOperator(), value.toString());
+                Object value = String.valueOf(criterion.getExpected());
+                valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
 
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
         }
-        return ret;
+        return valid;
     }
 
     /**
@@ -103,15 +127,12 @@ public class Validator {
      * @throws ValidationException
      */
     public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
-        final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
-
         if (Objects.isNull(object)) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-
-        List<Field> annotatedFields = getAnnotatedFields(object);
+        final List<Criteria> criteria = new ArrayList<>();
+        final List<Field> annotatedFields = getAnnotatedFields(object);
         for (Field field : annotatedFields) {
-            final ValidationReport validationReport = new ValidationReport();
             Object currentValue;
             try {
                 currentValue = field.get(object);
@@ -124,19 +145,15 @@ public class Validator {
             final String expected = assertion.value();
             final boolean required = validation.required();
 
-            validationReport.setAssertion(assertion);
-            validationReport.setFound(currentValue);
-            validationReport.setClassName(field.getType().getCanonicalName());
-            validationReport.setRequired(required);
-
-            boolean valid = true;
-            if (required) {
-                valid = checkValidation(currentValue, operator, expected);
-            }
-            validationReport.setValid(valid);
-            validationReportMap.put(field.getName(), validationReport);
+            final Criteria cr = Criteria
+                    .of(field.getName())
+                    .operator(operator)
+                    .value(expected)
+                     .expected(currentValue)
+                    .required(required);
+            criteria.add(cr);
         }
-        return validationReportMap;
+        return getValidationReport(object, criteria);
     }
 
 

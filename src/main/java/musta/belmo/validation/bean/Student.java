@@ -1,31 +1,14 @@
 package musta.belmo.validation.bean;
 
-import musta.belmo.validation.annotation.Assertion;
-import musta.belmo.validation.annotation.Validation;
-import musta.belmo.validation.enumeration.Operator;
-
 /**
- * A Person class wrapping fields to  be used as samples in validation by Annotation.
+ * A Student class wrapping fields to  be used as samples in validation by Criteria.
  */
-public class Person {
-
-     @Validation
-    String name;
-
-     @Validation
-    String lastName;
-
-    @Validation
-    String address;
-
-     @Validation(required = true,
-              assertion = @Assertion(operator = Operator.GREATER_THAN, value = "1"))
+public class Student {
+    private String name;
+    private String lastName;
+    private String address;
     private int age;
-
-     @Validation(assertion = @Assertion(operator = Operator.REGEX, value = "\\d{10}"))
     private String phoneNumber;
-
-
     public String getName() {
         return name;
     }

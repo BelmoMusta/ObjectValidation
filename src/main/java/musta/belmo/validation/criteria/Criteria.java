@@ -6,9 +6,11 @@ import musta.belmo.validation.enumeration.Operator;
  * Created by DELL on 22/01/2018.
  */
 public class Criteria {
-    String fieldName;
-    Operator operator;
-    Object value;
+    private String fieldName;
+    private Operator operator;
+    private Object value;
+    private boolean required;
+    private Object expected;
 
     public Criteria() {
 
@@ -57,5 +59,61 @@ public class Criteria {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public <T> Criteria equal(T value) {
+        operator(Operator.EQUALS).value(value);
+        return this;
+    }
+
+    public <T> Criteria regex(T value) {
+        operator(Operator.REGEX).value(value);
+        return this;
+    }
+
+    public <T> Criteria lessThan(T value) {
+        operator(Operator.LESS_THAN).value(value);
+        return this;
+    }
+
+    public <T> Criteria greatherThan(T value) {
+        operator(Operator.GREATER_THAN).value(value);
+        return this;
+    }
+
+    public <T> Criteria greaterOrEquals(T value) {
+        operator(Operator.GREATER_OR_EQUALS).value(value);
+        return this;
+    }
+
+    public <T> Criteria notNull() {
+        operator(Operator.NOT_NULL);
+        return this;
+    }
+
+    public Criteria required(boolean required) {
+        setRequired(required);
+        return this;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public Criteria expected(Object expected) {
+        setExpected(expected);
+        return this;
+    }
+
+    public void setExpected(Object expected) {
+        this.expected = expected;
+    }
+
+    public Object getExpected() {
+        return expected;
     }
 }
