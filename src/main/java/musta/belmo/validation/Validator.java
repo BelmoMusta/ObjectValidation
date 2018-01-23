@@ -32,9 +32,12 @@ public class Validator {
         }
         final List<Criteria> criteria = new ArrayList<>();
         final List<Field> annotatedFields = getAnnotatedFields(object);
-        for (Field field : annotatedFields) {
+        Iterator<Field> iterator = annotatedFields.iterator();
+        while (iterator.hasNext() && valid) {
             final Object currentValue;
+            Field field = iterator.next();
             try {
+
                 currentValue = field.get(object);
             } catch (IllegalAccessException e) {
                 throw new ValidationException(e);
@@ -72,14 +75,15 @@ public class Validator {
         if (Objects.isNull(object)) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-
-        for (Criteria criterion : criteria) {
+        Iterator<Criteria> iterator = criteria.iterator();
+        while (iterator.hasNext() && valid) {
+            Criteria criterion = iterator.next();
             String fieldName = criterion.getFieldName();
             try {
                 Field declaredField = object.getClass().getDeclaredField(fieldName);
                 declaredField.setAccessible(true);
                 Object currentValue = declaredField.get(object);
-                Object value = String.valueOf(criterion.getExpected());
+                Object value = String.valueOf(criterion.getValue());
                 valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
 
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -149,7 +153,7 @@ public class Validator {
                     .of(field.getName())
                     .operator(operator)
                     .value(expected)
-                     .expected(currentValue)
+                    .expected(currentValue)
                     .required(required);
             criteria.add(cr);
         }
