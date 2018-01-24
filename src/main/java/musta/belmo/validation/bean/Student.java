@@ -9,6 +9,8 @@ public class Student {
     private String address;
     private int age;
     private String phoneNumber;
+    private float mark;
+
     public String getName() {
         return name;
     }
@@ -48,4 +50,13 @@ public class Student {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public float getMark() {
+        return mark;
+    }
+
+    public void setMark(float mark) {
+        this.mark = mark;
+    }
 }
+

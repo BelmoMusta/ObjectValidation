@@ -61,10 +61,6 @@ public class Criteria {
         this.fieldName = fieldName;
     }
 
-    public <T> Criteria equal(T value) {
-        operator(Operator.EQUALS).value(value);
-        return this;
-    }
 
     public <T> Criteria matches(T value) {
         operator(Operator.REGEX).value(value);
@@ -76,8 +72,18 @@ public class Criteria {
         return this;
     }
 
+    public <T> Criteria equal(T value) {
+        operator(Operator.EQUALS).value(value);
+        return this;
+    }
+
     public <T> Criteria greatherThan(T value) {
         operator(Operator.GREATER_THAN).value(value);
+        return this;
+    }
+
+    public <T> Criteria lessThanOrEquals(T value) {
+        operator(Operator.GREATER_OR_EQUALS).value(value);
         return this;
     }
 
@@ -86,7 +92,7 @@ public class Criteria {
         return this;
     }
 
-    public <T> Criteria notNull() {
+    public Criteria notNull() {
         operator(Operator.NOT_NULL);
         return this;
     }

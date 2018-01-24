@@ -97,23 +97,80 @@ public class Main extends TestCase {
         student.setAge(5);
         student.setPhoneNumber("1234567890");
 
-        Map<String, ValidationReport> validationReport = validator.getValidationReport(student, criteria);
-        System.out.println(validationReport);
+        System.out.println(validator.getValidationReport(student, criteria));
         assertTrue(validator.check(student, criteria));
     }
 
     /**
-     * Test the validation by criteria on the given object
+     * Test the greatherThan function of validation by criteria on the given object
      *
      * @throws ValidationException
      */
-    public void testarithmeticByCriteria() throws ValidationException {
+    public void testGreatherThanByCriteria() throws ValidationException {
         Validator validator = new Validator();
 
         List<Criteria> criteria = new ArrayList<>();
-        criteria.add(Criteria.of("age").required(false).greatherThan(4));
-
+        criteria.add(Criteria.of("age").required(true).greatherThan(4));
         student.setAge(5);
+
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertTrue(validator.check(student, criteria));
+    }
+
+    /**
+     * Test the integer lessThan function of validation by criteria on the given object
+     *
+     * @throws ValidationException
+     */
+    public void testLessThanByCriteria() throws ValidationException {
+        Validator validator = new Validator();
+        List<Criteria> criteria = new ArrayList<>();
+
+        criteria.add(Criteria.of("age").required(true).lessThan(4));
+
+        student.setAge(10);
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertFalse(validator.check(student, criteria));
+
+        student.setAge(1);
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertTrue(validator.check(student, criteria));
+    }
+
+    /**
+     * Test the integer equality validation by criteria on the given object
+     *
+     * @throws ValidationException
+     */
+    public void testEqualityCriteria() throws ValidationException {
+        Validator validator = new Validator();
+        List<Criteria> criteria = new ArrayList<>();
+
+        criteria.add(Criteria.of("age").required(true).equal(4));
+        student.setAge(10);
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertFalse(validator.check(student, criteria));
+
+        student.setAge(4);
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertTrue(validator.check(student, criteria));
+    }
+
+    /**
+     * Test the float equality validation by criteria on the given object
+     *
+     * @throws ValidationException
+     */
+    public void testFloatEqualityCriteria() throws ValidationException {
+        Validator validator = new Validator();
+        List<Criteria> criteria = new ArrayList<>();
+
+        criteria.add(Criteria.of("mark").required(true).equal(4.5f));
+        student.setMark(10.01f);
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertFalse(validator.check(student, criteria));
+
+        student.setMark(4.5f);
         System.out.println(validator.getValidationReport(student, criteria));
         assertTrue(validator.check(student, criteria));
     }

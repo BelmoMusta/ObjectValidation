@@ -17,6 +17,16 @@ import java.util.*;
  * @author Belmokhtar
  */
 public class Validator {
+
+    private static Validator validator;
+
+    public static Validator getInstance() {
+        if (validator == null) {
+            validator = new Validator();
+        }
+        return validator;
+    }
+
     /**
      * Check the validity of a given object by annotations.
      *
@@ -106,6 +116,9 @@ public class Validator {
     private boolean checkNumber(Number number, Operator operator, String value) {
         boolean valid = true;
         switch (operator) {
+            case EQUALS:
+                valid = number.doubleValue() == Double.parseDouble(value);
+                break;
             case GREATER_THAN:
                 valid = number.doubleValue() > Double.parseDouble(value);
                 break;
@@ -219,7 +232,11 @@ public class Validator {
                 break;
 
             case EQUALS:
-                valid = expected.equals(currentValue);
+                if (currentValue instanceof Number) {
+                    valid = checkNumber((Number) currentValue, operator, expected);
+                } else {
+                    valid = expected.equals(currentValue);
+                }
                 break;
 
             case REGEX:
