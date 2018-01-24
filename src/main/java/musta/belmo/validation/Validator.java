@@ -84,7 +84,9 @@ public class Validator {
                 declaredField.setAccessible(true);
                 Object currentValue = declaredField.get(object);
                 Object value = String.valueOf(criterion.getValue());
-                valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
+                if (criterion.isRequired()) {
+                    valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
+                }
 
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
@@ -185,9 +187,10 @@ public class Validator {
                 Object value = String.valueOf(criterion.getValue());
                 boolean valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
                 final ValidationReport validationReport = new ValidationReport();
+                criterion.setFound(currentValue);
                 validationReport.setCriterion(criterion);
                 validationReport.setValid(valid);
-                validationReport.setRequired(true);
+                validationReport.setRequired(criterion.isRequired());
                 validationReport.setCriterion(criterion);
                 validationReportMap.put(criterion.getFieldName(), validationReport);
             } catch (NoSuchFieldException | IllegalAccessException e) {

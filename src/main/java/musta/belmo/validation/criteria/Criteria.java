@@ -66,7 +66,7 @@ public class Criteria {
         return this;
     }
 
-    public <T> Criteria regex(T value) {
+    public <T> Criteria matches(T value) {
         operator(Operator.REGEX).value(value);
         return this;
     }

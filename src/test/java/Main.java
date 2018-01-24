@@ -7,6 +7,7 @@ import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.exception.ValidationException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,20 @@ public class Main extends TestCase {
         assertTrue(validator.check(person));
     }
 
+    /**
+     * in this test case we suppose the birthDate is null but it is not required
+     * the object remains valid whether we it assigned to a new date or left null
+     *
+     * @throws ValidationException
+     */
+    public void testNull() throws ValidationException {
+        Validator validator = new Validator();
+        assertTrue(validator.check(person));
+        person.setBirthDate(new Date());
+        assertTrue(validator.check(person));
+
+    }
+
     public void testNonNull() throws ValidationException {
         Validator validator = new Validator();
 
@@ -73,10 +88,9 @@ public class Main extends TestCase {
         List<Criteria> criteria = new ArrayList<>();
 
         criteria.add(Criteria.of("name").equal("mustapha"));
-        Criteria crit = Criteria.of("address").notNull();
-        criteria.add(crit);
+        criteria.add(Criteria.of("address").notNull());
         criteria.add(Criteria.of("age").greatherThan(4));
-        criteria.add(Criteria.of("phoneNumber").regex("\\d{10}"));
+        criteria.add(Criteria.of("phoneNumber").matches("\\d{10}"));
 
         student.setName("mustapha");
         student.setAddress("wall street");
@@ -85,6 +99,22 @@ public class Main extends TestCase {
 
         Map<String, ValidationReport> validationReport = validator.getValidationReport(student, criteria);
         System.out.println(validationReport);
+        assertTrue(validator.check(student, criteria));
+    }
+
+    /**
+     * Test the validation by criteria on the given object
+     *
+     * @throws ValidationException
+     */
+    public void testarithmeticByCriteria() throws ValidationException {
+        Validator validator = new Validator();
+
+        List<Criteria> criteria = new ArrayList<>();
+        criteria.add(Criteria.of("age").required(false).greatherThan(4));
+
+        student.setAge(5);
+        System.out.println(validator.getValidationReport(student, criteria));
         assertTrue(validator.check(student, criteria));
     }
 }
