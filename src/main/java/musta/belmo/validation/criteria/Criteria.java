@@ -10,7 +10,7 @@ public class Criteria {
     private Operator operator;
     private Object value;
     private boolean required;
-    private Object expected;
+    private Object found;
 
     public Criteria() {
 
@@ -104,16 +104,18 @@ public class Criteria {
         return required;
     }
 
-    public Criteria expected(Object expected) {
-        setExpected(expected);
+
+    public Criteria found(Object found) {
+        setFound(found);
         return this;
     }
 
-    public void setExpected(Object expected) {
-        this.expected = expected;
+    public Object getFound() {
+        return found;
     }
 
-    public Object getExpected() {
-        return expected;
+
+    public void setFound(Object found) {
+        this.found = found;
     }
 }

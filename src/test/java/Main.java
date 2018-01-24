@@ -55,11 +55,11 @@ public class Main extends TestCase {
     public void testRegex() throws ValidationException {
         Validator validator = new Validator();
 
-       // System.out.println(validator.getValidationReport(person));
-    //    assertTrue(validator.check(person));
+        System.out.println(validator.getValidationReport(person));
+        assertTrue(validator.check(person));
 
         person.setPhoneNumber("01234567890_");
-      //  System.out.println(validator.getValidationReport(person));
+        System.out.println(validator.getValidationReport(person));
         assertFalse(validator.check(person));
     }
 
@@ -71,9 +71,9 @@ public class Main extends TestCase {
     public void testValidationByCriteria() throws ValidationException {
         Validator validator = new Validator();
         List<Criteria> criteria = new ArrayList<>();
+
         criteria.add(Criteria.of("name").equal("mustapha"));
-        Criteria crit = new Criteria();
-        crit.field("address").notNull();
+        Criteria crit = Criteria.of("address").notNull();
         criteria.add(crit);
         criteria.add(Criteria.of("age").greatherThan(4));
         criteria.add(Criteria.of("phoneNumber").regex("\\d{10}"));

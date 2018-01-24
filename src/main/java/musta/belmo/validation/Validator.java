@@ -50,8 +50,8 @@ public class Validator {
             final Criteria cr = Criteria
                     .of(field.getName())
                     .operator(operator)
-                    .value(currentValue)
-                    .expected(expected)
+                    .found(currentValue)
+                    .value(expected)
                     .required(required);
             criteria.add(cr);
             if (required) {
@@ -153,7 +153,7 @@ public class Validator {
                     .of(field.getName())
                     .operator(operator)
                     .value(expected)
-                    .expected(currentValue)
+                    .found(currentValue)
                     .required(required);
             criteria.add(cr);
         }
@@ -183,21 +183,12 @@ public class Validator {
                 declaredField.setAccessible(true);
                 Object currentValue = declaredField.get(object);
                 Object value = String.valueOf(criterion.getValue());
-                checkValidation(currentValue, criterion.getOperator(), value.toString());
+                boolean valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
                 final ValidationReport validationReport = new ValidationReport();
                 validationReport.setCriterion(criterion);
-
-                try {
-                    currentValue = declaredField.get(object);
-                } catch (IllegalAccessException e) {
-                    throw new ValidationException(e);
-                }
-                final Operator operator = criterion.getOperator();
-                final String expected = String.valueOf(criterion.getValue());
-                validationReport.setFound(currentValue);
-                validationReport.setRequired(true);
-                boolean valid = checkValidation(currentValue, operator, expected);
                 validationReport.setValid(valid);
+                validationReport.setRequired(true);
+                validationReport.setCriterion(criterion);
                 validationReportMap.put(criterion.getFieldName(), validationReport);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);

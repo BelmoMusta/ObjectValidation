@@ -73,7 +73,9 @@ public class ValidationReport {
 
         if (found != null) {
             foundVal = found;
-        } else {
+        } else if(criteria!=null){
+            foundVal = criteria.getFound();
+        } else  {
             foundVal = "{null}";
         }
 
