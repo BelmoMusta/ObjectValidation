@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Validation {
     /**
-     * Assign this value when annotating the wanted field.
+     * Assign this expected when annotating the wanted field.
      *
      * @return true of false
      */

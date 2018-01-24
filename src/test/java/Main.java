@@ -1,15 +1,13 @@
 import junit.framework.TestCase;
-import musta.belmo.validation.Validator;
+import musta.belmo.validation.validator.Validator;
 import musta.belmo.validation.bean.Person;
 import musta.belmo.validation.bean.Student;
-import musta.belmo.validation.bean.ValidationReport;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.exception.ValidationException;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class Main extends TestCase {
     Person person;
@@ -30,7 +28,7 @@ public class Main extends TestCase {
     }
 
     public void testArithmeticOperation() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
 
         person.setAge(-1);
         validator.getValidationReport(person);
@@ -49,7 +47,7 @@ public class Main extends TestCase {
      * @throws ValidationException
      */
     public void testNull() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
         assertTrue(validator.check(person));
         person.setBirthDate(new Date());
         assertTrue(validator.check(person));
@@ -57,7 +55,7 @@ public class Main extends TestCase {
     }
 
     public void testNonNull() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
 
         System.out.println(validator.getValidationReport(person));
         assertTrue(validator.check(person));
@@ -68,7 +66,7 @@ public class Main extends TestCase {
     }
 
     public void testRegex() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
 
         System.out.println(validator.getValidationReport(person));
         assertTrue(validator.check(person));
@@ -84,7 +82,7 @@ public class Main extends TestCase {
      * @throws ValidationException
      */
     public void testValidationByCriteria() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
         criteria.add(Criteria.of("name").equal("mustapha"));
@@ -107,7 +105,7 @@ public class Main extends TestCase {
      * @throws ValidationException
      */
     public void testGreatherThanByCriteria() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
 
         List<Criteria> criteria = new ArrayList<>();
         criteria.add(Criteria.of("age").required(true).greatherThan(4));
@@ -123,7 +121,7 @@ public class Main extends TestCase {
      * @throws ValidationException
      */
     public void testLessThanByCriteria() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
         criteria.add(Criteria.of("age").required(true).lessThan(4));
@@ -143,7 +141,7 @@ public class Main extends TestCase {
      * @throws ValidationException
      */
     public void testEqualityCriteria() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
         criteria.add(Criteria.of("age").required(true).equal(4));
@@ -162,7 +160,7 @@ public class Main extends TestCase {
      * @throws ValidationException
      */
     public void testFloatEqualityCriteria() throws ValidationException {
-        Validator validator = new Validator();
+        Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
         criteria.add(Criteria.of("mark").required(true).equal(4.5f));

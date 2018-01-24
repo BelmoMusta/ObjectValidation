@@ -1,8 +1,7 @@
-package musta.belmo.validation;
+package musta.belmo.validation.validator;
 
 import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.annotation.Validation;
-import musta.belmo.validation.bean.ValidationReport;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
@@ -61,7 +60,7 @@ public class Validator {
                     .of(field.getName())
                     .operator(operator)
                     .found(currentValue)
-                    .value(expected)
+                    .expected(expected)
                     .required(required);
             criteria.add(cr);
             if (required) {
@@ -89,13 +88,20 @@ public class Validator {
         while (iterator.hasNext() && valid) {
             Criteria criterion = iterator.next();
             String fieldName = criterion.getFieldName();
+            Field declaredField;
+
             try {
-                Field declaredField = object.getClass().getDeclaredField(fieldName);
+                if (fieldName != null) {
+                    declaredField = object.getClass().getDeclaredField(fieldName);
+                } else {
+                    throw new NoSuchFieldException(ErrorMessage.NULL_FIELD_NAME.getLabel());
+                }
+
                 declaredField.setAccessible(true);
                 Object currentValue = declaredField.get(object);
-                Object value = String.valueOf(criterion.getValue());
+                String expected = String.valueOf(criterion.getExpected());
                 if (criterion.isRequired()) {
-                    valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
+                    valid = checkValidation(currentValue, criterion.getOperator(), expected);
                 }
 
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -106,11 +112,11 @@ public class Validator {
     }
 
     /**
-     * Checks the validity of a number against the given operator and value.
+     * Checks the validity of a number against the given operator and expected.
      *
      * @param number   the number to check validity for.
      * @param operator The binary operator.
-     * @param value    the value to validate against
+     * @param value    the expected to validate against
      * @return true if the number is valid, false otherwise.
      */
     private boolean checkNumber(Number number, Operator operator, String value) {
@@ -158,6 +164,7 @@ public class Validator {
             } catch (IllegalAccessException e) {
                 throw new ValidationException(e);
             }
+
             final Validation validation = field.getAnnotation(Validation.class);
             final Assertion assertion = validation.assertion();
             final Operator operator = assertion.operator();
@@ -167,7 +174,7 @@ public class Validator {
             final Criteria cr = Criteria
                     .of(field.getName())
                     .operator(operator)
-                    .value(expected)
+                    .expected(expected)
                     .found(currentValue)
                     .required(required);
             criteria.add(cr);
@@ -197,7 +204,7 @@ public class Validator {
                 Field declaredField = object.getClass().getDeclaredField(fieldName);
                 declaredField.setAccessible(true);
                 Object currentValue = declaredField.get(object);
-                Object value = String.valueOf(criterion.getValue());
+                Object value = String.valueOf(criterion.getExpected());
                 boolean valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
                 final ValidationReport validationReport = new ValidationReport();
                 criterion.setFound(currentValue);
@@ -217,9 +224,9 @@ public class Validator {
     /**
      * Method to refactor the validation process.
      *
-     * @param currentValue the current value of the field.
+     * @param currentValue the current expected of the field.
      * @param operator     the wanted operator.
-     * @param expected     the expected value
+     * @param expected     the expected expected
      * @return true if the object is valid, false otherwise.
      */
     private boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {
