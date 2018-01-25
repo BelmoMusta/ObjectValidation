@@ -1,15 +1,20 @@
 package musta.belmo.validation.bean;
 
+import musta.belmo.validation.annotation.Length;
+import musta.belmo.validation.annotation.Regex;
+
 /**
- * A Student class wrapping fields to  be used as samples in validation by Criteria.
+ * An employee class wrapping fields to  be used as samples in validation by multiple annotations.
  */
-public class Student {
+public class Employee {
+    @Length(max = 10, min = 3)
     private String name;
     private String lastName;
     private String address;
     private int age;
+    @Regex("\\d{10}")
     private String phoneNumber;
-    private float mark;
+    private float salary;
 
     public String getName() {
         return name;
@@ -51,12 +56,12 @@ public class Student {
         this.phoneNumber = phoneNumber;
     }
 
-    public float getMark() {
-        return mark;
+    public float getSalary() {
+        return salary;
     }
 
-    public void setMark(float mark) {
-        this.mark = mark;
+    public void setSalary(float salary) {
+        this.salary = salary;
     }
 }
 

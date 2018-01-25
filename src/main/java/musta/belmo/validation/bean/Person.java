@@ -4,25 +4,30 @@ import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.enumeration.Operator;
 
+import java.util.Date;
+
 /**
  * A Person class wrapping fields to  be used as samples in validation by Annotation.
  */
 public class Person {
 
-     @Validation
-    String name;
-
-     @Validation
-    String lastName;
+    @Validation(required = false)
+    private Date birthDate;
 
     @Validation
-    String address;
+    private String name;
 
-     @Validation(required = true,
-              assertion = @Assertion(operator = Operator.GREATER_THAN, value = "1"))
+    @Validation
+    private String lastName;
+
+    @Validation
+    private String address;
+
+    @Validation(required = true,
+            assertion = @Assertion(operator = Operator.GREATER_THAN, value = "1"))
     private int age;
 
-     @Validation(assertion = @Assertion(operator = Operator.REGEX, value = "\\d{10}"))
+    @Validation(assertion = @Assertion(operator = Operator.REGEX, value = "\\d{10}"))
     private String phoneNumber;
 
 
@@ -64,5 +69,13 @@ public class Person {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
     }
 }

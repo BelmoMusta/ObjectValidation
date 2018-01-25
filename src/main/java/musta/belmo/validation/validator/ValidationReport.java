@@ -1,4 +1,4 @@
-package musta.belmo.validation.bean;
+package musta.belmo.validation.validator;
 
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.annotation.Assertion;
@@ -8,24 +8,15 @@ import musta.belmo.validation.enumeration.Operator;
  * The validation Report as the result of the Validation process.
  */
 public class ValidationReport {
-
-    private String className;
     private boolean valid;
     private boolean required;
     private Object found;
+
     private Assertion assertion;
-    Criteria criteria;
+    private Criteria criteria;
 
     public ValidationReport() {
         valid = true;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
     }
 
     public boolean isValid() {
@@ -61,18 +52,24 @@ public class ValidationReport {
 
         if (assertion != null) {
             value = assertion.value();
+        } else if (criteria != null) {
+            value = String.valueOf(criteria.getExpected());
         } else {
-            value = String.valueOf(criteria.getValue());
+            value = "";
         }
 
         if (assertion != null) {
             operator = assertion.operator();
-        } else {
+        } else if (criteria != null) {
             operator = criteria.getOperator();
+        } else {
+            operator = Operator.NONE;
         }
 
         if (found != null) {
             foundVal = found;
+        } else if (criteria != null) {
+            foundVal = criteria.getFound();
         } else {
             foundVal = "{null}";
         }

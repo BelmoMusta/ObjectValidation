@@ -14,14 +14,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Assertion {
     /**
-     * Assign this value with the wanted operator to validate the field.
+     * Assign this expected with the wanted operator to validate the field.
      *
      * @return Operator
      */
     Operator operator() default Operator.NOT_NULL;
 
     /**
-     * Holds the value to validate the object against.
+     * Holds the expected to validate the object against.
      *
      * @return String
      */

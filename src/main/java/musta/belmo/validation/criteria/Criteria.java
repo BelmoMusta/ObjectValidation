@@ -8,34 +8,18 @@ import musta.belmo.validation.enumeration.Operator;
 public class Criteria {
     private String fieldName;
     private Operator operator;
-    private Object value;
-    private boolean required;
     private Object expected;
+    private boolean required;
+    private Object found;
 
     public Criteria() {
-
+        super();
     }
 
     public static Criteria of(String fieldName) {
         Criteria rCriteria = new Criteria();
         rCriteria.setFieldName(fieldName);
         return rCriteria;
-    }
-
-    public Operator getOperator() {
-        return operator;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setOperator(Operator operator) {
-        this.operator = operator;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
     }
 
     public Criteria field(String field) {
@@ -48,69 +32,95 @@ public class Criteria {
         return this;
     }
 
-    public Criteria value(Object value) {
-        setValue(value);
+    public Criteria expected(Object value) {
+        setExpected(value);
         return this;
     }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public <T> Criteria equal(T value) {
-        operator(Operator.EQUALS).value(value);
+    public <T> Criteria matches(T value) {
+        operator(Operator.REGEX).expected(value);
         return this;
     }
 
-    public <T> Criteria regex(T value) {
-        operator(Operator.REGEX).value(value);
+    public <T> Criteria length(T value) {
+        operator(Operator.LENGTH).expected(value);
         return this;
     }
 
     public <T> Criteria lessThan(T value) {
-        operator(Operator.LESS_THAN).value(value);
+        operator(Operator.LESS_THAN).expected(value);
+        return this;
+    }
+
+    public <T> Criteria is(T value) {
+        operator(Operator.EQUALS).expected(value);
         return this;
     }
 
     public <T> Criteria greatherThan(T value) {
-        operator(Operator.GREATER_THAN).value(value);
+        operator(Operator.GREATER_THAN).expected(value);
+        return this;
+    }
+
+    public <T> Criteria lessThanOrEquals(T value) {
+        operator(Operator.GREATER_OR_EQUALS).expected(value);
         return this;
     }
 
     public <T> Criteria greaterOrEquals(T value) {
-        operator(Operator.GREATER_OR_EQUALS).value(value);
+        operator(Operator.GREATER_OR_EQUALS).expected(value);
         return this;
     }
 
-    public <T> Criteria notNull() {
+    public Criteria notNull() {
         operator(Operator.NOT_NULL);
         return this;
     }
 
-    public Criteria required(boolean required) {
-        setRequired(required);
+    public Criteria required() {
+        setRequired(true);
         return this;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
     }
 
     public boolean isRequired() {
         return required;
     }
 
-    public Criteria expected(Object expected) {
-        setExpected(expected);
+    public Criteria found(Object found) {
+        setFound(found);
         return this;
+    }
+
+    public void setOperator(Operator operator) {
+        this.operator = operator;
     }
 
     public void setExpected(Object expected) {
         this.expected = expected;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public void setFound(Object found) {
+        this.found = found;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public Object getFound() {
+        return found;
+    }
+
+    public Operator getOperator() {
+        return operator;
     }
 
     public Object getExpected() {
