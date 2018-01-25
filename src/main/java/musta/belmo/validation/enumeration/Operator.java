@@ -7,7 +7,8 @@ public enum Operator {
     LESS_THAN("{<}"),
     GREATER_OR_EQUALS("{>=}"),
     LESS_OR_EQUALS("{<=}"),
-    REGEX("{REGEX}"), NONE("NONE");
+    REGEX("{REGEX}"), NONE("NONE"),
+    LENGTH("{length}");
 
     private String label;
 

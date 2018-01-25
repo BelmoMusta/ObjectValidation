@@ -10,6 +10,7 @@ import musta.belmo.validation.exception.ValidationException;
 import java.lang.reflect.Field;
 import java.util.*;
 
+
 /**
  * Validator class to perform validation over objects.
  *
@@ -36,7 +37,7 @@ public class Validator {
      */
     public <T> boolean check(T object) throws ValidationException {
         boolean valid = true;
-        if (Objects.isNull(object)) {
+        if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         final List<Criteria> criteria = new ArrayList<>();
@@ -81,14 +82,16 @@ public class Validator {
      */
     public <T> boolean check(T object, List<Criteria> criteria) throws ValidationException {
         boolean valid = true;
-        if (Objects.isNull(object)) {
+        if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         Iterator<Criteria> iterator = criteria.iterator();
         while (iterator.hasNext() && valid) {
-            Criteria criterion = iterator.next();
-            String fieldName = criterion.getFieldName();
-            Field declaredField;
+            final Criteria criterion = iterator.next();
+            final String fieldName = criterion.getFieldName();
+            final Field declaredField;
+            final Object currentValue;
+            final String expected;
 
             try {
                 if (fieldName != null) {
@@ -96,16 +99,15 @@ public class Validator {
                 } else {
                     throw new NoSuchFieldException(ErrorMessage.NULL_FIELD_NAME.getLabel());
                 }
-
                 declaredField.setAccessible(true);
-                Object currentValue = declaredField.get(object);
-                String expected = String.valueOf(criterion.getExpected());
-                if (criterion.isRequired()) {
-                    valid = checkValidation(currentValue, criterion.getOperator(), expected);
-                }
-
+                currentValue = declaredField.get(object);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
+            }
+
+            expected = String.valueOf(criterion.getExpected());
+            if (criterion.isRequired()) {
+                valid = checkValidation(currentValue, criterion.getOperator(), expected);
             }
         }
         return valid;
@@ -152,25 +154,25 @@ public class Validator {
      * @throws ValidationException
      */
     public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
+
         if (Objects.isNull(object)) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         final List<Criteria> criteria = new ArrayList<>();
         final List<Field> annotatedFields = getAnnotatedFields(object);
-        for (Field field : annotatedFields) {
-            Object currentValue;
-            try {
-                currentValue = field.get(object);
-            } catch (IllegalAccessException e) {
-                throw new ValidationException(e);
-            }
 
+        for (Field field : annotatedFields) {
             final Validation validation = field.getAnnotation(Validation.class);
             final Assertion assertion = validation.assertion();
             final Operator operator = assertion.operator();
             final String expected = assertion.value();
             final boolean required = validation.required();
-
+            final Object currentValue;
+            try {
+                currentValue = field.get(object);
+            } catch (IllegalAccessException e) {
+                throw new ValidationException(e);
+            }
             final Criteria cr = Criteria
                     .of(field.getName())
                     .operator(operator)
@@ -181,7 +183,6 @@ public class Validator {
         }
         return getValidationReport(object, criteria);
     }
-
 
     /**
      * Constructs a validation report of the object according to the criteria in params.
@@ -195,27 +196,28 @@ public class Validator {
     public <T> Map<String, ValidationReport> getValidationReport(T object, List<Criteria> criteria) throws ValidationException {
         final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
 
-        if (Objects.isNull(object)) {
+        if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         for (Criteria criterion : criteria) {
             String fieldName = criterion.getFieldName();
+            Object currentValue;
+            String value = String.valueOf(criterion.getExpected());
+            final ValidationReport validationReport = new ValidationReport();
+            validationReportMap.put(criterion.getFieldName(), validationReport);
+            validationReport.setCriterion(criterion);
+            validationReport.setRequired(criterion.isRequired());
             try {
                 Field declaredField = object.getClass().getDeclaredField(fieldName);
                 declaredField.setAccessible(true);
-                Object currentValue = declaredField.get(object);
-                Object value = String.valueOf(criterion.getExpected());
-                boolean valid = checkValidation(currentValue, criterion.getOperator(), value.toString());
-                final ValidationReport validationReport = new ValidationReport();
-                criterion.setFound(currentValue);
-                validationReport.setCriterion(criterion);
-                validationReport.setValid(valid);
-                validationReport.setRequired(criterion.isRequired());
-                validationReport.setCriterion(criterion);
-                validationReportMap.put(criterion.getFieldName(), validationReport);
+                currentValue = declaredField.get(object);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
+
+            boolean valid = checkValidation(currentValue, criterion.getOperator(), value);
+            criterion.setFound(currentValue);
+            validationReport.setValid(valid);
         }
         return validationReportMap;
     }
@@ -233,30 +235,30 @@ public class Validator {
         boolean valid = true;
         switch (operator) {
             case NOT_NULL:
-                if (Objects.isNull(currentValue)) {
-                    valid = false;
-                }
+                valid = currentValue != null;
                 break;
 
             case EQUALS:
                 if (currentValue instanceof Number) {
                     valid = checkNumber((Number) currentValue, operator, expected);
                 } else {
-                    valid = expected.equals(currentValue);
+                    valid = Objects.equals(expected, currentValue);
                 }
                 break;
 
             case REGEX:
                 if (currentValue != null && currentValue.getClass() == String.class) {
                     valid = currentValue.toString().matches(expected);
-
                 } else if (currentValue != null) {
                     final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), currentValue.getClass().getCanonicalName());
                     throw new ValidationException(message);
                 } else {
                     throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());
-
                 }
+                break;
+
+            case LENGTH:
+                valid = checkLength(currentValue, expected);
                 break;
 
             case GREATER_THAN:
@@ -275,6 +277,30 @@ public class Validator {
                 break;
         }
         return valid;
+    }
+
+    /**
+     * checks if the current object is of the expected length
+     *
+     * @param currentValue   the value to check length of
+     * @param expectedLength the expected length
+     * @return true if object is of length the expected length.
+     * @throws ValidationException
+     */
+    private boolean checkLength(Object currentValue, String expectedLength) throws ValidationException {
+        Integer length;
+        if (currentValue == null) {
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
+        }
+        //TODO check length for arrays and collections
+        String strObject = String.valueOf(currentValue);
+        try {
+            length = Integer.parseInt(expectedLength);
+        } catch (NumberFormatException ex) {
+            throw new ValidationException(ErrorMessage.LENGTH_ERROR_MSG.getLabel() + expectedLength, ex);
+        }
+        return strObject.length() == length;
+
     }
 
     /**

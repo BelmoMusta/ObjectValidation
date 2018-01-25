@@ -42,12 +42,17 @@ public class Criteria {
         return this;
     }
 
+    public <T> Criteria length(T value) {
+        operator(Operator.LENGTH).expected(value);
+        return this;
+    }
+
     public <T> Criteria lessThan(T value) {
         operator(Operator.LESS_THAN).expected(value);
         return this;
     }
 
-    public <T> Criteria equal(T value) {
+    public <T> Criteria is(T value) {
         operator(Operator.EQUALS).expected(value);
         return this;
     }

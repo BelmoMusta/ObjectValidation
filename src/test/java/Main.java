@@ -85,7 +85,7 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("name").equal("mustapha"));
+        criteria.add(Criteria.of("name").is("mustapha"));
         criteria.add(Criteria.of("address").notNull());
         criteria.add(Criteria.of("age").greatherThan(4));
         criteria.add(Criteria.of("phoneNumber").matches("\\d{10}"));
@@ -144,7 +144,7 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("age").required(true).equal(4));
+        criteria.add(Criteria.of("age").required(true).is(4));
         student.setAge(10);
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
@@ -163,12 +163,31 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("mark").required(true).equal(4.5f));
+        criteria.add(Criteria.of("mark").required(true).is(4.5f));
         student.setMark(10.01f);
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
 
         student.setMark(4.5f);
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertTrue(validator.check(student, criteria));
+    }
+
+
+    /**
+     * Test the float equality validation by criteria on the given object
+     *
+     * @throws ValidationException
+     */
+    public void testLengthCriteria() throws ValidationException {
+        Validator validator = Validator.getInstance();
+        List<Criteria> criteria = new ArrayList<>();
+
+        criteria.add(Criteria.of("name").required(true).length(0));
+        student.setName("1");
+        System.out.println(validator.getValidationReport(student, criteria));
+        assertFalse(validator.check(student, criteria));
+        student.setName("");
         System.out.println(validator.getValidationReport(student, criteria));
         assertTrue(validator.check(student, criteria));
     }
