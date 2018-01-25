@@ -1,9 +1,10 @@
 import junit.framework.TestCase;
-import musta.belmo.validation.validator.Validator;
+import musta.belmo.validation.bean.Employee;
 import musta.belmo.validation.bean.Person;
 import musta.belmo.validation.bean.Student;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.exception.ValidationException;
+import musta.belmo.validation.validator.Validator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.List;
 public class Main extends TestCase {
     private Person person;
     private Student student;
+    private Employee employee;
 
 
     public Main() {
@@ -190,6 +192,22 @@ public class Main extends TestCase {
         student.setName("1234");
         System.out.println(validator.getValidationReport(student, criteria));
         assertTrue(validator.check(student, criteria));
+    }
+
+    /**
+     * Test the float equality validation by criteria on the given object
+     *
+     * @throws ValidationException if error
+     */
+    public void testMultipleAnnotation() throws ValidationException {
+        employee= new Employee();
+        Validator validator = Validator.getInstance();
+        employee.setName("1");
+        System.out.println(validator.getValidationReport(employee));
+       // assertFalse(validator.checkMultiAnnotations(employee));
+        student.setName("1234");
+        System.out.println(validator.getValidationReportMultiAnnotations(employee));
+        assertTrue(validator.check(employee));
     }
 }
 

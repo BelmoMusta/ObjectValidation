@@ -1,12 +1,12 @@
 package musta.belmo.validation.validator;
 
-import musta.belmo.validation.annotation.Assertion;
-import musta.belmo.validation.annotation.Validation;
+import musta.belmo.validation.annotation.*;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -17,6 +17,8 @@ import java.util.*;
  * @author Belmokhtar
  */
 public class Validator {
+
+    private static final List<Class<? extends Annotation>> ANNOTATION_CLASSES = Arrays.asList(Equals.class, Length.class, NotNull.class, Regex.class);
 
     private static Validator validator;
 
@@ -61,8 +63,9 @@ public class Validator {
                     .of(field.getName())
                     .operator(operator)
                     .found(currentValue)
-                    .expected(expected)
-                    .required();
+                    .expected(expected);
+            cr.setRequired(required);
+
             criteria.add(cr);
             if (required) {
                 valid = check(object, criteria);
@@ -141,20 +144,17 @@ public class Validator {
             case LESS_OR_EQUALS:
                 valid = number.doubleValue() <= Double.parseDouble(value);
                 break;
+
             case REGEX:
-                break;
             case NONE:
-                break;
             case LENGTH:
-                break;
             default:
-                break;
         }
         return valid;
     }
 
     /**
-     * Constructs a validation report over the annonated fields of the given object.
+     * Constructs a validation report over the annotated fields of the given object.
      *
      * @param object the object to generate the report for.
      * @param <T>    the Type of the object
@@ -282,7 +282,6 @@ public class Validator {
                 }
                 break;
             default:
-                break;
         }
         return valid;
     }
@@ -335,5 +334,27 @@ public class Validator {
         }
         return fields;
     }
-}
 
+    public <T> boolean checkMultiAnnotations(T t) {
+        return true;
+    }
+
+    public <T> ValidationReport getValidationReportMultiAnnotations(T t) {
+        return null;
+    }
+    private <T> List<Field> isToValidate(Class<? extends T> aClass) throws ValidationException {
+        Field[] declaredFields = aClass.getDeclaredFields();
+        List<Field> fields = new ArrayList<>();
+
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            for (Class<? extends Annotation> annotationClass : ANNOTATION_CLASSES) {
+
+                if (field.isAnnotationPresent(annotationClass)) {
+                    fields.add(field);
+                }
+            }
+        }
+        return fields;
+    }
+}
