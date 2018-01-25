@@ -77,8 +77,8 @@ public class Criteria {
         return this;
     }
 
-    public Criteria required(boolean required) {
-        setRequired(required);
+    public Criteria required() {
+        setRequired(true);
         return this;
     }
 

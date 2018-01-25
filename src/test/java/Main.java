@@ -108,7 +108,7 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
 
         List<Criteria> criteria = new ArrayList<>();
-        criteria.add(Criteria.of("age").required(true).greatherThan(4));
+        criteria.add(Criteria.of("age").required().greatherThan(4));
         student.setAge(5);
 
         System.out.println(validator.getValidationReport(student, criteria));
@@ -124,7 +124,7 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("age").required(true).lessThan(4));
+        criteria.add(Criteria.of("age").required().lessThan(4));
 
         student.setAge(10);
         System.out.println(validator.getValidationReport(student, criteria));
@@ -144,7 +144,7 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("age").required(true).is(4));
+        criteria.add(Criteria.of("age").required().is(4));
         student.setAge(10);
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
@@ -163,7 +163,7 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("mark").required(true).is(4.5f));
+        criteria.add(Criteria.of("mark").required().is(4.5f));
         student.setMark(10.01f);
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
@@ -183,11 +183,11 @@ public class Main extends TestCase {
         Validator validator = Validator.getInstance();
         List<Criteria> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("name").required(true).length(0));
+        criteria.add(Criteria.of("name").required().length(4));
         student.setName("1");
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
-        student.setName("");
+        student.setName("1234");
         System.out.println(validator.getValidationReport(student, criteria));
         assertTrue(validator.check(student, criteria));
     }

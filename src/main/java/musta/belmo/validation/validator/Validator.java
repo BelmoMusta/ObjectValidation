@@ -62,7 +62,7 @@ public class Validator {
                     .operator(operator)
                     .found(currentValue)
                     .expected(expected)
-                    .required(required);
+                    .required();
             criteria.add(cr);
             if (required) {
                 valid = check(object, criteria);
@@ -178,7 +178,7 @@ public class Validator {
                     .operator(operator)
                     .expected(expected)
                     .found(currentValue)
-                    .required(required);
+                    .required();
             criteria.add(cr);
         }
         return getValidationReport(object, criteria);
