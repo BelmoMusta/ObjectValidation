@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 public class Main extends TestCase {
-    Person person;
-    Student student;
+    private Person person;
+    private Student student;
 
 
     public Main() {
@@ -44,7 +44,7 @@ public class Main extends TestCase {
      * in this test case we suppose the birthDate is null but it is not required
      * the object remains valid whether we it assigned to a new date or left null
      *
-     * @throws ValidationException
+     * @throws ValidationException if error
      */
     public void testNull() throws ValidationException {
         Validator validator = Validator.getInstance();
@@ -79,7 +79,7 @@ public class Main extends TestCase {
     /**
      * Test the validation by criteria on the given object
      *
-     * @throws ValidationException
+     * @throws ValidationException if error
      */
     public void testValidationByCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
@@ -102,7 +102,7 @@ public class Main extends TestCase {
     /**
      * Test the greatherThan function of validation by criteria on the given object
      *
-     * @throws ValidationException
+     * @throws ValidationException if error
      */
     public void testGreatherThanByCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
@@ -118,7 +118,7 @@ public class Main extends TestCase {
     /**
      * Test the integer lessThan function of validation by criteria on the given object
      *
-     * @throws ValidationException
+     * @throws ValidationException if error
      */
     public void testLessThanByCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
@@ -138,7 +138,7 @@ public class Main extends TestCase {
     /**
      * Test the integer equality validation by criteria on the given object
      *
-     * @throws ValidationException
+     * @throws ValidationException if error
      */
     public void testEqualityCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
@@ -157,7 +157,7 @@ public class Main extends TestCase {
     /**
      * Test the float equality validation by criteria on the given object
      *
-     * @throws ValidationException
+     * @throws ValidationException if error
      */
     public void testFloatEqualityCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
@@ -177,7 +177,7 @@ public class Main extends TestCase {
     /**
      * Test the float equality validation by criteria on the given object
      *
-     * @throws ValidationException
+     * @throws ValidationException if error
      */
     public void testLengthCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();

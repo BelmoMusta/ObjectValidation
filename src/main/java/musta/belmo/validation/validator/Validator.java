@@ -33,7 +33,7 @@ public class Validator {
      * @param object the instance to check.
      * @param <T>    the explicit type of the instance.
      * @return true if the object is valid, false otherwise.
-     * @throws ValidationException
+     * @throws ValidationException when error
      */
     public <T> boolean check(T object) throws ValidationException {
         boolean valid = true;
@@ -41,7 +41,7 @@ public class Validator {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         final List<Criteria> criteria = new ArrayList<>();
-        final List<Field> annotatedFields = getAnnotatedFields(object);
+        final List<Field> annotatedFields = getAnnotatedFields(object.getClass());
         Iterator<Field> iterator = annotatedFields.iterator();
         while (iterator.hasNext() && valid) {
             final Object currentValue;
@@ -78,7 +78,7 @@ public class Validator {
      * @param criteria the criteria to be respected
      * @param <T>      the generic type of the object
      * @return true if the obect meets the given criteria, false otherwise.
-     * @throws ValidationException
+     * @throws ValidationException when error
      */
     public <T> boolean check(T object, List<Criteria> criteria) throws ValidationException {
         boolean valid = true;
@@ -124,6 +124,8 @@ public class Validator {
     private boolean checkNumber(Number number, Operator operator, String value) {
         boolean valid = true;
         switch (operator) {
+            case NOT_NULL:
+                break;
             case EQUALS:
                 valid = number.doubleValue() == Double.parseDouble(value);
                 break;
@@ -139,6 +141,12 @@ public class Validator {
             case LESS_OR_EQUALS:
                 valid = number.doubleValue() <= Double.parseDouble(value);
                 break;
+            case REGEX:
+                break;
+            case NONE:
+                break;
+            case LENGTH:
+                break;
             default:
                 break;
         }
@@ -151,7 +159,7 @@ public class Validator {
      * @param object the object to generate the report for.
      * @param <T>    the Type of the object
      * @return a validation report containing details for the object fields.
-     * @throws ValidationException
+     * @throws ValidationException when error
      */
     public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
 
@@ -159,7 +167,7 @@ public class Validator {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         final List<Criteria> criteria = new ArrayList<>();
-        final List<Field> annotatedFields = getAnnotatedFields(object);
+        final List<Field> annotatedFields = getAnnotatedFields(object.getClass());
 
         for (Field field : annotatedFields) {
             final Validation validation = field.getAnnotation(Validation.class);
@@ -177,8 +185,8 @@ public class Validator {
                     .of(field.getName())
                     .operator(operator)
                     .expected(expected)
-                    .found(currentValue)
-                    .required();
+                    .found(currentValue);
+            cr.setRequired(required);
             criteria.add(cr);
         }
         return getValidationReport(object, criteria);
@@ -191,7 +199,7 @@ public class Validator {
      * @param <T>      the Type of the object
      * @param criteria the criteria to validate to object against
      * @return a validation report containing details for the object fields.
-     * @throws ValidationException
+     * @throws ValidationException when error
      */
     public <T> Map<String, ValidationReport> getValidationReport(T object, List<Criteria> criteria) throws ValidationException {
         final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
@@ -285,14 +293,13 @@ public class Validator {
      * @param currentValue   the value to check length of
      * @param expectedLength the expected length
      * @return true if object is of length the expected length.
-     * @throws ValidationException
+     * @throws ValidationException when error
      */
     private boolean checkLength(Object currentValue, String expectedLength) throws ValidationException {
         Integer length;
         if (currentValue == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        //TODO check length for arrays and collections
         String strObject = String.valueOf(currentValue);
         try {
             length = Integer.parseInt(expectedLength);
@@ -300,27 +307,25 @@ public class Validator {
             throw new ValidationException(ErrorMessage.LENGTH_ERROR_MSG.getLabel() + expectedLength, ex);
         }
         return strObject.length() == length;
-
     }
 
     /**
-     * @param t   the object retrieve validation fields from
-     * @param <T> the generic type of the object
+     * @param aClass the class to  retrieve validation fields from
+     * @param <T>    the generic type of the object
      * @return <tt> List&lt;Field&gt;</tt> a list of the annotated fields with
      * <tt> Validation annotation </tt> in the given class
      */
-    private <T> List<Field> getAnnotatedFields(T t) {
-        Class cls = t.getClass();
-        Field[] fs = cls.getDeclaredFields();
+    private <T> List<Field> getAnnotatedFields(Class<? extends T> aClass) {
+        Field[] declaredFields = aClass.getDeclaredFields();
         List<Field> fields = new ArrayList<>();
 
-        for (Field field : fs) {
-            /**
+        for (Field field : declaredFields) {
+            /*
              * private fields need to be set to be accessible before processing
              */
             field.setAccessible(true);
 
-            /**
+            /*
              * checks if the field is annotated with <tt>Validation</tt> annotation
              * then add it to the list
              */

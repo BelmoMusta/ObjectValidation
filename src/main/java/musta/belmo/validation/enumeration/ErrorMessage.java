@@ -10,7 +10,7 @@ public enum ErrorMessage {
     NULL_FIELD_NAME("The field cannot be null"), LENGTH_ERROR_MSG("length error: ");
     private String label;
 
-    private ErrorMessage(String label) {
+      ErrorMessage(String label) {
         this.label = label;
     }
 
