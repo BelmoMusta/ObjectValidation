@@ -1,7 +1,7 @@
 package musta.belmo.validation.validator;
 
 import musta.belmo.validation.annotation.*;
-import musta.belmo.validation.criteria.Criteria;
+import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
@@ -42,7 +42,7 @@ public class Validator {
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        final List<Criteria> criteria = new ArrayList<>();
+        final List<Criterion> criteria = new ArrayList<>();
         final List<Field> annotatedFields = getAnnotatedFields(object.getClass());
         Iterator<Field> iterator = annotatedFields.iterator();
         while (iterator.hasNext() && valid) {
@@ -59,7 +59,7 @@ public class Validator {
             final Operator operator = assertion.operator();
             final String expected = assertion.value();
             final boolean required = validation.required();
-            final Criteria cr = Criteria
+            final Criterion cr = Criterion
                     .of(field.getName())
                     .operator(operator)
                     .found(currentValue)
@@ -83,14 +83,14 @@ public class Validator {
      * @return true if the obect meets the given criteria, false otherwise.
      * @throws ValidationException when error
      */
-    public <T> boolean check(T object, List<Criteria> criteria) throws ValidationException {
+    public <T> boolean check(T object, List<Criterion> criteria) throws ValidationException {
         boolean valid = true;
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        Iterator<Criteria> iterator = criteria.iterator();
+        Iterator<Criterion> iterator = criteria.iterator();
         while (iterator.hasNext() && valid) {
-            final Criteria criterion = iterator.next();
+            final Criterion criterion = iterator.next();
             final String fieldName = criterion.getFieldName();
             final Field declaredField;
             final Object currentValue;
@@ -166,7 +166,7 @@ public class Validator {
         if (Objects.isNull(object)) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        final List<Criteria> criteria = new ArrayList<>();
+        final List<Criterion> criteria = new ArrayList<>();
         final List<Field> annotatedFields = getAnnotatedFields(object.getClass());
 
         for (Field field : annotatedFields) {
@@ -181,7 +181,7 @@ public class Validator {
             } catch (IllegalAccessException e) {
                 throw new ValidationException(e);
             }
-            final Criteria cr = Criteria
+            final Criterion cr = Criterion
                     .of(field.getName())
                     .operator(operator)
                     .expected(expected)
@@ -201,13 +201,13 @@ public class Validator {
      * @return a validation report containing details for the object fields.
      * @throws ValidationException when error
      */
-    public <T> Map<String, ValidationReport> getValidationReport(T object, List<Criteria> criteria) throws ValidationException {
+    public <T> Map<String, ValidationReport> getValidationReport(T object, List<Criterion> criteria) throws ValidationException {
         final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
 
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        for (Criteria criterion : criteria) {
+        for (Criterion criterion : criteria) {
             String fieldName = criterion.getFieldName();
             Object currentValue;
             String value = String.valueOf(criterion.getExpected());
@@ -335,21 +335,37 @@ public class Validator {
         return fields;
     }
 
-    public <T> boolean checkMultiAnnotations(T t) {
-        return true;
+    public <T> boolean checkMultiAnnotations(T t) throws ValidationException {
+        Map<String, Criterion> mapCriteria = new HashMap<>();
+
+        List<Field> multiAnnotatedFields = getMultiAnnotatedFields(t.getClass());
+        boolean valid = true;
+        for (Field multiAnnotatedField : multiAnnotatedFields) {
+            if (multiAnnotatedField.isAnnotationPresent(NotNull.class)) {
+
+                multiAnnotatedField.getAnnotations();
+                try {
+                    valid = multiAnnotatedField.get(t) != null;
+                } catch (IllegalAccessException e) {
+                    throw new ValidationException(e);
+                }
+            }
+        }
+
+        return valid;
     }
 
     public <T> ValidationReport getValidationReportMultiAnnotations(T t) {
         return null;
     }
-    private <T> List<Field> isToValidate(Class<? extends T> aClass) throws ValidationException {
+
+    private <T> List<Field> getMultiAnnotatedFields(Class<? extends T> aClass) throws ValidationException {
         Field[] declaredFields = aClass.getDeclaredFields();
         List<Field> fields = new ArrayList<>();
 
         for (Field field : declaredFields) {
             field.setAccessible(true);
             for (Class<? extends Annotation> annotationClass : ANNOTATION_CLASSES) {
-
                 if (field.isAnnotationPresent(annotationClass)) {
                     fields.add(field);
                 }

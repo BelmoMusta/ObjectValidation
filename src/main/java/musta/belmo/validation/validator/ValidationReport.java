@@ -1,6 +1,6 @@
 package musta.belmo.validation.validator;
 
-import musta.belmo.validation.criteria.Criteria;
+import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.enumeration.Operator;
 
@@ -13,7 +13,7 @@ public class ValidationReport {
     private Object found;
 
     private Assertion assertion;
-    private Criteria criteria;
+    private Criterion criteria;
 
     public ValidationReport() {
         valid = true;
@@ -103,11 +103,11 @@ public class ValidationReport {
         return assertion;
     }
 
-    public void setCriterion(Criteria criteria) {
+    public void setCriterion(Criterion criteria) {
         this.criteria = criteria;
     }
 
-    public Criteria getCriteria() {
+    public Criterion getCriteria() {
         return criteria;
     }
 }

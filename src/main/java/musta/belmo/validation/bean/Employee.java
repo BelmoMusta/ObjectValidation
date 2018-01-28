@@ -1,6 +1,7 @@
 package musta.belmo.validation.bean;
 
 import musta.belmo.validation.annotation.Length;
+import musta.belmo.validation.annotation.NotNull;
 import musta.belmo.validation.annotation.Regex;
 
 /**
@@ -9,6 +10,7 @@ import musta.belmo.validation.annotation.Regex;
 public class Employee {
     @Length(max = 10, min = 3)
     private String name;
+    @NotNull
     private String lastName;
     private String address;
     private int age;

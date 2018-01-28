@@ -2,7 +2,7 @@ import junit.framework.TestCase;
 import musta.belmo.validation.bean.Employee;
 import musta.belmo.validation.bean.Person;
 import musta.belmo.validation.bean.Student;
-import musta.belmo.validation.criteria.Criteria;
+import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.validator.Validator;
 
@@ -85,12 +85,12 @@ public class Main extends TestCase {
      */
     public void testValidationByCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
-        List<Criteria> criteria = new ArrayList<>();
+        List<Criterion> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("name").is("mustapha"));
-        criteria.add(Criteria.of("address").notNull());
-        criteria.add(Criteria.of("age").greatherThan(4));
-        criteria.add(Criteria.of("phoneNumber").matches("\\d{10}"));
+        criteria.add(Criterion.of("name").is("mustapha"));
+        criteria.add(Criterion.of("address").notNull());
+        criteria.add(Criterion.of("age").greatherThan(4));
+        criteria.add(Criterion.of("phoneNumber").matches("\\d{10}"));
 
         student.setName("mustapha");
         student.setAddress("wall street");
@@ -109,8 +109,8 @@ public class Main extends TestCase {
     public void testGreatherThanByCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
 
-        List<Criteria> criteria = new ArrayList<>();
-        criteria.add(Criteria.of("age").required().greatherThan(4));
+        List<Criterion> criteria = new ArrayList<>();
+        criteria.add(Criterion.of("age").required().greatherThan(4));
         student.setAge(5);
 
         System.out.println(validator.getValidationReport(student, criteria));
@@ -124,9 +124,9 @@ public class Main extends TestCase {
      */
     public void testLessThanByCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
-        List<Criteria> criteria = new ArrayList<>();
+        List<Criterion> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("age").required().lessThan(4));
+        criteria.add(Criterion.of("age").required().lessThan(4));
 
         student.setAge(10);
         System.out.println(validator.getValidationReport(student, criteria));
@@ -144,9 +144,9 @@ public class Main extends TestCase {
      */
     public void testEqualityCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
-        List<Criteria> criteria = new ArrayList<>();
+        List<Criterion> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("age").required().is(4));
+        criteria.add(Criterion.of("age").required().is(4));
         student.setAge(10);
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
@@ -163,9 +163,9 @@ public class Main extends TestCase {
      */
     public void testFloatEqualityCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
-        List<Criteria> criteria = new ArrayList<>();
+        List<Criterion> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("mark").required().is(4.5f));
+        criteria.add(Criterion.of("mark").required().is(4.5f));
         student.setMark(10.01f);
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
@@ -183,9 +183,9 @@ public class Main extends TestCase {
      */
     public void testLengthCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
-        List<Criteria> criteria = new ArrayList<>();
+        List<Criterion> criteria = new ArrayList<>();
 
-        criteria.add(Criteria.of("name").required().length(4));
+        criteria.add(Criterion.of("name").required().length(4));
         student.setName("1");
         System.out.println(validator.getValidationReport(student, criteria));
         assertFalse(validator.check(student, criteria));
@@ -200,14 +200,14 @@ public class Main extends TestCase {
      * @throws ValidationException if error
      */
     public void testMultipleAnnotation() throws ValidationException {
-        employee= new Employee();
+        employee = new Employee();
         Validator validator = Validator.getInstance();
-        employee.setName("1");
-        System.out.println(validator.getValidationReport(employee));
-       // assertFalse(validator.checkMultiAnnotations(employee));
-        student.setName("1234");
+        employee.setLastName(null);
         System.out.println(validator.getValidationReportMultiAnnotations(employee));
-        assertTrue(validator.check(employee));
+        assertFalse(validator.checkMultiAnnotations(employee));
+        employee.setLastName("not null");
+        System.out.println(validator.getValidationReportMultiAnnotations(employee));
+        assertTrue(validator.checkMultiAnnotations(employee));
     }
 }
 
