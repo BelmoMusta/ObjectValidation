@@ -5,79 +5,79 @@ import musta.belmo.validation.enumeration.Operator;
 /**
  * Created by DELL on 22/01/2018.
  */
-public class Criteria {
+public class Criterion {
     private String fieldName;
     private Operator operator;
     private Object expected;
     private boolean required;
     private Object found;
 
-    public Criteria() {
+    public Criterion() {
         super();
     }
 
-    public static Criteria of(String fieldName) {
-        Criteria rCriteria = new Criteria();
-        rCriteria.setFieldName(fieldName);
-        return rCriteria;
+    public static Criterion of(String fieldName) {
+        Criterion rCriterion = new Criterion();
+        rCriterion.setFieldName(fieldName);
+        return rCriterion;
     }
 
-    public Criteria field(String field) {
+    public Criterion field(String field) {
         setFieldName(field);
         return this;
     }
 
-    public Criteria operator(Operator operator) {
+    public Criterion operator(Operator operator) {
         setOperator(operator);
         return this;
     }
 
-    public Criteria expected(Object value) {
+    public Criterion expected(Object value) {
         setExpected(value);
         return this;
     }
 
-    public <T> Criteria matches(T value) {
+    public <T> Criterion matches(T value) {
         operator(Operator.REGEX).expected(value);
         return this;
     }
 
-    public <T> Criteria length(T value) {
+    public <T> Criterion length(T value) {
         operator(Operator.LENGTH).expected(value);
         return this;
     }
 
-    public <T> Criteria lessThan(T value) {
+    public <T> Criterion lessThan(T value) {
         operator(Operator.LESS_THAN).expected(value);
         return this;
     }
 
-    public <T> Criteria is(T value) {
+    public <T> Criterion is(T value) {
         operator(Operator.EQUALS).expected(value);
         return this;
     }
 
-    public <T> Criteria greatherThan(T value) {
+    public <T> Criterion greatherThan(T value) {
         operator(Operator.GREATER_THAN).expected(value);
         return this;
     }
 
-    public <T> Criteria lessThanOrEquals(T value) {
+    public <T> Criterion lessThanOrEquals(T value) {
         operator(Operator.GREATER_OR_EQUALS).expected(value);
         return this;
     }
 
-    public <T> Criteria greaterOrEquals(T value) {
+    public <T> Criterion greaterOrEquals(T value) {
         operator(Operator.GREATER_OR_EQUALS).expected(value);
         return this;
     }
 
-    public Criteria notNull() {
+    public Criterion notNull() {
         operator(Operator.NOT_NULL);
         return this;
     }
 
-    public Criteria required() {
+    public Criterion required() {
         setRequired(true);
         return this;
     }
@@ -86,7 +86,7 @@ public class Criteria {
         return required;
     }
 
-    public Criteria found(Object found) {
+    public Criterion found(Object found) {
         setFound(found);
         return this;
     }

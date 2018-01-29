@@ -2,6 +2,7 @@ package musta.belmo.validation.validator;
 
 import musta.belmo.validation.annotation.*;
 import musta.belmo.validation.criteria.Criteria;
+import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
@@ -38,18 +39,17 @@ public class Validator {
      * @throws ValidationException when error
      */
     public <T> boolean check(T object) throws ValidationException {
-        boolean valid = true;
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        final List<Criteria> criteria = new ArrayList<>();
+
         final List<Field> annotatedFields = getAnnotatedFields(object.getClass());
         Iterator<Field> iterator = annotatedFields.iterator();
-        while (iterator.hasNext() && valid) {
+        Criteria cri = new Criteria();
+        while (iterator.hasNext()) {
             final Object currentValue;
             Field field = iterator.next();
             try {
-
                 currentValue = field.get(object);
             } catch (IllegalAccessException e) {
                 throw new ValidationException(e);
@@ -59,61 +59,15 @@ public class Validator {
             final Operator operator = assertion.operator();
             final String expected = assertion.value();
             final boolean required = validation.required();
-            final Criteria cr = Criteria
+            final Criterion cr = Criterion
                     .of(field.getName())
                     .operator(operator)
                     .found(currentValue)
                     .expected(expected);
             cr.setRequired(required);
-
-            criteria.add(cr);
-            if (required) {
-                valid = check(object, criteria);
-            }
+            cri.add(cr);
         }
-        return valid;
-    }
-
-    /**
-     * Checks the validity of the given object by criteria
-     *
-     * @param object   the object to validate
-     * @param criteria the criteria to be respected
-     * @param <T>      the generic type of the object
-     * @return true if the obect meets the given criteria, false otherwise.
-     * @throws ValidationException when error
-     */
-    public <T> boolean check(T object, List<Criteria> criteria) throws ValidationException {
-        boolean valid = true;
-        if (object == null) {
-            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
-        }
-        Iterator<Criteria> iterator = criteria.iterator();
-        while (iterator.hasNext() && valid) {
-            final Criteria criterion = iterator.next();
-            final String fieldName = criterion.getFieldName();
-            final Field declaredField;
-            final Object currentValue;
-            final String expected;
-
-            try {
-                if (fieldName != null) {
-                    declaredField = object.getClass().getDeclaredField(fieldName);
-                } else {
-                    throw new NoSuchFieldException(ErrorMessage.NULL_FIELD_NAME.getLabel());
-                }
-                declaredField.setAccessible(true);
-                currentValue = declaredField.get(object);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new ValidationException(e);
-            }
-
-            expected = String.valueOf(criterion.getExpected());
-            if (criterion.isRequired()) {
-                valid = checkValidation(currentValue, criterion.getOperator(), expected);
-            }
-        }
-        return valid;
+        return check(object, cri);
     }
 
     /**
@@ -166,7 +120,7 @@ public class Validator {
         if (Objects.isNull(object)) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        final List<Criteria> criteria = new ArrayList<>();
+        Criteria criteria = new Criteria();
         final List<Field> annotatedFields = getAnnotatedFields(object.getClass());
 
         for (Field field : annotatedFields) {
@@ -181,7 +135,7 @@ public class Validator {
             } catch (IllegalAccessException e) {
                 throw new ValidationException(e);
             }
-            final Criteria cr = Criteria
+            final Criterion cr = Criterion
                     .of(field.getName())
                     .operator(operator)
                     .expected(expected)
@@ -201,13 +155,13 @@ public class Validator {
      * @return a validation report containing details for the object fields.
      * @throws ValidationException when error
      */
-    public <T> Map<String, ValidationReport> getValidationReport(T object, List<Criteria> criteria) throws ValidationException {
+    public <T> Map<String, ValidationReport> getValidationReport(T object, Criteria criteria) throws ValidationException {
         final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
 
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        for (Criteria criterion : criteria) {
+        for (Criterion criterion : criteria.all()) {
             String fieldName = criterion.getFieldName();
             Object currentValue;
             String value = String.valueOf(criterion.getExpected());
@@ -342,6 +296,7 @@ public class Validator {
     public <T> ValidationReport getValidationReportMultiAnnotations(T t) {
         return null;
     }
+
     private <T> List<Field> isToValidate(Class<? extends T> aClass) throws ValidationException {
         Field[] declaredFields = aClass.getDeclaredFields();
         List<Field> fields = new ArrayList<>();
@@ -356,5 +311,48 @@ public class Validator {
             }
         }
         return fields;
+    }
+
+
+    /**
+     * Checks the validity of the given object by criteria
+     *
+     * @param object   the object to validate
+     * @param criteria the criteria to be respected
+     * @param <T>      the generic type of the object
+     * @return true if the obect meets the given criteria, false otherwise.
+     * @throws ValidationException when error
+     */
+    public <T> boolean check(T object, Criteria criteria) throws ValidationException {
+        boolean valid = true;
+        if (object == null) {
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
+        }
+        Iterator<Criterion> iterator = criteria.all().iterator();
+        while (iterator.hasNext() && valid) {
+            final Criterion criterion = iterator.next();
+            final String fieldName = criterion.getFieldName();
+            final Field declaredField;
+            final Object currentValue;
+            final String expected;
+
+            try {
+                if (fieldName != null) {
+                    declaredField = object.getClass().getDeclaredField(fieldName);
+                } else {
+                    throw new NoSuchFieldException(ErrorMessage.NULL_FIELD_NAME.getLabel());
+                }
+                declaredField.setAccessible(true);
+                currentValue = declaredField.get(object);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new ValidationException(e);
+            }
+
+            expected = String.valueOf(criterion.getExpected());
+            if (criterion.isRequired()) {
+                valid = checkValidation(currentValue, criterion.getOperator(), expected);
+            }
+        }
+        return valid;
     }
 }

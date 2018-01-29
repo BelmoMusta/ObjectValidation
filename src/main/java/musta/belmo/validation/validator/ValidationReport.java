@@ -1,6 +1,6 @@
 package musta.belmo.validation.validator;
 
-import musta.belmo.validation.criteria.Criteria;
+import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.enumeration.Operator;
 
@@ -13,7 +13,7 @@ public class ValidationReport {
     private Object found;
 
     private Assertion assertion;
-    private Criteria criteria;
+    private Criterion criterion;
 
     public ValidationReport() {
         valid = true;
@@ -52,24 +52,24 @@ public class ValidationReport {
 
         if (assertion != null) {
             value = assertion.value();
-        } else if (criteria != null) {
-            value = String.valueOf(criteria.getExpected());
+        } else if (criterion != null) {
+            value = String.valueOf(criterion.getExpected());
         } else {
             value = "";
         }
 
         if (assertion != null) {
             operator = assertion.operator();
-        } else if (criteria != null) {
-            operator = criteria.getOperator();
+        } else if (criterion != null) {
+            operator = criterion.getOperator();
         } else {
             operator = Operator.NONE;
         }
 
         if (found != null) {
             foundVal = found;
-        } else if (criteria != null) {
-            foundVal = criteria.getFound();
+        } else if (criterion != null) {
+            foundVal = criterion.getFound();
         } else {
             foundVal = "{null}";
         }
@@ -103,11 +103,11 @@ public class ValidationReport {
         return assertion;
     }
 
-    public void setCriterion(Criteria criteria) {
-        this.criteria = criteria;
+    public void setCriterion(Criterion criterion) {
+        this.criterion = criterion;
     }
 
-    public Criteria getCriteria() {
-        return criteria;
+    public Criterion getCriterion() {
+        return criterion;
     }
 }
