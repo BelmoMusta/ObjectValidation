@@ -1,7 +1,8 @@
+
 package musta.belmo.validation.validator;
 
-import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.annotation.Assertion;
+import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.Operator;
 
 /**

@@ -1,7 +1,5 @@
 package musta.belmo.validation.criteria;
 
-import musta.belmo.validation.enumeration.Operator;
-
 import java.util.*;
 
 /**

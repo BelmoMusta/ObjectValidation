@@ -1,4 +1,4 @@
-package musta.belmo.validation.criteria;
+ package musta.belmo.validation.criteria;
 
 import musta.belmo.validation.enumeration.Operator;
 
@@ -17,9 +17,9 @@ public class Criterion {
     }
 
     public static Criterion of(String fieldName) {
-        Criterion rCriterion = new Criterion();
-        rCriterion.setFieldName(fieldName);
-        return rCriterion;
+        Criterion rCriteria = new Criterion();
+        rCriteria.setFieldName(fieldName);
+        return rCriteria;
     }
 
     public Criterion field(String field) {
@@ -127,3 +127,4 @@ public class Criterion {
         return expected;
     }
 }
+//>//>>>>>> 8946fa2d4e797b503cec71282d29ea15cef36425

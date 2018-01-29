@@ -1,7 +1,7 @@
 package musta.belmo.validation.bean;
 
 /**
- * A Student class wrapping fields to  be used as samples in validation by Criterion.
+ * A Student class wrapping fields to  be used as samples in validation by Criteria.
  */
 public class Student {
     private String name;
@@ -59,4 +59,3 @@ public class Student {
         this.mark = mark;
     }
 }
-

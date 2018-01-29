@@ -7,9 +7,7 @@ import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.validator.Validator;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Main extends TestCase {
     private Person person;
@@ -212,4 +210,5 @@ public class Main extends TestCase {
         assertTrue(validator.check(employee, cr));
     }
 }
+
 
