@@ -17,8 +17,6 @@ import java.util.List;
  */
 public class MultiAnnotationValidator extends AbstractValidator {
 
-    private static final List<Class<? extends Annotation>> ANNOTATION_CLASSES = Arrays.asList(Equals.class, Length.class, NotNull.class, Regex.class);
-
     private static MultiAnnotationValidator validator;
 
     public static MultiAnnotationValidator getInstance() {

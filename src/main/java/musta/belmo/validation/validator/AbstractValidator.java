@@ -1,11 +1,16 @@
 package musta.belmo.validation.validator;
 
+import musta.belmo.validation.annotation.Equals;
+import musta.belmo.validation.annotation.Length;
+import musta.belmo.validation.annotation.NotNull;
+import musta.belmo.validation.annotation.Regex;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -16,6 +21,7 @@ import java.util.*;
  * @author Belmokhtar
  */
 public abstract class AbstractValidator {
+    protected static final List<Class<? extends Annotation>> ANNOTATION_CLASSES = Arrays.asList(Equals.class, Length.class, NotNull.class, Regex.class);
 
     protected boolean checkNumber(Number number, Operator operator, String value) {
         boolean valid = true;
