@@ -161,7 +161,8 @@ public class Validator {
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-        for (Criterion criterion : criteria.all()) {
+        List<Criterion> all = criteria.all();
+        for (Criterion criterion : all) {
             String fieldName = criterion.getFieldName();
             Object currentValue;
             String value = String.valueOf(criterion.getExpected());
@@ -313,7 +314,6 @@ public class Validator {
         return fields;
     }
 
-
     /**
      * Checks the validity of the given object by criteria
      *
@@ -324,10 +324,20 @@ public class Validator {
      * @throws ValidationException when error
      */
     public <T> boolean check(T object, Criteria criteria) throws ValidationException {
+        criteria.setObject(object);
+        return check(criteria);
+    }
+
+    /**
+     * Checks the validity of the given object by criteria
+     *
+     * @param criteria the criteria to be respected
+     * @return true if the obect meets the given criteria, false otherwise.
+     * @throws ValidationException when error
+     */
+    public boolean check(Criteria criteria) throws ValidationException {
         boolean valid = true;
-        if (object == null) {
-            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
-        }
+        Object object = criteria.getObject();
         Iterator<Criterion> iterator = criteria.all().iterator();
         while (iterator.hasNext() && valid) {
             final Criterion criterion = iterator.next();
@@ -338,6 +348,7 @@ public class Validator {
 
             try {
                 if (fieldName != null) {
+
                     declaredField = object.getClass().getDeclaredField(fieldName);
                 } else {
                     throw new NoSuchFieldException(ErrorMessage.NULL_FIELD_NAME.getLabel());

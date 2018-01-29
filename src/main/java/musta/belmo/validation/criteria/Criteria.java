@@ -6,6 +6,10 @@ import java.util.*;
  * Created by DELL on 22/01/2018.
  */
 public class Criteria {
+    /**
+     * the object to validate
+     */
+    private Object object;
     public Map<String, List<Criterion>> map;
 
     public List<Criterion> get(String fieldName) {
@@ -14,6 +18,11 @@ public class Criteria {
 
     public Criteria() {
         map = new HashMap<>();
+    }
+
+    public Criteria(Object object) {
+        this();
+        this.object = object;
     }
 
     public Criteria add(Criterion criterion) {
@@ -40,5 +49,13 @@ public class Criteria {
             list.addAll(criterionList);
         }
         return list;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
     }
 }

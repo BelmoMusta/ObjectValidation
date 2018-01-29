@@ -127,4 +127,3 @@ public class Criterion {
         return expected;
     }
 }
-//>//>>>>>> 8946fa2d4e797b503cec71282d29ea15cef36425

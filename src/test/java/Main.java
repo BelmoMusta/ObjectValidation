@@ -85,6 +85,7 @@ public class Main extends TestCase {
     public void testValidationByCriteria() throws ValidationException {
         Validator validator = Validator.getInstance();
         Criteria criteria = new Criteria();
+        criteria.setObject(student);
 
         criteria.add(Criterion.of("name").is("mustapha").required());
         criteria.add(Criterion.of("address").notNull());
@@ -97,7 +98,7 @@ public class Main extends TestCase {
         student.setPhoneNumber("1234567890");
 
          System.out.println(validator.getValidationReport(student, criteria));
-        assertTrue(validator.check(student, criteria));
+        assertTrue(validator.check(criteria));
     }
 
     /**
