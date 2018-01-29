@@ -5,10 +5,10 @@ import musta.belmo.validation.validator.AnnotationValidator;
 
 import java.util.Date;
 
-public class Main extends TestCase {
+public class TestAnnotation extends TestCase {
     private Person person;
 
-    public Main() {
+    public TestAnnotation() {
         super();
         person = new Person();
         person.setName("Mustapha");
