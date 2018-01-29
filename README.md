@@ -1,6 +1,6 @@
 # Java Object Validation
 
-Developed in order to check if an instance of a class is valid according to the predicates
+Developed in order to check if an instance of a class mustEqual valid according to the predicates
 given as annotations on its fields.
 
 The fields to be validated can also be put on a list of criteria, this can be done without the annotatoins aspect.
@@ -26,7 +26,7 @@ class Person {
     }
    ```
    
-   And we will create an instance, then we check if it is valid or not: 
+   And we will create an instance, then we check if it mustEqual valid or not:
    
    ```JAVA 
      Validator validator = new Validator();

@@ -52,7 +52,7 @@ public class Criterion {
         return this;
     }
 
-    public <T> Criterion is(T value) {
+    public <T> Criterion mustEqual(T value) {
         operator(Operator.EQUALS).expected(value);
         return this;
     }
