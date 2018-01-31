@@ -1,7 +1,6 @@
-package musta.belmo.validation.criteria;
+ package musta.belmo.validation.criteria;
 
 import musta.belmo.validation.enumeration.Operator;
-import musta.belmo.validation.utils.ArithmeticUtils;
 
 /**
  * Created by DELL on 22/01/2018.
@@ -127,6 +126,4 @@ public class Criterion {
     public Object getExpected() {
         return expected;
     }
-
-
 }

@@ -59,4 +59,3 @@ public class Student {
         this.mark = mark;
     }
 }
-

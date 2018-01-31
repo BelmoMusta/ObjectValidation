@@ -2,21 +2,27 @@
 package musta.belmo.validation.validator;
 
 import musta.belmo.validation.annotation.Assertion;
+import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.Operator;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The validation Report as the result of the Validation process.
  */
-public class ValidationReport {
+public class AbstractReport {
     private boolean valid;
     private boolean required;
     private Object found;
 
     private Assertion assertion;
-    private Criterion criterion;
+    private Criteria criteria;
 
-    public ValidationReport() {
+    public AbstractReport() {
         valid = true;
     }
 
@@ -48,29 +54,30 @@ public class ValidationReport {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         String value;
-        Operator operator;
+        List<Operator> operator;
         Object foundVal;
 
         if (assertion != null) {
             value = assertion.value();
-        } else if (criterion != null) {
-            value = String.valueOf(criterion.getExpected());
+        } else if (criteria != null) {
+            value = String.valueOf(criteria.all());
         } else {
             value = "";
         }
 
         if (assertion != null) {
-            operator = assertion.operator();
-        } else if (criterion != null) {
-            operator = criterion.getOperator();
+            operator = Collections.singletonList(assertion.operator());
+        } else if (criteria != null) {
+            operator = criteria.all().stream().map(Criterion::getOperator).collect(Collectors.toList());
         } else {
-            operator = Operator.NONE;
+            operator = Collections.singletonList(Operator.NONE);
         }
 
         if (found != null) {
             foundVal = found;
-        } else if (criterion != null) {
-            foundVal = criterion.getFound();
+        } else if (criteria != null) {
+            foundVal = criteria.all().stream().map(Criterion::getFound).collect(
+                    Collectors.toList());
         } else {
             foundVal = "{null}";
         }
@@ -84,7 +91,7 @@ public class ValidationReport {
                     .append(", found=")
                     .append(foundVal)
                     .append(", expected=")
-                    .append(operator.getLabel())
+                    .append(operator.stream().map(Operator::getLabel).collect(Collectors.toList()))
                     .append(':')
                     .append('[')
                     .append(value)
@@ -104,11 +111,5 @@ public class ValidationReport {
         return assertion;
     }
 
-    public void setCriterion(Criterion criterion) {
-        this.criterion = criterion;
-    }
 
-    public Criterion getCriterion() {
-        return criterion;
-    }
 }
