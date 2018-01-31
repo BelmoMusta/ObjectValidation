@@ -27,7 +27,7 @@ public class TestCriteria extends TestCase {
         Criteria criteria = new Criteria();
         criteria.setObject(student);
 
-        criteria.add(Criterion.of("name").mustEqual("mustapha").required());
+        criteria.add(Criterion.of("name").is("mustapha").required());
         criteria.add(Criterion.of("address").notNull());
         criteria.add(Criterion.of("age").greaterOrEquals(4).required());
         criteria.add(Criterion.of("phoneNumber").matches("\\d{10}"));
@@ -86,7 +86,7 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = new Criteria();
 
-        criteria.add(Criterion.of("age").required().mustEqual(4));
+        criteria.add(Criterion.of("age").required().is(4));
         student.setAge(10);
         // System.out.println(criteriaValidator.getValidationReport(student, criteria));
         assertFalse(criteriaValidator.check(student, criteria));
@@ -105,7 +105,7 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = new Criteria();
 
-        criteria.add(Criterion.of("mark").required().mustEqual(4.5f));
+        criteria.add(Criterion.of("mark").required().is(4.5f));
         student.setMark(10.01f);
         //System.out.println(criteriaValidator.getValidationReport(student, criteria));
         assertFalse(criteriaValidator.check(student, criteria));

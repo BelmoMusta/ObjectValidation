@@ -206,4 +206,3 @@ public class Main extends TestCase {
         assertTrue(validator.check(employee,criteria));
     }
 }
-
