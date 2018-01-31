@@ -5,6 +5,7 @@ import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
+import musta.belmo.validation.utils.ArithmeticUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -116,42 +117,7 @@ public class Validator {
         return valid;
     }
 
-    /**
-     * Checks the validity of a number against the given operator and expected.
-     *
-     * @param number   the number to check validity for.
-     * @param operator The binary operator.
-     * @param value    the expected to validate against
-     * @return true if the number is valid, false otherwise.
-     */
-    private boolean checkNumber(Number number, Operator operator, String value) {
-        boolean valid = true;
-        switch (operator) {
-            case NOT_NULL:
-                break;
-            case EQUALS:
-                valid = number.doubleValue() == Double.parseDouble(value);
-                break;
-            case GREATER_THAN:
-                valid = number.doubleValue() > Double.parseDouble(value);
-                break;
-            case LESS_THAN:
-                valid = number.doubleValue() < Double.parseDouble(value);
-                break;
-            case GREATER_OR_EQUALS:
-                valid = number.doubleValue() >= Double.parseDouble(value);
-                break;
-            case LESS_OR_EQUALS:
-                valid = number.doubleValue() <= Double.parseDouble(value);
-                break;
 
-            case REGEX:
-            case NONE:
-            case LENGTH:
-            default:
-        }
-        return valid;
-    }
 
     /**
      * Constructs a validation report over the annotated fields of the given object.
@@ -248,7 +214,7 @@ public class Validator {
 
             case EQUALS:
                 if (currentValue instanceof Number) {
-                    valid = checkNumber((Number) currentValue, operator, expected);
+                    valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
                 } else {
                     valid = Objects.equals(expected, currentValue);
                 }
@@ -274,7 +240,7 @@ public class Validator {
             case LESS_OR_EQUALS:
             case GREATER_OR_EQUALS:
                 if (currentValue != null && currentValue instanceof Number) {
-                    valid = checkNumber((Number) currentValue, operator, expected);
+                    valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
                 } else if (currentValue == null) {
                     throw new ValidationException(ErrorMessage.ARITHMETIC_ON_NULL.getLabel());
                 } else {
@@ -335,42 +301,4 @@ public class Validator {
         return fields;
     }
 
-    public <T> boolean checkMultiAnnotations(T t) throws ValidationException {
-        Map<String, Criterion> mapCriteria = new HashMap<>();
-
-        List<Field> multiAnnotatedFields = getMultiAnnotatedFields(t.getClass());
-        boolean valid = true;
-        for (Field multiAnnotatedField : multiAnnotatedFields) {
-            if (multiAnnotatedField.isAnnotationPresent(NotNull.class)) {
-
-                multiAnnotatedField.getAnnotations();
-                try {
-                    valid = multiAnnotatedField.get(t) != null;
-                } catch (IllegalAccessException e) {
-                    throw new ValidationException(e);
-                }
-            }
-        }
-
-        return valid;
-    }
-
-    public <T> ValidationReport getValidationReportMultiAnnotations(T t) {
-        return null;
-    }
-
-    private <T> List<Field> getMultiAnnotatedFields(Class<? extends T> aClass) throws ValidationException {
-        Field[] declaredFields = aClass.getDeclaredFields();
-        List<Field> fields = new ArrayList<>();
-
-        for (Field field : declaredFields) {
-            field.setAccessible(true);
-            for (Class<? extends Annotation> annotationClass : ANNOTATION_CLASSES) {
-                if (field.isAnnotationPresent(annotationClass)) {
-                    fields.add(field);
-                }
-            }
-        }
-        return fields;
-    }
 }

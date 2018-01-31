@@ -2,8 +2,10 @@ import junit.framework.TestCase;
 import musta.belmo.validation.bean.Employee;
 import musta.belmo.validation.bean.Person;
 import musta.belmo.validation.bean.Student;
+import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.exception.ValidationException;
+import musta.belmo.validation.validator.MultiValidator;
 import musta.belmo.validation.validator.Validator;
 
 import java.util.ArrayList;
@@ -182,16 +184,8 @@ public class Main extends TestCase {
      * @throws ValidationException if error
      */
     public void testLengthCriteria() throws ValidationException {
-        Validator validator = Validator.getInstance();
-        List<Criterion> criteria = new ArrayList<>();
+        MultiValidator validator = MultiValidator.getInstance();
 
-        criteria.add(Criterion.of("name").required().length(4));
-        student.setName("1");
-        System.out.println(validator.getValidationReport(student, criteria));
-        assertFalse(validator.check(student, criteria));
-        student.setName("1234");
-        System.out.println(validator.getValidationReport(student, criteria));
-        assertTrue(validator.check(student, criteria));
     }
 
     /**
@@ -201,13 +195,15 @@ public class Main extends TestCase {
      */
     public void testMultipleAnnotation() throws ValidationException {
         employee = new Employee();
-        Validator validator = Validator.getInstance();
-        employee.setLastName(null);
-        System.out.println(validator.getValidationReportMultiAnnotations(employee));
-        assertFalse(validator.checkMultiAnnotations(employee));
-        employee.setLastName("not null");
-        System.out.println(validator.getValidationReportMultiAnnotations(employee));
-        assertTrue(validator.checkMultiAnnotations(employee));
+        MultiValidator validator = MultiValidator.getInstance();
+
+        Criteria criteria = Criteria.of(Criterion.of("name").notNull());
+        employee.setName(null);
+       // System.out.println(validator.getValidationReportMultiAnnotations(employee));
+         assertFalse(validator.check(employee,criteria));
+        employee.setName("not null");
+        //System.out.println(validator.getValidationReportMultiAnnotations(employee));
+        assertTrue(validator.check(employee,criteria));
     }
 }
 
