@@ -1,7 +1,9 @@
+import bean.Person;
 import junit.framework.TestCase;
-import musta.belmo.validation.bean.Person;
+
 import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.validator.AnnotationValidator;
+import org.junit.Before;
 
 import java.util.Date;
 
@@ -9,7 +11,6 @@ public class TestAnnotation extends TestCase {
     private Person person;
 
     public TestAnnotation() {
-        super();
         person = new Person();
         person.setName("Mustapha");
         person.setLastName("Belmokhtar");
@@ -17,6 +18,7 @@ public class TestAnnotation extends TestCase {
         person.setAddress("a non-null address ! ");
         person.setAge(25);
     }
+
 
     public void testArithmeticOperation() throws ValidationException {
         AnnotationValidator annotationValidator = AnnotationValidator.getInstance();

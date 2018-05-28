@@ -1,12 +1,14 @@
+import bean.Employee;
+
+import bean.Student;
 import junit.framework.TestCase;
-import musta.belmo.validation.bean.Employee;
-import musta.belmo.validation.bean.Student;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.validator.CriteriaValidator;
 
 public class TestCriteria extends TestCase {
+
 
     private Student student;
     private Employee employee;
@@ -37,7 +39,7 @@ public class TestCriteria extends TestCase {
         student.setAge(4);
         student.setPhoneNumber("1234567890");
 
-        System.out.println(criteriaValidator.getValidationReport(student, criteria));
+        System.out.println(criteriaValidator.getValidationReport(criteria));
         assertTrue(criteriaValidator.check(criteria));
     }
 
@@ -50,11 +52,12 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
 
         Criteria criteria = new Criteria();
+        criteria.setObject(student);
         criteria.add(Criterion.of("age").required().greatherThan(4));
         student.setAge(5);
 
         // System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertTrue(criteriaValidator.check(student, criteria));
+        assertTrue(criteriaValidator.check(criteria));
     }
 
     /**
@@ -65,16 +68,16 @@ public class TestCriteria extends TestCase {
     public void testLessThan() throws ValidationException {
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = new Criteria();
-
+        criteria.setObject(student);
         criteria.add(Criterion.of("age").required().lessThan(4));
 
         student.setAge(10);
         //  System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertFalse(criteriaValidator.check(student, criteria));
+        assertFalse(criteriaValidator.check(criteria));
 
         student.setAge(1);
         //System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertTrue(criteriaValidator.check(student, criteria));
+        assertTrue(criteriaValidator.check(criteria));
     }
 
     /**
@@ -88,12 +91,14 @@ public class TestCriteria extends TestCase {
 
         criteria.add(Criterion.of("age").required().is(4));
         student.setAge(10);
+        criteria.setObject(student);
         // System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertFalse(criteriaValidator.check(student, criteria));
+        assertFalse(criteriaValidator.check(criteria));
 
         student.setAge(4);
+        criteria.setObject(student);
         // System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertTrue(criteriaValidator.check(student, criteria));
+        assertTrue(criteriaValidator.check(criteria));
     }
 
     /**
@@ -104,15 +109,15 @@ public class TestCriteria extends TestCase {
     public void testFloatEquality() throws ValidationException {
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = new Criteria();
-
+        criteria.setObject(student);
         criteria.add(Criterion.of("mark").required().is(4.5f));
         student.setMark(10.01f);
         //System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertFalse(criteriaValidator.check(student, criteria));
+        assertFalse(criteriaValidator.check(criteria));
 
         student.setMark(4.5f);
         // System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertTrue(criteriaValidator.check(student, criteria));
+        assertTrue(criteriaValidator.check(criteria));
     }
 
 
@@ -124,14 +129,15 @@ public class TestCriteria extends TestCase {
     public void testLength() throws ValidationException {
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = new Criteria();
+        criteria.setObject(student);
 
         criteria.add(Criterion.of("name").required().length(4));
         student.setName("1");
         //System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertFalse(criteriaValidator.check(student, criteria));
+        assertFalse(criteriaValidator.check(criteria));
         student.setName("1234");
         //System.out.println(criteriaValidator.getValidationReport(student, criteria));
-        assertTrue(criteriaValidator.check(student, criteria));
+        assertTrue(criteriaValidator.check(criteria));
     }
 
 

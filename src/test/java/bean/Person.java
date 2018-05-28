@@ -1,15 +1,35 @@
-package musta.belmo.validation.bean;
+package bean;
+
+import musta.belmo.validation.annotation.Assertion;
+import musta.belmo.validation.annotation.Validation;
+import musta.belmo.validation.enumeration.Operator;
+
+import java.util.Date;
 
 /**
- * A Student class wrapping fields to  be used as samples in validation by Criteria.
+ * A Person class wrapping fields to  be used as samples in validation by Annotation.
  */
-public class Student {
+public class Person {
+
+    @Validation(required = false)
+    private Date birthDate;
+
+    @Validation
     private String name;
+
+    @Validation
     private String lastName;
+
+    @Validation
     private String address;
+
+    @Validation(required = true,
+            assertion = @Assertion(operator = Operator.GREATER_THAN, value = "1"))
     private int age;
+
+    @Validation(assertion = @Assertion(operator = Operator.REGEX, value = "\\d{10}"))
     private String phoneNumber;
-    private float mark;
+
 
     public String getName() {
         return name;
@@ -51,11 +71,11 @@ public class Student {
         this.phoneNumber = phoneNumber;
     }
 
-    public float getMark() {
-        return mark;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setMark(float mark) {
-        this.mark = mark;
+    public Date getBirthDate() {
+        return birthDate;
     }
 }

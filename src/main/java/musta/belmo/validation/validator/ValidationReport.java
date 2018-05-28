@@ -12,7 +12,6 @@ public class ValidationReport {
     private boolean valid;
     private boolean required;
     private Object found;
-
     private Assertion assertion;
     private Criterion criterion;
 
@@ -53,17 +52,12 @@ public class ValidationReport {
 
         if (assertion != null) {
             value = assertion.value();
-        } else if (criterion != null) {
-            value = String.valueOf(criterion.getExpected());
-        } else {
-            value = "";
-        }
-
-        if (assertion != null) {
             operator = assertion.operator();
         } else if (criterion != null) {
+            value = String.valueOf(criterion.getExpected());
             operator = criterion.getOperator();
         } else {
+            value = "";
             operator = Operator.NONE;
         }
 
@@ -78,7 +72,6 @@ public class ValidationReport {
         stringBuilder.append('|')
                 .append("required=")
                 .append(required);
-
         if (required) {
             stringBuilder
                     .append(", found=")

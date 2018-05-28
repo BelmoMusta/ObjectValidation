@@ -1,13 +1,5 @@
 package musta.belmo.validation.validator;
 
-import musta.belmo.validation.annotation.Equals;
-import musta.belmo.validation.annotation.Length;
-import musta.belmo.validation.annotation.NotNull;
-import musta.belmo.validation.annotation.Regex;
-
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -15,7 +7,7 @@ import java.util.List;
  *
  * @author Belmokhtar
  */
-public class MultiAnnotationValidator extends AbstractValidator {
+public class MultiAnnotationValidator extends AnnotationValidator {
 
     private static MultiAnnotationValidator validator;
 

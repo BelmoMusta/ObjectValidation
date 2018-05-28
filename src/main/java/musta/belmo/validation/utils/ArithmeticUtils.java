@@ -1,6 +1,8 @@
 package musta.belmo.validation.utils;
 
+import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
+import musta.belmo.validation.exception.ValidationException;
 
 public class ArithmeticUtils {
 
@@ -46,8 +48,25 @@ public class ArithmeticUtils {
         return String.valueOf(found).matches(String.valueOf(expected));
     }
 
-    public static boolean checkLength(Object expected, Object found) {
-
-        return true;
+    /**
+     * checks if the current object mustEqual of the expected length
+     *
+     * @param currentValue   the value to check length of
+     * @param expectedLength the expected length
+     * @return true if object mustEqual of length the expected length.
+     * @throws ValidationException when error
+     */
+    public static boolean checkLength(Object currentValue, String expectedLength) throws ValidationException {
+        Integer length;
+        if (currentValue == null) {
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
+        }
+        String strObject = String.valueOf(currentValue);
+        try {
+            length = Integer.parseInt(expectedLength);
+        } catch (NumberFormatException ex) {
+            throw new ValidationException(ErrorMessage.LENGTH_ERROR_MSG.getLabel() + expectedLength, ex);
+        }
+        return strObject.length() == length;
     }
 }
