@@ -57,7 +57,7 @@ public class ArithmeticUtils {
      * @throws ValidationException when error
      */
     public static boolean checkLength(Object currentValue, String expectedLength) throws ValidationException {
-        Integer length;
+        int length;
         if (currentValue == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }

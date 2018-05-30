@@ -19,7 +19,8 @@ public @interface Validation {
     boolean required() default true;
 
     /**
-     * Assign this assertion to indicate the wanted predicate to validate the annotated field with.
+     * Assign this assertion to indicate the wanted predicate to validate
+     * the annotated field with.
      *
      * @return Assertion
      */

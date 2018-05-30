@@ -62,8 +62,8 @@ public class Criterion {
         return this;
     }
 
-    public <T> Criterion lessThanOrEquals(T value) {
-        operator(Operator.GREATER_OR_EQUALS).expected(value);
+    public <T> Criterion lessOrEquals(T value) {
+        operator(Operator.LESS_OR_EQUALS).expected(value);
         return this;
     }
 

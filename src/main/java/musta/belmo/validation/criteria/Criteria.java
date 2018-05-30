@@ -65,4 +65,3 @@ public class Criteria {
         return criteria;
     }
 }
-

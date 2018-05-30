@@ -1,20 +1,14 @@
 package bean;
 
-import musta.belmo.validation.annotation.Length;
-import musta.belmo.validation.annotation.NotNull;
-import musta.belmo.validation.annotation.Regex;
-
 /**
  * An employee class wrapping fields to  be used as samples in validation by multiple annotations.
  */
 public class Employee {
-    @Length(max = 10, min = 3)
+
     private String name;
-    @NotNull
     private String lastName;
     private String address;
     private int age;
-    @Regex("\\d{10}")
     private String phoneNumber;
     private float salary;
 

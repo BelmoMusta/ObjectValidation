@@ -1,3 +1,4 @@
+import bean.Book;
 import bean.Person;
 import junit.framework.TestCase;
 
@@ -67,6 +68,16 @@ public class TestAnnotation extends TestCase {
         person.setPhoneNumber("01234567890_");
         System.out.println(annotationValidator.getValidationReport(person));
         assertFalse(annotationValidator.check(person));
+    }
+
+    public void testEquals() throws ValidationException {
+        Book book  = new Book();
+        book.setPrice(20);
+        AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
+        System.out.println(annotationValidator.getValidationReport(book));
+        assertTrue(annotationValidator.check(book));
+
+
     }
 }
 
