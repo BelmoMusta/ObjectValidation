@@ -4,6 +4,11 @@ import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ArithmeticUtils {
 
 
@@ -58,15 +63,39 @@ public class ArithmeticUtils {
      */
     public static boolean checkLength(Object currentValue, String expectedLength) throws ValidationException {
         int length;
-        if (currentValue == null) {
-            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
-        }
-        String strObject = String.valueOf(currentValue);
+        boolean isValid;
+
         try {
             length = Integer.parseInt(expectedLength);
         } catch (NumberFormatException ex) {
             throw new ValidationException(ErrorMessage.LENGTH_ERROR_MSG.getLabel() + expectedLength, ex);
         }
-        return strObject.length() == length;
+        if (currentValue == null) {
+            isValid = false;
+            //  throw new ValidationException(ErrorMessage.NULL_FIELD_NAME.getLabel());
+        } else
+            if (currentValue instanceof Collection) {
+                Collection collection = (Collection) currentValue;
+                isValid = collection.size() == length;
+            } else if (isArray(currentValue)) {
+                /*
+                TODO arrays.asList(int[]) returns a single object referenced by int[]
+                 */
+                isValid = length == Arrays.asList(currentValue).size();
+
+
+            } else {
+                String strObject = String.valueOf(currentValue);
+                isValid = strObject.length() == length;
+
+            }
+
+        return isValid;
     }
+
+    private static boolean isArray(Object obj) {
+
+        return obj != null && obj.getClass().isArray();
+    }
+
 }

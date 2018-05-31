@@ -103,4 +103,6 @@ public class CriteriaValidator extends AbstractValidator {
     public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
         throw new UnsupportedOperationException();
     }
+
+
 }

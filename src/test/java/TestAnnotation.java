@@ -6,6 +6,7 @@ import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.validator.AnnotationValidator;
 import org.junit.Before;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class TestAnnotation extends TestCase {
@@ -72,10 +73,14 @@ public class TestAnnotation extends TestCase {
 
     public void testEquals() throws ValidationException {
         Book book  = new Book();
+        book.setLanguages(Arrays.asList("Fr","En"));
         book.setPrice(20);
+        int[] isbn = {1,2,3,4,5,6,7,8,9,10,11};
+        book.setIsbn(isbn);
         AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
         System.out.println(annotationValidator.getValidationReport(book));
         assertTrue(annotationValidator.check(book));
+
 
 
     }

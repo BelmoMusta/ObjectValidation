@@ -5,6 +5,7 @@ import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.enumeration.Operator;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by DELL on 30/05/2018.
@@ -16,6 +17,11 @@ public class Book {
     @Validation(assertion = @Assertion(operator = Operator.EQUALS, value = "20.0"))
     private int price;
     private Date publishedAt;
+
+   // @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "2"))
+    private List<String> languages;
+    @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "11"))
+    private int[] isbn;
 
 
     public String getTitle() {
@@ -48,5 +54,21 @@ public class Book {
 
     public void setPublishedAt(Date publishedAt) {
         this.publishedAt = publishedAt;
+    }
+
+    public List<String> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<String> languages) {
+        this.languages = languages;
+    }
+
+    public int[] getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(int[] isbn) {
+        this.isbn = isbn;
     }
 }
