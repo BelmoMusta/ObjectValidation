@@ -6,8 +6,6 @@ import musta.belmo.validation.exception.ValidationException;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ArithmeticUtils {
 
@@ -73,22 +71,42 @@ public class ArithmeticUtils {
         if (currentValue == null) {
             isValid = false;
             //  throw new ValidationException(ErrorMessage.NULL_FIELD_NAME.getLabel());
-        } else
-            if (currentValue instanceof Collection) {
-                Collection collection = (Collection) currentValue;
-                isValid = collection.size() == length;
-            } else if (isArray(currentValue)) {
+        } else if (currentValue instanceof Collection) {
+            Collection collection = (Collection) currentValue;
+            isValid = collection.size() == length;
+        } else if (isArray(currentValue)) {
+
+            int tempLength = 0;
+            if (currentValue instanceof int[]) {
+                tempLength = ArrayUtils.toBoxedArray((int[]) currentValue).length;
+            } else if (currentValue instanceof long[]) {
+                tempLength = ArrayUtils.toBoxedArray((long[]) currentValue).length;
+            } else if (currentValue instanceof byte[]) {
+                tempLength = ArrayUtils.toBoxedArray((byte[]) currentValue).length;
+            } else if (currentValue instanceof boolean[]) {
+                tempLength = ArrayUtils.toBoxedArray((boolean[]) currentValue).length;
+            } else if (currentValue instanceof float[]) {
+                tempLength = ArrayUtils.toBoxedArray((float[]) currentValue).length;
+            } else if (currentValue instanceof short[]) {
+                tempLength = ArrayUtils.toBoxedArray((short[]) currentValue).length;
+            } else if (currentValue instanceof double[]) {
+                tempLength = ArrayUtils.toBoxedArray((double[]) currentValue).length;
+            } else if (currentValue instanceof char[]) {
+                tempLength = ArrayUtils.toBoxedArray((char[]) currentValue).length;
+            }
+
                 /*
                 TODO arrays.asList(int[]) returns a single object referenced by int[]
                  */
-                isValid = length == Arrays.asList(currentValue).size();
+
+            isValid = length == tempLength;
 
 
-            } else {
-                String strObject = String.valueOf(currentValue);
-                isValid = strObject.length() == length;
+        } else {
+            String strObject = String.valueOf(currentValue);
+            isValid = strObject.length() == length;
 
-            }
+        }
 
         return isValid;
     }

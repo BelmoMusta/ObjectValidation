@@ -61,7 +61,9 @@ public class CriteriaValidator extends AbstractValidator {
     }
 
     @Override
-    public <T> boolean check(T criteria) throws ValidationException {
+    public <T> boolean check(T object) throws ValidationException {
+        if (object instanceof Criteria)
+            return check((Criteria) object);
         throw new UnsupportedOperationException();
     }
 
@@ -83,7 +85,6 @@ public class CriteriaValidator extends AbstractValidator {
             final ValidationReport validationReport = new ValidationReport();
             validationReportMap.put(criterion.getFieldName(), validationReport);
             validationReport.setCriterion(criterion);
-            validationReport.setRequired(criterion.isRequired());
             try {
                 Field declaredField = criteria.getObject().getClass().getDeclaredField(fieldName);
                 declaredField.setAccessible(true);
@@ -93,7 +94,6 @@ public class CriteriaValidator extends AbstractValidator {
             }
 
             boolean valid = checkValidation(currentValue, criterion.getOperator(), value);
-            criterion.setFound(currentValue);
             validationReport.setValid(valid);
         }
         return validationReportMap;

@@ -4,6 +4,9 @@ package musta.belmo.validation.validator;
 import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.Operator;
+import musta.belmo.validation.utils.ArrayUtils;
+
+import java.util.Arrays;
 
 /**
  * The validation Report as the result of the Validation process.
@@ -75,7 +78,7 @@ public class ValidationReport {
         if (required) {
             stringBuilder
                     .append(", found=")
-                    .append(foundVal)
+                    .append(stringify(foundVal))
                     .append(", expected=")
                     .append(operator.getLabel())
                     .append(':')
@@ -89,6 +92,21 @@ public class ValidationReport {
         return stringBuilder.toString();
     }
 
+    private String stringify(Object foundVal) {
+        StringBuilder sb = new StringBuilder();
+        if (foundVal == null) {
+            sb.append("#null#");
+        } else {
+            sb.append(foundVal.getClass().getSimpleName())
+                    .append(':');
+            if (foundVal.getClass().isArray())
+                sb.append(ArrayUtils.toString(foundVal));
+            else sb.append(foundVal);
+        }
+        return sb.toString();
+
+    }
+
     public void setAssertion(Assertion assertion) {
         this.assertion = assertion;
     }
@@ -99,6 +117,9 @@ public class ValidationReport {
 
     public void setCriterion(Criterion criterion) {
         this.criterion = criterion;
+        if (criterion != null) {
+            setRequired(criterion.isRequired());
+        }
     }
 
     public Criterion getCriterion() {

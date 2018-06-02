@@ -6,6 +6,7 @@ import musta.belmo.validation.enumeration.Operator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by DELL on 30/05/2018.
@@ -18,10 +19,12 @@ public class Book {
     private int price;
     private Date publishedAt;
 
-   // @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "2"))
+    @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "2"))
     private List<String> languages;
     @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "11"))
     private int[] isbn;
+    @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "3"))
+    private Set<String> keywords;
 
 
     public String getTitle() {
@@ -70,5 +73,13 @@ public class Book {
 
     public void setIsbn(int[] isbn) {
         this.isbn = isbn;
+    }
+
+    public Set<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(Set<String> keywords) {
+        this.keywords = keywords;
     }
 }
