@@ -128,6 +128,7 @@ public abstract class AbstractValidator {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
 
+
         final List<Field> annotatedFields = ReflectUtils.getAnnotatedFields(object.getClass(), Validation.class);
         Criteria criteria = new Criteria();
         criteria.setObject(object);
