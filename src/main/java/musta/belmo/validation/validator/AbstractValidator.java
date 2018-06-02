@@ -1,8 +1,8 @@
 package musta.belmo.validation.validator;
 
 
-import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.annotation.Validation;
+
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.ErrorMessage;
@@ -118,6 +118,7 @@ public abstract class AbstractValidator {
 
     /**
      * Creates a {@link Criteria } object from the object in parameters
+     *
      * @param object
      * @param <T>
      * @return {@link Criteria}
@@ -140,12 +141,11 @@ public abstract class AbstractValidator {
                 throw new ValidationException(e);
             }
             final Validation validation = field.getAnnotation(Validation.class);
-            final Assertion assertion = validation.assertion();
             final Criterion cr = Criterion
                     .of(field.getName())
-                    .operator(assertion.operator())
+                    .operator(validation.operator())
                     .found(currentValue)
-                    .expected(assertion.value());
+                    .expected(validation.value());
             cr.setRequired(validation.required());
             criteria.add(cr);
         }

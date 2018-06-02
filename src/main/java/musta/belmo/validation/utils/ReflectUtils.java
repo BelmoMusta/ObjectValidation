@@ -6,6 +6,9 @@ import java.util.List;
 
 public class ReflectUtils {
 
+    private ReflectUtils() {
+    }
+
     public static Object getValueFromField(Object object, String fieldName) throws NoSuchFieldException, IllegalAccessException {
 
         Field declaredField = object.getClass().getDeclaredField(fieldName);
@@ -20,6 +23,7 @@ public class ReflectUtils {
      * @return <tt> List&lt;Field&gt;</tt> a list of the annotated fields with
      * <tt> Validation annotation </tt> in the given class
      */
+    @SuppressWarnings("unchecked")
     public static <T> List<Field> getAnnotatedFields(Class<? extends T> aClass, Class annotationClass) {
         Field[] declaredFields = aClass.getDeclaredFields();
         List<Field> fields = new ArrayList<>();

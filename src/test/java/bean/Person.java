@@ -1,6 +1,5 @@
 package bean;
 
-import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.enumeration.Operator;
 
@@ -24,10 +23,10 @@ public class Person {
     private String address;
 
     @Validation(required = true,
-            assertion = @Assertion(operator = Operator.GREATER_THAN, value = "1"))
+            operator = Operator.GREATER_THAN, value = "1")
     private int age;
 
-    @Validation(assertion = @Assertion(operator = Operator.REGEX, value = "\\d{10}"))
+    @Validation(operator = Operator.REGEX, value = "\\d{10}")
     private String phoneNumber;
 
 

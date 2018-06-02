@@ -1,6 +1,5 @@
 package bean;
 
-import musta.belmo.validation.annotation.Assertion;
 import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.enumeration.Operator;
 
@@ -15,15 +14,15 @@ public class Book {
 
     private String title;
     private String author;
-    @Validation(assertion = @Assertion(operator = Operator.EQUALS, value = "20.0"))
+    @Validation(operator = Operator.EQUALS, value = "20.0")
     private int price;
     private Date publishedAt;
 
-    @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "2"))
+    @Validation(operator = Operator.LENGTH, value = "2")
     private List<String> languages;
-    @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "11"))
+    @Validation(operator = Operator.LENGTH, value = "11")
     private int[] isbn;
-    @Validation(assertion = @Assertion(operator = Operator.LENGTH, value = "3"))
+    @Validation(operator = Operator.LENGTH, value = "3")
     private Set<String> keywords;
 
 

@@ -10,7 +10,7 @@ public class Criteria {
      * the object to validate
      */
     private Object object;
-    public Map<String, List<Criterion>> map;
+    private Map<String, List<Criterion>> map;
 
     public List<Criterion> get(String fieldName) {
         return map.get(fieldName);

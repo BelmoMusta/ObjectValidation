@@ -1,29 +1,40 @@
 package musta.belmo.validation.annotation;
 
+import musta.belmo.validation.enumeration.Operator;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Validation annotation
+ * The Validation Annotation
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Validation {
+
+
     /**
      * Assign this expected when annotating the wanted field.
      *
      * @return true of false
      */
+
+
     boolean required() default true;
 
     /**
-     * Assign this assertion to indicate the wanted predicate to validate
-     * the annotated field with.
+     * Assign this expected with the wanted operator to validate the field.
      *
-     * @return Assertion
+     * @return Operator
      */
-    Assertion assertion() default @Assertion();
+    Operator operator() default Operator.NOT_NULL;
 
+    /**
+     * Holds the expected to validate the object against.
+     *
+     * @return String
+     */
+    String value() default "";
 }

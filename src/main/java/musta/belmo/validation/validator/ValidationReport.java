@@ -1,12 +1,10 @@
 
 package musta.belmo.validation.validator;
 
-import musta.belmo.validation.annotation.Assertion;
+import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.utils.ArrayUtils;
-
-import java.util.Arrays;
 
 /**
  * The validation Report as the result of the Validation process.
@@ -15,7 +13,7 @@ public class ValidationReport {
     private boolean valid;
     private boolean required;
     private Object found;
-    private Assertion assertion;
+    private Validation validation;
     private Criterion criterion;
 
     public ValidationReport() {
@@ -53,9 +51,9 @@ public class ValidationReport {
         Operator operator;
         Object foundVal;
 
-        if (assertion != null) {
-            value = assertion.value();
-            operator = assertion.operator();
+        if (validation != null) {
+            value = validation.value();
+            operator = validation.operator();
         } else if (criterion != null) {
             value = String.valueOf(criterion.getExpected());
             operator = criterion.getOperator();
@@ -107,12 +105,12 @@ public class ValidationReport {
 
     }
 
-    public void setAssertion(Assertion assertion) {
-        this.assertion = assertion;
+    public void setValidation(Validation validation) {
+        this.validation = validation;
     }
 
-    public Assertion getAssertion() {
-        return assertion;
+    public Validation getValidation() {
+        return validation;
     }
 
     public void setCriterion(Criterion criterion) {

@@ -6,6 +6,9 @@ import java.util.Arrays;
  * Created by DELL on 01/06/2018.
  */
 public class ArrayUtils {
+    private ArrayUtils() {
+    }
+
     public static String toString(Object currentValue) {
         String str = null;
 

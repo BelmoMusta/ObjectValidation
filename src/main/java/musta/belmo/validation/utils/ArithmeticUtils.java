@@ -4,11 +4,12 @@ import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 public class ArithmeticUtils {
 
+    private ArithmeticUtils() {
+    }
 
     /**
      * Checks the validity of a number against the given operator and expected.
@@ -70,7 +71,7 @@ public class ArithmeticUtils {
         }
         if (currentValue == null) {
             isValid = false;
-            //  throw new ValidationException(ErrorMessage.NULL_FIELD_NAME.getLabel());
+
         } else if (currentValue instanceof Collection) {
             Collection collection = (Collection) currentValue;
             isValid = collection.size() == length;
@@ -94,10 +95,6 @@ public class ArithmeticUtils {
             } else if (currentValue instanceof char[]) {
                 tempLength = ArrayUtils.toBoxedArray((char[]) currentValue).length;
             }
-
-                /*
-                TODO arrays.asList(int[]) returns a single object referenced by int[]
-                 */
 
             isValid = length == tempLength;
 
