@@ -9,12 +9,6 @@ public class ReflectUtils {
     private ReflectUtils() {
     }
 
-    public static Object getValueFromField(Object object, String fieldName) throws NoSuchFieldException, IllegalAccessException {
-
-        Field declaredField = object.getClass().getDeclaredField(fieldName);
-        declaredField.setAccessible(true);
-        return declaredField.get(object);
-    }
 
     /**
      * @param aClass          the class to check that it has annotated by the {@param annotationClass}
@@ -43,6 +37,21 @@ public class ReflectUtils {
             }
         }
         return fields;
+    }
+
+    public static Object getFieldValue(Object object, String fieldPath) throws NoSuchFieldException, IllegalAccessException {
+        String[] split = fieldPath.split("\\.");
+        Object next = object;
+
+        if (next != null) {
+            for (String fieldName : split) {
+                Class cls = next.getClass();
+                Field field = cls.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                next = field.get(next);
+            }
+        }
+        return next;
     }
 
 }

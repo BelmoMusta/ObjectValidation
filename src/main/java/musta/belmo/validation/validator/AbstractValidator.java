@@ -61,50 +61,53 @@ public abstract class AbstractValidator {
      */
     protected boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {
         boolean valid = true;
-        switch (operator) {
-            case NOT_NULL:
-                valid = currentValue != null;
-                break;
+        if (operator != null){
+            switch (operator) {
+                case NOT_NULL:
+                    valid = currentValue != null;
+                    break;
 
-            case EQUALS:
-                if (currentValue instanceof Number) {
-                    valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
-                } else {
-                    valid = Objects.equals(expected, currentValue);
-                }
-                break;
+                case EQUALS:
+                    if (currentValue instanceof Number) {
+                        valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
+                    } else {
+                        valid = Objects.equals(expected, currentValue);
+                    }
+                    break;
 
-            case REGEX:
-                if (currentValue != null && currentValue.getClass() == String.class) {
-                    valid = currentValue.toString().matches(expected);
-                } else if (currentValue != null) {
-                    final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), currentValue.getClass().getCanonicalName());
-                    throw new ValidationException(message);
-                } else {
-                    throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());
-                }
-                break;
+                case REGEX:
+                    if (currentValue instanceof CharSequence) {
+                        valid = currentValue.toString().matches(expected);
+                    } else if (currentValue != null) {
+                        final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), currentValue.getClass().getCanonicalName());
+                        throw new ValidationException(message);
+                    } else {
+                        throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());
+                    }
+                    break;
 
-            case LENGTH:
-                valid = ArithmeticUtils.checkLength(currentValue, expected);
-                break;
+                case LENGTH:
+                    valid = ArithmeticUtils.checkLength(currentValue, expected);
+                    break;
 
-            case GREATER_THAN:
-            case LESS_THAN:
-            case LESS_OR_EQUALS:
-            case GREATER_OR_EQUALS:
-                if (currentValue != null && currentValue instanceof Number) {
-                    valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
-                } else if (currentValue == null) {
-                    throw new ValidationException(ErrorMessage.ARITHMETIC_ON_NULL.getLabel());
-                } else {
-                    throw new ValidationException(ErrorMessage.NOT_A_NUMBER.getLabel());
-                }
-                break;
-            default:
-        }
-        return valid;
+                case GREATER_THAN:
+                case LESS_THAN:
+                case LESS_OR_EQUALS:
+                case GREATER_OR_EQUALS:
+                    if (currentValue != null && currentValue instanceof Number) {
+                        valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
+                    } else if (currentValue == null) {
+                        throw new ValidationException(ErrorMessage.ARITHMETIC_ON_NULL.getLabel());
+                    } else {
+                        throw new ValidationException(ErrorMessage.NOT_A_NUMBER.getLabel());
+                    }
+                    break;
+                default:
+            }
     }
+
+    return valid;
+}
 
     /**
      * Constructs a validation report over the annotated fields of the given object.

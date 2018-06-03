@@ -4,8 +4,8 @@ import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.exception.ValidationException;
+import musta.belmo.validation.utils.ReflectUtils;
 
-import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,27 +27,21 @@ public class CriteriaValidator extends AbstractValidator {
         return criteriaValidator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean check(Criteria criteria) throws ValidationException {
         boolean valid = true;
-        Object object = criteria.getObject();
         Iterator<Criterion> iterator = criteria.all().iterator();
         while (iterator.hasNext() && valid) {
             final Criterion criterion = iterator.next();
             final String fieldName = criterion.getFieldName();
-            final Field declaredField;
             final Object currentValue;
             final String expected;
 
             try {
-                if (fieldName != null) {
-
-                    declaredField = object.getClass().getDeclaredField(fieldName);
-                } else {
-                    throw new NoSuchFieldException(ErrorMessage.NULL_FIELD_NAME.getLabel());
-                }
-                declaredField.setAccessible(true);
-                currentValue = declaredField.get(object);
+                currentValue = ReflectUtils.getFieldValue(criteria.getObject(), fieldName);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
@@ -60,6 +54,9 @@ public class CriteriaValidator extends AbstractValidator {
         return valid;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> boolean check(T object) throws ValidationException {
         if (object instanceof Criteria)
@@ -86,23 +83,23 @@ public class CriteriaValidator extends AbstractValidator {
             validationReportMap.put(criterion.getFieldName(), validationReport);
             validationReport.setCriterion(criterion);
             try {
-                Field declaredField = criteria.getObject().getClass().getDeclaredField(fieldName);
-                declaredField.setAccessible(true);
-                currentValue = declaredField.get(criteria.getObject());
+                currentValue = ReflectUtils.getFieldValue(criteria.getObject(), fieldName);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
 
             boolean valid = checkValidation(currentValue, criterion.getOperator(), value);
+            validationReport.setFound(currentValue);
             validationReport.setValid(valid);
         }
         return validationReportMap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
         throw new UnsupportedOperationException();
     }
-
-
 }

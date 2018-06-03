@@ -2,10 +2,7 @@ package musta.belmo.validation.annotation;
 
 import musta.belmo.validation.enumeration.Operator;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * The Validation Annotation
@@ -14,14 +11,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Validation {
 
-
     /**
      * Assign this expected when annotating the wanted field.
      *
      * @return true of false
      */
-
-
     boolean required() default true;
 
     /**
@@ -32,7 +26,7 @@ public @interface Validation {
     Operator operator() default Operator.NOT_NULL;
 
     /**
-     * Holds the expected to validate the object against.
+     * Holds the expected value to validate the object against.
      *
      * @return String
      */

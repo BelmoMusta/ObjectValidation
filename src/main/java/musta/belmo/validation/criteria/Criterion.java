@@ -3,6 +3,7 @@
 import musta.belmo.validation.enumeration.Operator;
 
 /**
+ * Criterion class that contains validation attributes
  * Created by DELL on 22/01/2018.
  */
 public class Criterion {
@@ -57,7 +58,7 @@ public class Criterion {
         return this;
     }
 
-    public <T> Criterion greatherThan(T value) {
+    public <T> Criterion greaterThan(T value) {
         operator(Operator.GREATER_THAN).expected(value);
         return this;
     }

@@ -10,6 +10,15 @@ public class Student {
     private int age;
     private String phoneNumber;
     private float mark;
+    private Matters matters;
+
+    public Matters getMatters() {
+        return matters;
+    }
+
+    public void setMatters(Matters matters) {
+        this.matters = matters;
+    }
 
     public String getName() {
         return name;

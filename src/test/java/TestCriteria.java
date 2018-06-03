@@ -1,5 +1,5 @@
 import bean.Employee;
-
+import bean.Matters;
 import bean.Student;
 import junit.framework.TestCase;
 import musta.belmo.validation.criteria.Criteria;
@@ -44,7 +44,7 @@ public class TestCriteria extends TestCase {
     }
 
     /**
-     * TestCriteria the greatherThan function of validation by criteria on the given object
+     * TestCriteria the greaterThan function of validation by criteria on the given object
      *
      * @throws ValidationException if error
      */
@@ -53,7 +53,7 @@ public class TestCriteria extends TestCase {
 
         Criteria criteria = new Criteria();
         criteria.setObject(student);
-        criteria.add(Criterion.of("age").required().greatherThan(4));
+        criteria.add(Criterion.of("age").required().greaterThan(4));
         student.setAge(5);
 
         // System.out.println(criteriaValidator.getValidationReport(student, criteria));
@@ -139,7 +139,22 @@ public class TestCriteria extends TestCase {
         //System.out.println(criteriaValidator.getValidationReport(student, criteria));
         assertTrue(criteriaValidator.check(criteria));
     }
+    /**
+     * TestCustomObjectsCriteria the validation by criteria on the given object
+     *
+     * @throws ValidationException if error
+     */
+    public void testCustomObjectValidation() throws ValidationException {
+        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        Criteria criteria = Criteria.of(student);
 
+        criteria.add(Criterion.of("matters.maths").is(20.0).required());
+        Matters matters = new Matters();
+        matters.setMaths(20.0);
+        student.setMatters(matters);
+        System.out.println(criteriaValidator.getValidationReport(criteria));
+        assertTrue(criteriaValidator.check(criteria));
+    }
 
 }
 

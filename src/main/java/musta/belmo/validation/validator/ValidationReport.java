@@ -77,9 +77,13 @@ public class ValidationReport {
             stringBuilder
                     .append(", found=")
                     .append(stringify(foundVal))
-                    .append(", expected=")
-                    .append(operator.getLabel())
-                    .append(':')
+                    .append(", expected=");
+
+            if (operator != null) {
+                stringBuilder.append(operator.getLabel());
+            }
+
+            stringBuilder.append(':')
                     .append('[')
                     .append(value)
                     .append(']')

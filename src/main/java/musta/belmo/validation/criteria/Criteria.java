@@ -12,8 +12,8 @@ public class Criteria {
     private Object object;
     private Map<String, List<Criterion>> map;
 
-    public List<Criterion> get(String fieldName) {
-        return map.get(fieldName);
+    public static Criteria of(Object object) {
+        return new Criteria(object);
     }
 
     public Criteria() {
@@ -43,9 +43,8 @@ public class Criteria {
 
     public List<Criterion> all() {
         List<Criterion> list = new ArrayList<>();
-        Iterator<Map.Entry<String, List<Criterion>>> iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            List<Criterion> criterionList = iterator.next().getValue();
+        for (Map.Entry<String, List<Criterion>> stringListEntry : map.entrySet()) {
+            List<Criterion> criterionList = stringListEntry.getValue();
             list.addAll(criterionList);
         }
         return list;
@@ -59,9 +58,4 @@ public class Criteria {
         this.object = object;
     }
 
-    public static Criteria of(Criterion name) {
-        Criteria criteria = new Criteria();
-        criteria.add(name);
-        return criteria;
-    }
 }

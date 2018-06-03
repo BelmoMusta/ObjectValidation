@@ -48,9 +48,6 @@ public class ArithmeticUtils {
         return valid;
     }
 
-    public static boolean checkRegex(Object expected, Object found) {
-        return String.valueOf(found).matches(String.valueOf(expected));
-    }
 
     /**
      * checks if the current object mustEqual of the expected length
@@ -98,18 +95,15 @@ public class ArithmeticUtils {
 
             isValid = length == tempLength;
 
-
         } else {
             String strObject = String.valueOf(currentValue);
             isValid = strObject.length() == length;
-
         }
 
         return isValid;
     }
 
     private static boolean isArray(Object obj) {
-
         return obj != null && obj.getClass().isArray();
     }
 
