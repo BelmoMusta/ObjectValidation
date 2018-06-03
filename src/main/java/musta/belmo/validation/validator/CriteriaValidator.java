@@ -38,7 +38,7 @@ public class CriteriaValidator extends AbstractValidator {
             final Criterion criterion = iterator.next();
             final String fieldName = criterion.getFieldName();
             final Object currentValue;
-            final String expected;
+            final String expected = String.valueOf(criterion.getExpected());
 
             try {
                 currentValue = ReflectUtils.getFieldValue(criteria.getObject(), fieldName);
@@ -46,7 +46,6 @@ public class CriteriaValidator extends AbstractValidator {
                 throw new ValidationException(e);
             }
 
-            expected = String.valueOf(criterion.getExpected());
             if (criterion.isRequired()) {
                 valid = checkValidation(currentValue, criterion.getOperator(), expected);
             }
