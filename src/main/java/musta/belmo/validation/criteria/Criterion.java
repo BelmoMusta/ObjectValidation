@@ -20,6 +20,7 @@ public class Criterion {
     public static Criterion of(String fieldName) {
         Criterion rCriteria = new Criterion();
         rCriteria.setFieldName(fieldName);
+        rCriteria.required();
         return rCriteria;
     }
 

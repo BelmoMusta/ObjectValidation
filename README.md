@@ -1,48 +1,133 @@
 # Java Object Validation
 
-Developed in order to check if an instance of a class mustEqual valid according to the predicates
+Developed in order to check if an instance of a class is valid according to the predicates
 given as annotations on its fields.
 
-The fields to be validated can also be put on a list of criteria, this can be done without the annotatoins aspect.
+The fields to be validated can also be put on a list of criteria, this can be done without the annotations aspect.
 
 It prevents the classic control flow like the if-else blocks.
 
-## Example of use :
+Validation process can be done using two ways:  
+1. Using annotations.
+2. Using customized criteria.
 
-Suppose we have a Person class, and for all the instances, we want that the first name and the last
-name be assigned and not left null :
+## Examples of use :
+##### 1. Using annotations
+
+Suppose we have a `Person` class, and for all the instances, we want that the first name and the last
+name be assigned and not left `null` :
 
  ```JAVA
-
 class Person {
 
     @Validation(required = true)
-    String name;
+    private String name;
 
     @Validation(required = true)
-    String lastName;
+    private String lastName;
     // .... other fields...
     // .... getters and setters..
     }
    ```
    
-   And we will create an instance, then we check if it mustEqual valid or not:
+   And we will create an instance, then we check if it is valid or not:
    
    ```JAVA 
-     Validator validator = new Validator();
+     AnnotationValidator annotationValidator = new AnnotationValidator();
      Person person = new Person();
-            person.setName("mustapha");
+            person.setName("Mustapha");
             person.setLastName("Belmokhtar");
 
-     boolean isValid = validator.checkValidation(person);
-     boolean isValid = validator.getValidationReport(person); // gives the details of each field
+     boolean isValid = annotationValidator.checkValidation(person);
+     ValidationReport validationReport = annotationValidator.getValidationReport(person); // gives the details of each field
    ```
-   ## Result :
+   ##### Result :
 
   ```Console
    true
-   {name=|required=true, found=mustapha, expected={!=null}, valide=true|, lastName=|required=true, found=Belmokhtar, expected={!=null}, valide=true|}
+  {lastName=|required=true, found=String:Belmokhtar, expected={!=null}:[], valid=true|, name=|required=true, found=String:Mustapha, expected={!=null}:[], valid=true|}
    ```
-   ## TODO:
+   
+   ##### Validation by Operators: 
+```JAVA
 
-   Validate objects with nested  and/or lists/arrays/collections fields.
+   class Person{
+   // ... others fields 
+   @Validation(required = true, operator = Operator.GREATER_THAN, value = "18")
+    private int age;
+    // ... getters and setters ...
+    }
+   ```
+   
+  ```JAVA
+     Person person = new Person(); 
+     person.setAge(20);
+  
+     AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
+     boolean isValid = annotationValidator.check(person);
+     ValidationReport validationReport = annotationValidator.getValidationReport(person);
+   ```
+   ##### Result :
+   
+   ```JAVA
+   true
+   {age=|required=true, found=Integer:20, expected={>}:[18], valid=true|}
+   ```
+
+   ##### 2.Using criteria :
+   You can also perform validation  over objects using `Criteria`:
+   ```JAVA
+        Student student = new Student();
+        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        Criteria criteria = new Criteria();
+        criteria.setObject(student);
+        criteria.add(Criterion.of("name").is("mustapha").required());
+        criteria.add(Criterion.of("address").notNull());
+        criteria.add(Criterion.of("age").greaterOrEquals(4).required());
+        criteria.add(Criterion.of("phoneNumber").matches("\\d{10}"));
+        
+        student.setName("mustapha");
+        student.setAddress("wall street");
+        student.setAge(4);
+        student.setPhoneNumber("1234567890");
+        System.out.println(criteriaValidator.getValidationReport(criteria));
+        assertTrue(criteriaValidator.check(criteria));
+   ```
+ ##### Output :
+ ```JAVA 
+ address=|required=true, found=String:wall street, expected={!=null}:[null], valid=true|, phoneNumber=|required=true, found=String:1234567890, expected={REGEX}:[\d{10}], valid=true|, name=|required=true, found=String:mustapha, expected={==}:[mustapha], valid=true|, age=|required=true, found=Integer:4, expected={>=}:[4], valid=true|}
+```
+##### Criteria over complex Objects: 
+To perform validation by criteria over complex objects, you only have to specify the filed path of the wanted field, for example: 
+```JAVA
+  class Student {
+   // omittd fields for brievety 
+    private Matters matters
+    //... getters and setters
+    }
+    
+    //....
+      class Matters {
+    private double science;
+    private double maths;
+    private double languages;
+    //...
+    }
+    //... 
+```
+##### Validation process: 
+
+ ```JAVA 
+  CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        Criteria criteria = Criteria.of(student);
+        criteria.add(Criterion.of("matters.maths").lessThan(20.0).required());
+        Matters matters = new Matters();
+        matters.setMaths(19.99);
+        student.setMatters(matters);
+        System.out.println(criteriaValidator.getValidationReport(criteria));
+        assertTrue(criteriaValidator.check(criteria));
+ ```
+ ###### Output 
+ ```JAVA 
+ {matters.maths=|required=true, found=Double:19.99, expected={<}:[20.0], valid=true|}
+ ```

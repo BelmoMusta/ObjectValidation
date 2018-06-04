@@ -18,7 +18,7 @@ import java.util.Objects;
 
 
 /**
- * CriteriaValidator class to perform validation over objects.
+ * AbstractValidator class to perform validation over objects.
  *
  * @author Belmokhtar
  */
