@@ -131,3 +131,39 @@ To perform validation by criteria over complex objects, you only have to specify
  ```JAVA 
  {matters.maths=|required=true, found=Double:19.99, expected={<}:[20.0], valid=true|}
  ```
+ 
+##### Validation overs arrays and collections:
+
+```JAVA
+class Book {
+private int[] isbn; 
+private TreeSet<String> keeywords;
+
+// .. other fields 
+//.. getters and setters
+ }
+```
+##### Validation process:  
+```JAVA
+        Book book = new Book();
+        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        Criteria criteria = Criteria.of(book);
+        criteria.add(Criterion.of("keywords").length(3).required());
+        criteria.add(Criterion.of("isbn").length(11).required());
+        int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        Set<String> keywords = new TreeSet<>();
+        keywords.add("science");
+        keywords.add("earth");
+        keywords.add("universe");
+        
+        book.setKeywords(keywords);
+        book.setIsbn(isbn);
+
+        System.out.println(criteriaValidator.getValidationReport(criteria));
+        assertTrue(criteriaValidator.check(criteria));
+```
+ ##### Output
+ ```JAVA 
+ {keywords=|required=true, found=TreeSet:[earth, science, universe], expected={length}:[3], valid=true|, isbn=|required=true, found=int[]:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], expected={length}:[11], valid=true|}
+ ```
+ 

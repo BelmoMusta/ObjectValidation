@@ -1,3 +1,4 @@
+import bean.Book;
 import bean.Employee;
 import bean.Matters;
 import bean.Student;
@@ -5,7 +6,12 @@ import junit.framework.TestCase;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.exception.ValidationException;
+import musta.belmo.validation.validator.AnnotationValidator;
 import musta.belmo.validation.validator.CriteriaValidator;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TestCriteria extends TestCase {
 
@@ -139,6 +145,7 @@ public class TestCriteria extends TestCase {
         //System.out.println(criteriaValidator.getValidationReport(student, criteria));
         assertTrue(criteriaValidator.check(criteria));
     }
+
     /**
      * TestCustomObjectsCriteria the validation by criteria on the given object
      *
@@ -156,6 +163,26 @@ public class TestCriteria extends TestCase {
         assertTrue(criteriaValidator.check(criteria));
     }
 
+    public void testArraysAndCollections() throws ValidationException {
+        Book book = new Book();
+        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        Criteria criteria = Criteria.of(book);
+        criteria.add(Criterion.of("keywords").length(3).required());
+        criteria.add(Criterion.of("isbn").length(11).required());
+        int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        Set<String> keywords = new TreeSet<>();
+        keywords.add("science");
+        keywords.add("earth");
+        keywords.add("universe");
+
+        book.setKeywords(keywords);
+        book.setIsbn(isbn);
+
+        System.out.println(criteriaValidator.getValidationReport(criteria));
+        assertTrue(criteriaValidator.check(criteria));
+
+
+    }
 }
 
 
