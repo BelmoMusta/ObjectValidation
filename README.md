@@ -28,9 +28,10 @@ class Person {
     // .... other fields...
     // .... getters and setters..
     }
+    
    ```
-   
-   And we will create an instance, then we check if it is valid or not:
+  
+  And we will create an instance, then we check if it is valid or not:
    
    ```JAVA 
      AnnotationValidator annotationValidator = new AnnotationValidator();
@@ -69,7 +70,7 @@ class Person {
    ```
    ##### Result :
    
-   ```JAVA
+   ```Console
    true
    {age=|required=true, found=Integer:20, expected={>}:[18], valid=true|}
    ```
@@ -94,7 +95,7 @@ class Person {
         assertTrue(criteriaValidator.check(criteria));
    ```
  ##### Output :
- ```JAVA 
+ ```Console 
  address=|required=true, found=String:wall street, expected={!=null}:[null], valid=true|, phoneNumber=|required=true, found=String:1234567890, expected={REGEX}:[\d{10}], valid=true|, name=|required=true, found=String:mustapha, expected={==}:[mustapha], valid=true|, age=|required=true, found=Integer:4, expected={>=}:[4], valid=true|}
 ```
 ##### Criteria over complex Objects: 
@@ -128,16 +129,16 @@ To perform validation by criteria over complex objects, you only have to specify
         assertTrue(criteriaValidator.check(criteria));
  ```
  ###### Output 
- ```JAVA 
+ ```Console 
  {matters.maths=|required=true, found=Double:19.99, expected={<}:[20.0], valid=true|}
  ```
- 
+
 ##### Validation overs arrays and collections:
 
 ```JAVA
 class Book {
 private int[] isbn; 
-private TreeSet<String> keeywords;
+private TreeSet<String> keywords;
 
 // .. other fields 
 //.. getters and setters
@@ -163,7 +164,7 @@ private TreeSet<String> keeywords;
         assertTrue(criteriaValidator.check(criteria));
 ```
  ##### Output
- ```JAVA 
+ ```Console 
  {keywords=|required=true, found=TreeSet:[earth, science, universe], expected={length}:[3], valid=true|, isbn=|required=true, found=int[]:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], expected={length}:[11], valid=true|}
  ```
  
