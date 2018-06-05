@@ -26,7 +26,7 @@ public class ArrayUtils {
         return null;
     }
 
-    private static List castArrayToList(Object currentValue) {
+    public static List castArrayToList(Object currentValue) {
         List list = null;
         if (currentValue instanceof int[]) {
             list = Arrays.asList(toBoxedArray((int[]) currentValue));

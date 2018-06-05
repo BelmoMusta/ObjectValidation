@@ -5,6 +5,7 @@ import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
 
 import java.util.Collection;
+import java.util.List;
 
 public class ValidationUtils {
     private ValidationUtils() {
@@ -76,23 +77,11 @@ public class ValidationUtils {
             isValid = collection.size() == length;
         } else if (isArray(currentValue)) {
             int tempLength = 0;
-            if (currentValue instanceof int[]) {
-                tempLength = ArrayUtils.toBoxedArray((int[]) currentValue).length;
-            } else if (currentValue instanceof long[]) {
-                tempLength = ArrayUtils.toBoxedArray((long[]) currentValue).length;
-            } else if (currentValue instanceof byte[]) {
-                tempLength = ArrayUtils.toBoxedArray((byte[]) currentValue).length;
-            } else if (currentValue instanceof boolean[]) {
-                tempLength = ArrayUtils.toBoxedArray((boolean[]) currentValue).length;
-            } else if (currentValue instanceof float[]) {
-                tempLength = ArrayUtils.toBoxedArray((float[]) currentValue).length;
-            } else if (currentValue instanceof short[]) {
-                tempLength = ArrayUtils.toBoxedArray((short[]) currentValue).length;
-            } else if (currentValue instanceof double[]) {
-                tempLength = ArrayUtils.toBoxedArray((double[]) currentValue).length;
-            } else if (currentValue instanceof char[]) {
-                tempLength = ArrayUtils.toBoxedArray((char[]) currentValue).length;
-            }
+
+            List list = ArrayUtils.castArrayToList(currentValue);
+            if (list != null)
+                tempLength = list.size();
+
             isValid = length == tempLength;
         } else {
             String strObject = String.valueOf(currentValue);
