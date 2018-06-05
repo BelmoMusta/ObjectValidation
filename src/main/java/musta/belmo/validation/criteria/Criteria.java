@@ -25,7 +25,7 @@ public class Criteria {
         this.object = object;
     }
 
-    public Criteria add(Criterion criterion) {
+    public void add(Criterion criterion) {
         final List<Criterion> criteria;
         final String fieldName;
         if (criterion != null) {
@@ -38,7 +38,7 @@ public class Criteria {
             }
             criteria.add(criterion);
         }
-        return this;
+
     }
 
     public List<Criterion> all() {

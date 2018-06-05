@@ -6,44 +6,53 @@ import musta.belmo.validation.exception.ValidationException;
 
 import java.util.Collection;
 
-public class ArithmeticUtils {
+public class ValidationUtils {
 
-    private ArithmeticUtils() {
+    private ValidationUtils() {
     }
 
     /**
      * Checks the validity of a number against the given operator and expected.
      *
-     * @param number   the number to check validity for.
-     * @param operator The binary operator.
-     * @param value    the expected to validate against
+     * @param currentValue the number to check validity for.
+     * @param operator     The binary operator.
+     * @param value        the expected to validate against
      * @return true if the number is valid, false otherwise.
      */
-    public static boolean checkNumber(Number number, Operator operator, String value) {
+    public static boolean checkNumber(Object currentValue, Operator operator, String value) throws ValidationException {
         boolean valid = true;
-        switch (operator) {
-            case NOT_NULL:
-                break;
-            case EQUALS:
-                valid = number.doubleValue() == Double.parseDouble(value);
-                break;
-            case GREATER_THAN:
-                valid = number.doubleValue() > Double.parseDouble(value);
-                break;
-            case LESS_THAN:
-                valid = number.doubleValue() < Double.parseDouble(value);
-                break;
-            case GREATER_OR_EQUALS:
-                valid = number.doubleValue() >= Double.parseDouble(value);
-                break;
-            case LESS_OR_EQUALS:
-                valid = number.doubleValue() <= Double.parseDouble(value);
-                break;
+        if (currentValue != null && currentValue instanceof Number) {
+            Number number = (Number) currentValue;
 
-            case REGEX:
-            case NONE:
-            case LENGTH:
-            default:
+            switch (operator) {
+                case NOT_NULL:
+                    break;
+                case EQUALS:
+                    valid = number.doubleValue() == Double.parseDouble(value);
+                    break;
+                case GREATER_THAN:
+                    valid = number.doubleValue() > Double.parseDouble(value);
+                    break;
+                case LESS_THAN:
+                    valid = number.doubleValue() < Double.parseDouble(value);
+                    break;
+                case GREATER_OR_EQUALS:
+                    valid = number.doubleValue() >= Double.parseDouble(value);
+                    break;
+                case LESS_OR_EQUALS:
+                    valid = number.doubleValue() <= Double.parseDouble(value);
+                    break;
+
+                case REGEX:
+                case NONE:
+                case LENGTH:
+                default:
+            }
+
+        } else if (currentValue == null) {
+            throw new ValidationException(ErrorMessage.ARITHMETIC_ON_NULL.getLabel());
+        } else {
+            throw new ValidationException(ErrorMessage.NOT_A_NUMBER.getLabel());
         }
         return valid;
     }
@@ -107,4 +116,26 @@ public class ArithmeticUtils {
         return obj != null && obj.getClass().isArray();
     }
 
+
+    public static <T, R> boolean safeEquals(T t, R r) {
+        if (r == null || t == null) {
+            return r == t;
+        }
+        return r.getClass() == t.getClass() && r.equals(t);
+    }
+
+
+    public static boolean checkRegex(Object currentValue, String expected) throws ValidationException {
+        boolean valid;
+        if (currentValue instanceof CharSequence) {
+            valid = currentValue.toString().matches(expected);
+        } else if (currentValue != null) {
+            final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), currentValue.getClass().getCanonicalName());
+            throw new ValidationException(message);
+        } else {
+            throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());
+        }
+
+        return valid;
+    }
 }

@@ -2,19 +2,17 @@ package musta.belmo.validation.validator;
 
 
 import musta.belmo.validation.annotation.Validation;
-
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
-import musta.belmo.validation.utils.ArithmeticUtils;
 import musta.belmo.validation.utils.ReflectUtils;
+import musta.belmo.validation.utils.ValidationUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
@@ -61,53 +59,32 @@ public abstract class AbstractValidator {
      */
     protected boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {
         boolean valid = true;
-        if (operator != null){
+        if (operator != null) {
             switch (operator) {
                 case NOT_NULL:
                     valid = currentValue != null;
                     break;
-
                 case EQUALS:
-                    if (currentValue instanceof Number) {
-                        valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
-                    } else {
-                        valid = Objects.equals(expected, currentValue);
-                    }
+                    valid = ValidationUtils.checkNumber(currentValue, operator, expected);
                     break;
-
                 case REGEX:
-                    if (currentValue instanceof CharSequence) {
-                        valid = currentValue.toString().matches(expected);
-                    } else if (currentValue != null) {
-                        final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), currentValue.getClass().getCanonicalName());
-                        throw new ValidationException(message);
-                    } else {
-                        throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());
-                    }
+                    valid = ValidationUtils.checkRegex(currentValue, expected);
                     break;
-
                 case LENGTH:
-                    valid = ArithmeticUtils.checkLength(currentValue, expected);
+                    valid = ValidationUtils.checkLength(currentValue, expected);
                     break;
-
                 case GREATER_THAN:
                 case LESS_THAN:
                 case LESS_OR_EQUALS:
                 case GREATER_OR_EQUALS:
-                    if (currentValue != null && currentValue instanceof Number) {
-                        valid = ArithmeticUtils.checkNumber((Number) currentValue, operator, expected);
-                    } else if (currentValue == null) {
-                        throw new ValidationException(ErrorMessage.ARITHMETIC_ON_NULL.getLabel());
-                    } else {
-                        throw new ValidationException(ErrorMessage.NOT_A_NUMBER.getLabel());
-                    }
+                    valid = ValidationUtils.checkNumber(currentValue, operator, expected);
                     break;
                 default:
             }
-    }
+        }
 
-    return valid;
-}
+        return valid;
+    }
 
     /**
      * Constructs a validation report over the annotated fields of the given object.
