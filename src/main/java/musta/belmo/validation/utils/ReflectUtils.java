@@ -40,15 +40,32 @@ public class ReflectUtils {
     }
 
     public static Object getFieldValue(Object object, String fieldPath) throws NoSuchFieldException, IllegalAccessException {
-        String[] fields = fieldPath.split("\\.");
         Object next = object;
+        String[] fields = fieldPath.split("\\.");
+
         int i = 0;
-        while (next != null && i<fields.length) {
+        while (next != null && i < fields.length) {
             String fieldName = fields[i];
-            Class cls = next.getClass();
-            Field field = cls.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            next = field.get(next);
+            if (fieldName.matches("\\w+\\[\\d+]")) {
+                int first = fieldName.indexOf('[');
+                int last = fieldName.indexOf(']');
+
+                String realFieldName = fieldName.substring(0, first);
+                Integer index = Integer.valueOf(fieldName.substring(first + 1, last));
+
+
+                Class cls = next.getClass();
+                Field field = cls.getDeclaredField(realFieldName);
+                field.setAccessible(true);
+                next = field.get(next);
+                next = ArrayUtils.get(next, index);
+            } else {
+                Class cls = next.getClass();
+                Field field = cls.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                next = field.get(next);
+
+            }
             i++;
 
         }

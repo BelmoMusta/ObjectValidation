@@ -10,7 +10,6 @@ public enum Operator {
     REGEX("{REGEX}"),
     NONE("NONE"),
     LENGTH("{length}");
-
     private String label;
 
     Operator(String label) {

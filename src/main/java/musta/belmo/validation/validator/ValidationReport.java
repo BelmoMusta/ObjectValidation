@@ -1,4 +1,3 @@
-
 package musta.belmo.validation.validator;
 
 import musta.belmo.validation.annotation.Validation;
@@ -50,7 +49,6 @@ public class ValidationReport {
         String value;
         Operator operator;
         Object foundVal;
-
         if (validation != null) {
             value = validation.value();
             operator = validation.operator();
@@ -61,7 +59,6 @@ public class ValidationReport {
             value = "";
             operator = Operator.NONE;
         }
-
         if (found != null) {
             foundVal = found;
         } else if (criterion != null) {
@@ -69,7 +66,6 @@ public class ValidationReport {
         } else {
             foundVal = "{null}";
         }
-
         stringBuilder.append('|')
                 .append("required=")
                 .append(required);
@@ -78,11 +74,9 @@ public class ValidationReport {
                     .append(", found=")
                     .append(stringify(foundVal))
                     .append(", expected=");
-
             if (operator != null) {
                 stringBuilder.append(operator.getLabel());
             }
-
             stringBuilder.append(':')
                     .append('[')
                     .append(value)
@@ -106,15 +100,18 @@ public class ValidationReport {
             else sb.append(foundVal);
         }
         return sb.toString();
+    }
 
+    public Validation getValidation() {
+        return validation;
     }
 
     public void setValidation(Validation validation) {
         this.validation = validation;
     }
 
-    public Validation getValidation() {
-        return validation;
+    public Criterion getCriterion() {
+        return criterion;
     }
 
     public void setCriterion(Criterion criterion) {
@@ -122,9 +119,5 @@ public class ValidationReport {
         if (criterion != null) {
             setRequired(criterion.isRequired());
         }
-    }
-
-    public Criterion getCriterion() {
-        return criterion;
     }
 }

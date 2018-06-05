@@ -1,6 +1,9 @@
 package musta.belmo.validation.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by DELL on 01/06/2018.
@@ -10,27 +13,41 @@ public class ArrayUtils {
     }
 
     public static String toString(Object currentValue) {
-        String str = null;
+        List list = castArrayToList(currentValue);
+        if (list == null)
+            return "#null#";
+        return list.toString();
+    }
 
+    public static Object get(Object currentValue, int index) {
+        List list = castArrayToList(currentValue);
+        if (list != null && !list.isEmpty() && list.size() > index)
+            return list.get(index);
+        return null;
+    }
+
+    private static List castArrayToList(Object currentValue) {
+        List list = null;
         if (currentValue instanceof int[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((int[]) currentValue));
+            list = Arrays.asList(toBoxedArray((int[]) currentValue));
         } else if (currentValue instanceof long[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((long[]) currentValue));
+            list = Arrays.asList(toBoxedArray((long[]) currentValue));
         } else if (currentValue instanceof byte[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((byte[]) currentValue));
+            list = Arrays.asList(toBoxedArray((byte[]) currentValue));
         } else if (currentValue instanceof boolean[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((boolean[]) currentValue));
+            list = Arrays.asList(toBoxedArray((boolean[]) currentValue));
         } else if (currentValue instanceof float[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((float[]) currentValue));
+            list = Arrays.asList(toBoxedArray((float[]) currentValue));
         } else if (currentValue instanceof short[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((short[]) currentValue));
+            list = Arrays.asList(toBoxedArray((short[]) currentValue));
         } else if (currentValue instanceof double[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((double[]) currentValue));
+            list = Arrays.asList(toBoxedArray((double[]) currentValue));
         } else if (currentValue instanceof char[]) {
-            str = Arrays.toString(ArrayUtils.toBoxedArray((char[]) currentValue));
+            list = Arrays.asList(toBoxedArray((char[]) currentValue));
+        } else if (currentValue instanceof Collection) {
+            list = new ArrayList((Collection) currentValue);
         }
-
-        return str;
+        return list;
     }
 
     public static Boolean[] toBoxedArray(boolean[] input) {

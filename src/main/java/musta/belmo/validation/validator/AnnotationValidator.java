@@ -5,7 +5,6 @@ import musta.belmo.validation.exception.ValidationException;
 
 import java.util.Map;
 
-
 /**
  * CriteriaValidator class to perform validation over objects.
  *

@@ -7,7 +7,6 @@ import musta.belmo.validation.exception.ValidationException;
 import java.util.Collection;
 
 public class ValidationUtils {
-
     private ValidationUtils() {
     }
 
@@ -23,7 +22,6 @@ public class ValidationUtils {
         boolean valid = true;
         if (currentValue != null && currentValue instanceof Number) {
             Number number = (Number) currentValue;
-
             switch (operator) {
                 case NOT_NULL:
                     break;
@@ -42,13 +40,11 @@ public class ValidationUtils {
                 case LESS_OR_EQUALS:
                     valid = number.doubleValue() <= Double.parseDouble(value);
                     break;
-
                 case REGEX:
                 case NONE:
                 case LENGTH:
                 default:
             }
-
         } else if (currentValue == null) {
             throw new ValidationException(ErrorMessage.ARITHMETIC_ON_NULL.getLabel());
         } else {
@@ -56,7 +52,6 @@ public class ValidationUtils {
         }
         return valid;
     }
-
 
     /**
      * checks if the current object mustEqual of the expected length
@@ -69,7 +64,6 @@ public class ValidationUtils {
     public static boolean checkLength(Object currentValue, String expectedLength) throws ValidationException {
         int length;
         boolean isValid;
-
         try {
             length = Integer.parseInt(expectedLength);
         } catch (NumberFormatException ex) {
@@ -77,12 +71,10 @@ public class ValidationUtils {
         }
         if (currentValue == null) {
             isValid = false;
-
         } else if (currentValue instanceof Collection) {
             Collection collection = (Collection) currentValue;
             isValid = collection.size() == length;
         } else if (isArray(currentValue)) {
-
             int tempLength = 0;
             if (currentValue instanceof int[]) {
                 tempLength = ArrayUtils.toBoxedArray((int[]) currentValue).length;
@@ -101,14 +93,11 @@ public class ValidationUtils {
             } else if (currentValue instanceof char[]) {
                 tempLength = ArrayUtils.toBoxedArray((char[]) currentValue).length;
             }
-
             isValid = length == tempLength;
-
         } else {
             String strObject = String.valueOf(currentValue);
             isValid = strObject.length() == length;
         }
-
         return isValid;
     }
 
@@ -116,14 +105,12 @@ public class ValidationUtils {
         return obj != null && obj.getClass().isArray();
     }
 
-
     public static <T, R> boolean safeEquals(T t, R r) {
         if (r == null || t == null) {
             return r == t;
         }
         return r.getClass() == t.getClass() && r.equals(t);
     }
-
 
     public static boolean checkRegex(Object currentValue, String expected) throws ValidationException {
         boolean valid;
@@ -135,7 +122,6 @@ public class ValidationUtils {
         } else {
             throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());
         }
-
         return valid;
     }
 }

@@ -1,4 +1,4 @@
- package musta.belmo.validation.criteria;
+package musta.belmo.validation.criteria;
 
 import musta.belmo.validation.enumeration.Operator;
 
@@ -88,44 +88,44 @@ public class Criterion {
         return required;
     }
 
-    public Criterion found(Object found) {
-        setFound(found);
-        return this;
-    }
-
-    public void setOperator(Operator operator) {
-        this.operator = operator;
-    }
-
-    public void setExpected(Object expected) {
-        this.expected = expected;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
     public void setRequired(boolean required) {
         this.required = required;
     }
 
-    public void setFound(Object found) {
-        this.found = found;
+    public Criterion found(Object found) {
+        setFound(found);
+        return this;
     }
 
     public String getFieldName() {
         return fieldName;
     }
 
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
     public Object getFound() {
         return found;
+    }
+
+    public void setFound(Object found) {
+        this.found = found;
     }
 
     public Operator getOperator() {
         return operator;
     }
 
+    public void setOperator(Operator operator) {
+        this.operator = operator;
+    }
+
     public Object getExpected() {
         return expected;
+    }
+
+    public void setExpected(Object expected) {
+        this.expected = expected;
     }
 }

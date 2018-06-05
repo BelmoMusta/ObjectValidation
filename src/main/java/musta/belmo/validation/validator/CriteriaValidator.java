@@ -17,7 +17,6 @@ import java.util.Map;
  * @author Belmokhtar
  */
 public class CriteriaValidator extends AbstractValidator {
-
     private static CriteriaValidator criteriaValidator;
 
     public static CriteriaValidator getInstance() {
@@ -39,13 +38,11 @@ public class CriteriaValidator extends AbstractValidator {
             final String fieldName = criterion.getFieldName();
             final Object currentValue;
             final String expected = String.valueOf(criterion.getExpected());
-
             try {
                 currentValue = ReflectUtils.getFieldValue(criteria.getObject(), fieldName);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
-
             if (criterion.isRequired()) {
                 valid = checkValidation(currentValue, criterion.getOperator(), expected);
             }
@@ -69,7 +66,6 @@ public class CriteriaValidator extends AbstractValidator {
     @Override
     public Map<String, ValidationReport> getValidationReport(Criteria criteria) throws ValidationException {
         final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
-
         if (criteria.getObject() == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
@@ -86,7 +82,6 @@ public class CriteriaValidator extends AbstractValidator {
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
-
             boolean valid = checkValidation(currentValue, criterion.getOperator(), value);
             validationReport.setFound(currentValue);
             validationReport.setValid(valid);

@@ -1,6 +1,9 @@
 package musta.belmo.validation.criteria;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by DELL on 22/01/2018.
@@ -12,10 +15,6 @@ public class Criteria {
     private Object object;
     private Map<String, List<Criterion>> map;
 
-    public static Criteria of(Object object) {
-        return new Criteria(object);
-    }
-
     public Criteria() {
         map = new HashMap<>();
     }
@@ -23,6 +22,10 @@ public class Criteria {
     public Criteria(Object object) {
         this();
         this.object = object;
+    }
+
+    public static Criteria of(Object object) {
+        return new Criteria(object);
     }
 
     public void add(Criterion criterion) {
@@ -38,7 +41,6 @@ public class Criteria {
             }
             criteria.add(criterion);
         }
-
     }
 
     public List<Criterion> all() {
@@ -57,5 +59,4 @@ public class Criteria {
     public void setObject(Object object) {
         this.object = object;
     }
-
 }

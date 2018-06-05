@@ -1,6 +1,5 @@
 package musta.belmo.validation.validator;
 
-
 import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
@@ -14,14 +13,12 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * AbstractValidator class to perform validation over objects.
  *
  * @author Belmokhtar
  */
 public abstract class AbstractValidator {
-
     /**
      * Checks the validity of the given object by criteria
      *
@@ -65,7 +62,11 @@ public abstract class AbstractValidator {
                     valid = currentValue != null;
                     break;
                 case EQUALS:
-                    valid = ValidationUtils.checkNumber(currentValue, operator, expected);
+                    if (currentValue != null && currentValue instanceof Number) {
+                        valid = ValidationUtils.checkNumber(currentValue, operator, expected);
+                    } else {
+                        valid = ValidationUtils.safeEquals(currentValue, expected);
+                    }
                     break;
                 case REGEX:
                     valid = ValidationUtils.checkRegex(currentValue, expected);
@@ -82,7 +83,6 @@ public abstract class AbstractValidator {
                 default:
             }
         }
-
         return valid;
     }
 
@@ -108,11 +108,9 @@ public abstract class AbstractValidator {
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
-
         final List<Field> annotatedFields = ReflectUtils.getAnnotatedFields(object.getClass(), Validation.class);
         Criteria criteria = new Criteria();
         criteria.setObject(object);
-
         for (Field field : annotatedFields) {
             final Object currentValue;
             try {

@@ -1,12 +1,13 @@
 import bean.Book;
 import bean.Person;
 import junit.framework.TestCase;
-
 import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.validator.AnnotationValidator;
-import org.junit.Before;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TestAnnotation extends TestCase {
     private Person person;
@@ -20,15 +21,12 @@ public class TestAnnotation extends TestCase {
         person.setAge(25);
     }
 
-
     public void testArithmeticOperation() throws ValidationException {
         AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
-
         person.setAge(-1);
         annotationValidator.getValidationReport(person);
         System.out.println(annotationValidator.getValidationReport(person));
         assertFalse(annotationValidator.check(person));
-
         person.setAge(40);
         System.out.println(annotationValidator.getValidationReport(person));
         assertTrue(annotationValidator.check(person));
@@ -45,15 +43,12 @@ public class TestAnnotation extends TestCase {
         assertTrue(annotationValidator.check(person));
         person.setBirthDate(new Date());
         assertTrue(annotationValidator.check(person));
-
     }
 
     public void testNonNull() throws ValidationException {
         AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
-
         System.out.println(annotationValidator.getValidationReport(person));
         assertTrue(annotationValidator.check(person));
-
         person.setAddress(null);
         System.out.println(annotationValidator.getValidationReport(person));
         assertFalse(annotationValidator.check(person));
@@ -61,10 +56,8 @@ public class TestAnnotation extends TestCase {
 
     public void testRegex() throws ValidationException {
         AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
-
         System.out.println(annotationValidator.getValidationReport(person));
         assertTrue(annotationValidator.check(person));
-
         person.setPhoneNumber("01234567890_");
         System.out.println(annotationValidator.getValidationReport(person));
         assertFalse(annotationValidator.check(person));
@@ -80,14 +73,9 @@ public class TestAnnotation extends TestCase {
         keywords.add("earth");
         keywords.add("universe");
         book.setKeywords(keywords);
-
         book.setIsbn(isbn);
         AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
         System.out.println(annotationValidator.getValidationReport(book));
         assertTrue(annotationValidator.check(book));
-
-
     }
 }
-
-
