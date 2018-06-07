@@ -1,16 +1,10 @@
 package musta.belmo.validation.validator;
 
-import musta.belmo.validation.annotation.Validation;
 import musta.belmo.validation.criteria.Criteria;
-import musta.belmo.validation.criteria.Criterion;
-import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.enumeration.Operator;
 import musta.belmo.validation.exception.ValidationException;
-import musta.belmo.validation.utils.ReflectUtils;
 import musta.belmo.validation.utils.ValidationUtils;
 
-import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Map;
 
 /**
