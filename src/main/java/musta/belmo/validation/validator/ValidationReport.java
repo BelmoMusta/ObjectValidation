@@ -11,39 +11,39 @@ import musta.belmo.validation.utils.ArrayUtils;
 public class ValidationReport {
 
     /**
-     * TODO: provide a description for this field
+     * The valid field
      */
     private boolean valid;
 
     /**
-     * TODO: provide a description for this field
+     * The required field
      */
     private boolean required;
 
     /**
-     * TODO: provide a description for this field
+     * the found object
      */
     private Object found;
 
     /**
-     * TODO: provide a description for this field
+     * The validation assertions
      */
     private Validation validation;
 
     /**
-     * TODO: provide a description for this field
+     * The criterion assertion
      */
     private Criterion criterion;
 
     /**
-     * TODO: provide a description for this constructor
+     * The default constructor
      */
     public ValidationReport() {
         valid = true;
     }
 
     /**
-     * TODO: provide a description for this method
+     * Returns the value of the valid field
      *
      * @return boolean
      */
@@ -61,7 +61,7 @@ public class ValidationReport {
     }
 
     /**
-     * TODO: provide a description for this method
+     * Returns the value of the required field
      *
      * @return boolean
      */
@@ -97,7 +97,7 @@ public class ValidationReport {
     }
 
     /**
-     * TODO: provide a description for this method
+     * the toString method
      *
      * @return String
      */
@@ -137,21 +137,21 @@ public class ValidationReport {
     }
 
     /**
-     * TODO: provide a description for this method
+     * Converts an object to its string format
      *
-     * @param foundVal { @link Object}
+     * @param object { @link Object}
      * @return String
      */
-    private String stringify(Object foundVal) {
+    private String stringify(Object object) {
         StringBuilder sb = new StringBuilder();
-        if (foundVal == null) {
+        if (object == null) {
             sb.append("#null#");
         } else {
-            sb.append(foundVal.getClass().getSimpleName()).append(':');
-            if (foundVal.getClass().isArray())
-                sb.append(ArrayUtils.toString(foundVal));
+            sb.append(object.getClass().getSimpleName()).append(':');
+            if (object.getClass().isArray())
+                sb.append(ArrayUtils.toString(object));
             else
-                sb.append(foundVal);
+                sb.append(object);
         }
         return sb.toString();
     }

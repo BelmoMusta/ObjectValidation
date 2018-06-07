@@ -7,7 +7,13 @@ import musta.belmo.validation.exception.ValidationException;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * class of validation utilities
+ */
 public class ValidationUtils {
+    /**
+     * The default constructor
+     */
     private ValidationUtils() {
     }
 
@@ -90,10 +96,25 @@ public class ValidationUtils {
         return isValid;
     }
 
+    /**
+     * Checks whether the passed object is an array
+     *
+     * @param obj the object
+     * @return boolean
+     */
     private static boolean isArray(Object obj) {
         return obj != null && obj.getClass().isArray();
     }
 
+    /**
+     * checks if two objects are equal
+     *
+     * @param t   the first object
+     * @param r   the second object
+     * @param <T> the first object's type
+     * @param <R> the second object's type
+     * @return boolean
+     */
     public static <T, R> boolean safeEquals(T t, R r) {
         if (r == null || t == null) {
             return r == t;
@@ -101,12 +122,20 @@ public class ValidationUtils {
         return r.getClass() == t.getClass() && r.equals(t);
     }
 
-    public static boolean checkRegex(Object currentValue, String expected) throws ValidationException {
+    /**
+     * checks the object string format against the
+     *
+     * @param object the object
+     * @param regex  the regex
+     * @return boolean
+     * @throws ValidationException if error
+     */
+    public static boolean checkRegex(Object object, String regex) throws ValidationException {
         boolean valid;
-        if (currentValue instanceof CharSequence) {
-            valid = currentValue.toString().matches(expected);
-        } else if (currentValue != null) {
-            final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), currentValue.getClass().getCanonicalName());
+        if (object instanceof CharSequence) {
+            valid = object.toString().matches(regex);
+        } else if (object != null) {
+            final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), object.getClass().getCanonicalName());
             throw new ValidationException(message);
         } else {
             throw new ValidationException(ErrorMessage.REGEX_OVER_NULL.getLabel());

@@ -1,19 +1,35 @@
 package musta.belmo.validation.enumeration;
 
+/**
+ * The enumeration of the error messages
+ */
 public enum ErrorMessage {
     NULL_OBJECT_MSG("Object is null, cannot validate its fields!"),
     REGEX_OVER_NON_STRING("REGEX validation cannot be applied on this field of type %s"),
     REGEX_OVER_NULL("REGEX validation cannot be applied on a null String"),
     NOT_A_NUMBER("Arithmethic operations cannot be applied on non number field"),
     ARITHMETIC_ON_NULL("Arithmethic operations cannot be applied on a null object"),
-    NULL_FIELD_NAME("The field cannot be null"),
     LENGTH_ERROR_MSG("length error: ");
+
+    /**
+     * the label field
+     */
     private String label;
 
+    /**
+     * Constructor of the error message
+     *
+     * @param label
+     */
     ErrorMessage(String label) {
         this.label = label;
     }
 
+    /**
+     * getter of the label
+     *
+     * @return String
+     */
     public String getLabel() {
         return label;
     }

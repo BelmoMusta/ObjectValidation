@@ -55,8 +55,6 @@ public class CriteriaValidator extends AbstractValidator {
      */
     @Override
     public <T> boolean check(T object) throws ValidationException {
-        if (object instanceof Criteria)
-            return check((Criteria) object);
         throw new UnsupportedOperationException();
     }
 

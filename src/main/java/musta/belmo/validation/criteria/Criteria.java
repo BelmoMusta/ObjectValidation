@@ -6,24 +6,41 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by DELL on 22/01/2018.
+ * The Criteria class.
  */
 public class Criteria {
     /**
      * the object to validate
      */
     private Object object;
+    /**
+     * The map of criteria
+     */
     private Map<String, List<Criterion>> map;
 
+    /**
+     * The default constructor
+     */
     public Criteria() {
         map = new HashMap<>();
     }
 
+    /**
+     * Constructor with parameters
+     *
+     * @param object the object
+     */
     public Criteria(Object object) {
         this();
         this.object = object;
     }
 
+    /**
+     * creates an instance of criteria of the given object
+     *
+     * @param object the object
+     * @return Criteria
+     */
     public static Criteria of(Object object) {
         return new Criteria(object);
     }

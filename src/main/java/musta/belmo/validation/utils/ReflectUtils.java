@@ -4,11 +4,16 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class of reflection utilities
+ */
 public class ReflectUtils {
 
+    /**
+     * The default constructor
+     */
     private ReflectUtils() {
     }
-
 
     /**
      * @param aClass          the class to check that it has annotated by the {@param annotationClass}
@@ -23,15 +28,7 @@ public class ReflectUtils {
         List<Field> fields = new ArrayList<>();
 
         for (Field field : declaredFields) {
-            /*
-             * private fields need to be set to be accessible before processing
-             */
             field.setAccessible(true);
-
-            /*
-             * checks if the field mustEqual annotated with <tt>Validation</tt> annotation
-             * then add it to the list
-             */
             if (field.isAnnotationPresent(annotationClass)) {
                 fields.add(field);
             }
@@ -39,6 +36,13 @@ public class ReflectUtils {
         return fields;
     }
 
+    /**
+     * @param object    the object
+     * @param fieldPath the path of the field
+     * @return Object
+     * @throws NoSuchFieldException   if the field path leads to a field that does'nt exist
+     * @throws IllegalAccessException if the reflection throws an illegal access exception
+     */
     public static Object getFieldValue(Object object, String fieldPath) throws NoSuchFieldException, IllegalAccessException {
         Object next = object;
         String[] fields = fieldPath.split("\\.");
@@ -49,11 +53,8 @@ public class ReflectUtils {
             if (fieldName.matches("\\w+\\[\\d+]")) {
                 int first = fieldName.indexOf('[');
                 int last = fieldName.indexOf(']');
-
                 String realFieldName = fieldName.substring(0, first);
                 Integer index = Integer.valueOf(fieldName.substring(first + 1, last));
-
-
                 Class cls = next.getClass();
                 Field field = cls.getDeclaredField(realFieldName);
                 field.setAccessible(true);
@@ -64,12 +65,9 @@ public class ReflectUtils {
                 Field field = cls.getDeclaredField(fieldName);
                 field.setAccessible(true);
                 next = field.get(next);
-
             }
             i++;
-
         }
         return next;
     }
-
 }
