@@ -25,7 +25,7 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testValidation() throws ValidationException {
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator = new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
         criteria.add(Criterion.of("name").is("mustapha").required());
@@ -46,7 +46,7 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testGreatherThan() throws ValidationException {
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
         criteria.add(Criterion.of("age").required().greaterThan(4));
@@ -60,7 +60,7 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testLessThan() throws ValidationException {
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
         criteria.add(Criterion.of("age").required().lessThan(4));
@@ -76,7 +76,7 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testEquality() throws ValidationException {
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.add(Criterion.of("age").required().is(4));
         student.setAge(10);
@@ -93,7 +93,7 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testFloatEquality() throws ValidationException {
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
         criteria.add(Criterion.of("mark").required().is(4.5f));
@@ -109,7 +109,7 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testLength() throws ValidationException {
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
         criteria.add(Criterion.of("name").required().length(4));
@@ -125,7 +125,7 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testCustomObjectValidation() throws ValidationException {
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(student);
         criteria.add(Criterion.of("matters.maths").is(20.0).required());
         Matters matters = new Matters();
@@ -137,7 +137,7 @@ public class TestCriteria extends TestCase {
 
     public void testArraysAndCollections() throws ValidationException {
         Book book = new Book();
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(book);
         criteria.add(Criterion.of("keywords").length(3).required());
         criteria.add(Criterion.of("isbn").length(11).required());
@@ -159,7 +159,7 @@ public class TestCriteria extends TestCase {
      */
     public void testArrayAccess() throws ValidationException {
         Book book = new Book();
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(book);
         criteria.add(Criterion.of("isbn[1]").is(2).required());
         int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
@@ -175,7 +175,7 @@ public class TestCriteria extends TestCase {
      */
     public void testListAccess() throws ValidationException {
         Book book = new Book();
-        CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
+        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(book);
         criteria.add(Criterion.of("keywords[1]").length(5).required());
         Set<String> keywords = new LinkedHashSet<>();

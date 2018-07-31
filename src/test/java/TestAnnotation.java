@@ -22,7 +22,7 @@ public class TestAnnotation extends TestCase {
     }
 
     public void testArithmeticOperation() throws ValidationException {
-        AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
+        AnnotationValidator annotationValidator = new AnnotationValidator();
         person.setAge(-1);
         annotationValidator.getValidationReport(person);
         System.out.println(annotationValidator.getValidationReport(person));
@@ -39,14 +39,14 @@ public class TestAnnotation extends TestCase {
      * @throws ValidationException if error
      */
     public void testNull() throws ValidationException {
-        AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
+        AnnotationValidator annotationValidator = new AnnotationValidator();
         assertTrue(annotationValidator.check(person));
         person.setBirthDate(new Date());
         assertTrue(annotationValidator.check(person));
     }
 
     public void testNonNull() throws ValidationException {
-        AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
+        AnnotationValidator annotationValidator = new AnnotationValidator();
         System.out.println(annotationValidator.getValidationReport(person));
         assertTrue(annotationValidator.check(person));
         person.setAddress(null);
@@ -55,7 +55,7 @@ public class TestAnnotation extends TestCase {
     }
 
     public void testRegex() throws ValidationException {
-        AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
+        AnnotationValidator annotationValidator = new AnnotationValidator();
         System.out.println(annotationValidator.getValidationReport(person));
         assertTrue(annotationValidator.check(person));
         person.setPhoneNumber("01234567890_");
@@ -74,7 +74,7 @@ public class TestAnnotation extends TestCase {
         keywords.add("universe");
         book.setKeywords(keywords);
         book.setIsbn(isbn);
-        AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
+        AnnotationValidator annotationValidator = new AnnotationValidator();
         System.out.println(annotationValidator.getValidationReport(book));
         assertTrue(annotationValidator.check(book));
     }

@@ -34,7 +34,7 @@ public abstract class AbstractValidator {
     /**
      * Constructs a validation report of the object according to the criteria in params.
      *
-     * @param criteria the criteria to validate to object against
+     * @param criteria the {@link Criteria} to validate to object against
      * @return a validation report containing details for the object fields.
      * @throws ValidationException when error
      */
@@ -45,7 +45,7 @@ public abstract class AbstractValidator {
      *
      * @param currentValue the current expected of the field.
      * @param operator     the wanted operator.
-     * @param expected     the expected expected
+     * @param expected     the expected value
      * @return true if the object mustEqual valid, false otherwise.
      */
     protected boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {

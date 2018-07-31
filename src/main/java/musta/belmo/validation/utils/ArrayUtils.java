@@ -36,10 +36,12 @@ public class ArrayUtils {
      * @return Object
      */
     public static Object get(Object array, int index) {
+        Object value = null;
         List list = castArrayToList(array);
-        if (list != null && !list.isEmpty() && list.size() > index)
-            return list.get(index);
-        return null;
+        if (list != null && !list.isEmpty() && list.size() > index) {
+            value = list.get(index);
+        }
+        return value;
     }
 
     /**

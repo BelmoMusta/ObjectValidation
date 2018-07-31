@@ -17,14 +17,6 @@ import java.util.Map;
  * @author Belmokhtar
  */
 public class AnnotationValidator extends CriteriaValidator {
-    private static AnnotationValidator annotationValidator;
-
-    public static AnnotationValidator getInstance() {
-        if (annotationValidator == null) {
-            annotationValidator = new AnnotationValidator();
-        }
-        return annotationValidator;
-    }
 
     /**
      * {@inheritDoc}
