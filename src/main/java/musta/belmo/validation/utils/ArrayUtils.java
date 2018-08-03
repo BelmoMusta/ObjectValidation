@@ -72,7 +72,7 @@ public class ArrayUtils {
         } else if (index < 0 || list.size() <= index) {
             throw new ValidationException(new ArrayIndexOutOfBoundsException());
         } else if (list.isEmpty()) {
-            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG)
+            throw new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel());
 
 
         }
