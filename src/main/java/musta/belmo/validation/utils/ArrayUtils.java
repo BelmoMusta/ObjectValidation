@@ -1,14 +1,17 @@
 package musta.belmo.validation.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * class of the array utilities
  */
 public class ArrayUtils {
+    private static Map<Class<?>, Function> MAPPER;
+
     /**
      * The default constructor
      */
@@ -16,7 +19,24 @@ public class ArrayUtils {
     }
 
     /**
-     * Returns the strnig format of the array
+     *
+     */
+    private static void createMapper() {
+        if (MAPPER == null) {
+            MAPPER = new HashMap<>();
+            MAPPER.put(boolean[].class, toBoxedBooleanArray());
+            MAPPER.put(byte[].class, toBoxedByteArray());
+            MAPPER.put(double[].class, toBoxedDoubleArray());
+            MAPPER.put(char[].class, toBoxedCharacterArray());
+            MAPPER.put(short[].class, toBoxedShortArray());
+            MAPPER.put(float[].class, toBoxedFloatArray());
+            MAPPER.put(int[].class, toBoxedIntegerArray());
+            MAPPER.put(long[].class, toBoxedLongArray());
+        }
+    }
+
+    /**
+     * Returns the string format of the array
      *
      * @param array the array
      * @return String
@@ -45,168 +65,139 @@ public class ArrayUtils {
     }
 
     /**
+     * Converts an array of primitive type to its respective boxed one.
+     *
+     * @param array the array
+     * @param <T>   the type of the target array
+     * @return T[]
+     */
+    public static <T> T[] toBoxedArray(Object array) {
+        T[] returnValue;
+        if (array == null || !array.getClass().isArray()
+                || !array.getClass().getComponentType().isPrimitive()) {
+            returnValue = null;
+        } else {
+            createMapper();
+            returnValue = (T[]) MAPPER.get(array.getClass()).apply(array);
+        }
+        return returnValue;
+    }
+
+    /**
      * Casts the array to list
      *
      * @param array the array
      * @return List
      */
-    public static List castArrayToList(Object array) {
-        List list = null;
-        if (array instanceof int[]) {
-            list = Arrays.asList(toBoxedArray((int[]) array));
-        } else if (array instanceof long[]) {
-            list = Arrays.asList(toBoxedArray((long[]) array));
-        } else if (array instanceof byte[]) {
-            list = Arrays.asList(toBoxedArray((byte[]) array));
-        } else if (array instanceof boolean[]) {
-            list = Arrays.asList(toBoxedArray((boolean[]) array));
-        } else if (array instanceof float[]) {
-            list = Arrays.asList(toBoxedArray((float[]) array));
-        } else if (array instanceof short[]) {
-            list = Arrays.asList(toBoxedArray((short[]) array));
-        } else if (array instanceof double[]) {
-            list = Arrays.asList(toBoxedArray((double[]) array));
-        } else if (array instanceof char[]) {
-            list = Arrays.asList(toBoxedArray((char[]) array));
-        } else if (array instanceof Collection) {
-            list = new ArrayList((Collection) array);
-        }
-        return list;
+    public static <T> List<T> castArrayToList(Object array) {
+        T[] boxedArray = toBoxedArray(array);
+        return boxedArray != null ?
+                Arrays.asList(boxedArray) :
+                null;
+
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of boolean to a boxed array of type {@link Boolean}
      *
-     * @param array the array
-     * @return a Boolean array
+     * @return Boolean
      */
-    public static Boolean[] toBoxedArray(boolean[] array) {
-        Boolean[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Boolean[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<boolean[], Boolean[]> toBoxedBooleanArray() {
+        return array -> {
+            Boolean[] boxed = new Boolean[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of byte to a boxed array of type {@link Byte}
      *
-     * @param array the array
-     * @return a Byte array
+     * @return Byte
      */
-    public static Byte[] toBoxedArray(byte[] array) {
-        Byte[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Byte[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<byte[], Byte[]> toBoxedByteArray() {
+        return array -> {
+            Byte[] boxed = new Byte[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of double to a boxed array of type {@link Double}
      *
-     * @param array the array
-     * @return a Double array
+     * @return Double
      */
-    public static Double[] toBoxedArray(double[] array) {
-        Double[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Double[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<double[], Double[]> toBoxedDoubleArray() {
+        return array -> {
+            Double[] boxed = new Double[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of char to a boxed array of type {@link Character}
      *
-     * @param array the array
-     * @return a Character array
+     * @return Character
      */
-    public static Character[] toBoxedArray(char[] array) {
-        Character[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Character[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<char[], Character[]> toBoxedCharacterArray() {
+        return array -> {
+            Character[] boxed = new Character[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of short to a boxed array of type {@link Short}
      *
-     * @param array the array
-     * @return a Short array
+     * @return Short
      */
-    public static Short[] toBoxedArray(short[] array) {
-        Short[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Short[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<short[], Short[]> toBoxedShortArray() {
+        return array -> {
+            Short[] boxed = new Short[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of float to a boxed array of type {@link Float}
      *
-     * @param array the array
-     * @return a Float array
+     * @return Float
      */
-    public static Float[] toBoxedArray(float[] array) {
-        Float[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Float[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<float[], Float[]> toBoxedFloatArray() {
+        return array -> {
+            Float[] boxed = new Float[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of int to a boxed array of type {@link Integer}
      *
-     * @param array the array
-     * @return a Integer array
+     * @return Integer
      */
-    public static Integer[] toBoxedArray(int[] array) {
-        Integer[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Integer[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<int[], Integer[]> toBoxedIntegerArray() {
+        return array -> {
+            Integer[] boxed = new Integer[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 
     /**
-     * Converts an of primitive values to their boxed type
+     * Converts an array of long to a boxed array of type {@link Long}
      *
-     * @param array the array
-     * @return a Long array
+     * @return Long
      */
-    public static Long[] toBoxedArray(long[] array) {
-        Long[] boxedArray = null;
-        if (array != null) {
-            boxedArray = new Long[array.length];
-            for (int i = 0; i < array.length; i++) {
-                boxedArray[i] = array[i];
-            }
-        }
-        return boxedArray;
+    private static Function<long[], Long[]> toBoxedLongArray() {
+        return array -> {
+            Long[] boxed = new Long[array.length];
+            Arrays.setAll(boxed, index -> array[index]);
+            return boxed;
+        };
     }
 }
