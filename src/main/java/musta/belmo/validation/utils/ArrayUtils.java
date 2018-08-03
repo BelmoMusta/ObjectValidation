@@ -10,7 +10,10 @@ import java.util.function.Function;
  * class of the array utilities
  */
 public class ArrayUtils {
-    private static Map<Class<?>, Function> MAPPER;
+    /**
+     * Each type has its converting function.
+     */
+    private static Map<Class<?>, Function> mapper;
 
     /**
      * The default constructor
@@ -22,16 +25,16 @@ public class ArrayUtils {
      *
      */
     private static void createMapper() {
-        if (MAPPER == null) {
-            MAPPER = new HashMap<>();
-            MAPPER.put(boolean[].class, toBoxedBooleanArray());
-            MAPPER.put(byte[].class, toBoxedByteArray());
-            MAPPER.put(double[].class, toBoxedDoubleArray());
-            MAPPER.put(char[].class, toBoxedCharacterArray());
-            MAPPER.put(short[].class, toBoxedShortArray());
-            MAPPER.put(float[].class, toBoxedFloatArray());
-            MAPPER.put(int[].class, toBoxedIntegerArray());
-            MAPPER.put(long[].class, toBoxedLongArray());
+        if (mapper == null) {
+            mapper = new HashMap<>();
+            mapper.put(boolean[].class, toBoxedBooleanArray());
+            mapper.put(byte[].class, toBoxedByteArray());
+            mapper.put(double[].class, toBoxedDoubleArray());
+            mapper.put(char[].class, toBoxedCharacterArray());
+            mapper.put(short[].class, toBoxedShortArray());
+            mapper.put(float[].class, toBoxedFloatArray());
+            mapper.put(int[].class, toBoxedIntegerArray());
+            mapper.put(long[].class, toBoxedLongArray());
         }
     }
 
@@ -71,6 +74,7 @@ public class ArrayUtils {
      * @param <T>   the type of the target array
      * @return T[]
      */
+    @SuppressWarnings("all")
     public static <T> T[] toBoxedArray(Object array) {
         T[] returnValue;
         if (array == null || !array.getClass().isArray()
@@ -78,7 +82,7 @@ public class ArrayUtils {
             returnValue = null;
         } else {
             createMapper();
-            returnValue = (T[]) MAPPER.get(array.getClass()).apply(array);
+            returnValue = (T[]) mapper.get(array.getClass()).apply(array);
         }
         return returnValue;
     }
