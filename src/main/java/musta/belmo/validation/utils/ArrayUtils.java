@@ -1,5 +1,8 @@
 package musta.belmo.validation.utils;
 
+import musta.belmo.validation.enumeration.ErrorMessage;
+import musta.belmo.validation.exception.ValidationException;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -58,11 +61,20 @@ public class ArrayUtils {
      * @param index the index
      * @return Object
      */
-    public static Object get(Object array, int index) {
+    public static Object get(Object array, int index) throws ValidationException {
         Object value = null;
         List list = castArrayToList(array);
         if (list != null && !list.isEmpty() && list.size() > index) {
             value = list.get(index);
+
+        } else if (list == null) {
+            throw new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel());
+        } else if (index < 0 || list.size() <= index) {
+            throw new ValidationException(new ArrayIndexOutOfBoundsException());
+        } else if (list.isEmpty()) {
+            throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG)
+
+
         }
         return value;
     }

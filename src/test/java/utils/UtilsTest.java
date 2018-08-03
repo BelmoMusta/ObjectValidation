@@ -16,11 +16,21 @@ public class UtilsTest {
         Assert.assertEquals(list.get(0).getClass(), Integer.class);
         Assert.assertEquals(list.get(0), 1);
 
-    } @Test
-    public void testGet() {
-        List list = ArrayUtils.castArrayToList(new int[]{1, 2, 3, 7, 8});
+    }
 
+    @Test
+    public void testGetNormally() {
         Object o = ArrayUtils.get(new int[]{1, 2, 3, 7, 8}, 2);
+        Assert.assertEquals(o, 3);
+        Assert.assertFalse(o.getClass() == int.class);
+        Assert.assertTrue(o.getClass() == Integer.class);// make sur the boxed type is returned
+
+    }
+
+    @Test
+    public void testGetWithNullArray() {
+        Object o = ArrayUtils.get(null, 3);
+        Assert.assertNull(o);
 
     }
 

@@ -1,5 +1,7 @@
 package musta.belmo.validation.utils;
 
+import musta.belmo.validation.exception.ValidationException;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ public class ReflectUtils {
      * @throws NoSuchFieldException   if the field path leads to a field that does'nt exist
      * @throws IllegalAccessException if the reflection throws an illegal access exception
      */
-    public static Object getFieldValue(Object object, String fieldPath) throws NoSuchFieldException, IllegalAccessException {
+    public static Object getFieldValue(Object object, String fieldPath) throws NoSuchFieldException, IllegalAccessException, ValidationException {
         Object next = object;
         String[] fields = fieldPath.split("\\.");
 
