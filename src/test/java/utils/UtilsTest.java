@@ -1,5 +1,6 @@
 package utils;
 
+import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.utils.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class UtilsTest {
     }
 
     @Test
-    public void testGetNormally() {
+    public void testGetNormally() throws ValidationException {
         Object o = ArrayUtils.get(new int[]{1, 2, 3, 7, 8}, 2);
         Assert.assertEquals(o, 3);
         Assert.assertFalse(o.getClass() == int.class);
@@ -27,8 +28,8 @@ public class UtilsTest {
 
     }
 
-    @Test
-    public void testGetWithNullArray() {
+    @Test(expected = ValidationException.class)
+    public void testGetWithNullArray() throws ValidationException {
         Object o = ArrayUtils.get(null, 3);
         Assert.assertNull(o);
 

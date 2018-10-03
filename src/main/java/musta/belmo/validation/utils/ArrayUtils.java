@@ -1,12 +1,11 @@
 package musta.belmo.validation.utils;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.exception.ValidationException;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -47,6 +46,7 @@ public class ArrayUtils {
      * @param array the array
      * @return String
      */
+    @NotNull
     public static String toString(Object array) {
         List list = castArrayToList(array);
         if (list == null)
@@ -61,20 +61,18 @@ public class ArrayUtils {
      * @param index the index
      * @return Object
      */
+    @NotNull
     public static Object get(Object array, int index) throws ValidationException {
-        Object value = null;
+        Object value;
         List list = castArrayToList(array);
+
         if (list != null && !list.isEmpty() && list.size() > index) {
             value = list.get(index);
 
-        } else if (list == null) {
+        } else if (list == null || list.isEmpty()) {
             throw new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel());
-        } else if (index < 0 || list.size() <= index) {
+        } else {
             throw new ValidationException(new ArrayIndexOutOfBoundsException());
-        } else if (list.isEmpty()) {
-            throw new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel());
-
-
         }
         return value;
     }
@@ -87,11 +85,13 @@ public class ArrayUtils {
      * @return T[]
      */
     @SuppressWarnings("all")
+    @Nullable
     public static <T> T[] toBoxedArray(Object array) {
         T[] returnValue;
-        if (array == null || !array.getClass().isArray()
-                || !array.getClass().getComponentType().isPrimitive()) {
+        if (array == null) {
             returnValue = null;
+        } else if (Collection.class.isAssignableFrom(array.getClass())) {
+            returnValue = (T[]) new ArrayList((Collection) array).toArray();
         } else {
             createMapper();
             returnValue = (T[]) mapper.get(array.getClass()).apply(array);
@@ -105,6 +105,7 @@ public class ArrayUtils {
      * @param array the array
      * @return List
      */
+    @Nullable
     public static <T> List<T> castArrayToList(Object array) {
         T[] boxedArray = toBoxedArray(array);
         return boxedArray != null ?

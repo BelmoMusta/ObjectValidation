@@ -6,6 +6,7 @@ import musta.belmo.validation.criteria.Criteria;
 import musta.belmo.validation.criteria.Criterion;
 import musta.belmo.validation.exception.ValidationException;
 import musta.belmo.validation.validator.CriteriaValidator;
+import org.junit.Test;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -173,6 +174,7 @@ public class TestCriteria extends TestCase {
      *
      * @throws ValidationException if error
      */
+    @Test(expected = ValidationException.class)
     public void testListAccess() throws ValidationException {
         Book book = new Book();
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
