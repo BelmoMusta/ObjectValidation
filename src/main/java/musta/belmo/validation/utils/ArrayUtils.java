@@ -1,7 +1,5 @@
 package musta.belmo.validation.utils;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import musta.belmo.validation.enumeration.ErrorMessage;
 import musta.belmo.validation.exception.ValidationException;
 
@@ -46,7 +44,6 @@ public class ArrayUtils {
      * @param array the array
      * @return String
      */
-    @NotNull
     public static String toString(Object array) {
         List list = castArrayToList(array);
         if (list == null)
@@ -61,7 +58,6 @@ public class ArrayUtils {
      * @param index the index
      * @return Object
      */
-    @NotNull
     public static Object get(Object array, int index) throws ValidationException {
         Object value;
         List list = castArrayToList(array);
@@ -85,7 +81,6 @@ public class ArrayUtils {
      * @return T[]
      */
     @SuppressWarnings("all")
-    @Nullable
     public static <T> T[] toBoxedArray(Object array) {
         T[] returnValue;
         if (array == null) {
@@ -105,7 +100,6 @@ public class ArrayUtils {
      * @param array the array
      * @return List
      */
-    @Nullable
     public static <T> List<T> castArrayToList(Object array) {
         T[] boxedArray = toBoxedArray(array);
         return boxedArray != null ?
