@@ -15,10 +15,6 @@ public class ValidationReport {
      */
     private boolean valid;
 
-    /**
-     * The required field
-     */
-    private boolean required;
 
     /**
      * the found object
@@ -60,23 +56,6 @@ public class ValidationReport {
         this.valid = valid;
     }
 
-    /**
-     * Returns the value of the required field
-     *
-     * @return boolean
-     */
-    public boolean isRequired() {
-        return required;
-    }
-
-    /**
-     * Setter of the field required
-     *
-     * @param required {@link boolean}
-     */
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
 
     /**
      * Getter of the field found
@@ -124,14 +103,13 @@ public class ValidationReport {
         } else {
             foundVal = "{null}";
         }
-        stringBuilder.append('|').append("required=").append(required);
-        if (required) {
-            stringBuilder.append(", found=").append(stringify(foundVal)).append(", expected=");
-            if (operator != null) {
-                stringBuilder.append(operator.getLabel());
-            }
-            stringBuilder.append(':').append('[').append(value).append(']').append(", valid=").append(valid);
+        stringBuilder.append('|')
+                .append("found=").append(stringify(foundVal)).append(", expected=");
+        if (operator != null) {
+            stringBuilder.append(operator.getLabel());
         }
+        stringBuilder.append(':').append('[').append(value).append(']').append(", valid=").append(valid);
+
         stringBuilder.append('|');
         return stringBuilder.toString();
     }
@@ -147,11 +125,19 @@ public class ValidationReport {
         if (object == null) {
             sb.append("#null#");
         } else {
-            sb.append(object.getClass().getSimpleName()).append(':');
-            if (object.getClass().isArray())
+            String simpleName = object.getClass().getSimpleName();
+
+            sb.append(simpleName).append(':');
+            if (object.getClass().isArray()) {
                 sb.append(ArrayUtils.toString(object));
-            else
+            } else if ("String".equals(simpleName)) {
+                sb.append('"')
+                        .append(object)
+                        .append('"');
+            } else {
                 sb.append(object);
+            }
+
         }
         return sb.toString();
     }
@@ -191,7 +177,7 @@ public class ValidationReport {
     public void setCriterion(Criterion criterion) {
         this.criterion = criterion;
         if (criterion != null) {
-            setRequired(criterion.isRequired());
+            //setRequired(criterion.isRequired());
         }
     }
 }

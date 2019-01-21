@@ -14,7 +14,7 @@ public class BookDest {
 
     private String title;
     private String author;
-    @Validation(operator = Operator.EQUALS, value = "20.0", required = false)
+    @Validation(operator = Operator.EQUALS, value = "20.0")
     private int price;
     private Date publishedAt;
 

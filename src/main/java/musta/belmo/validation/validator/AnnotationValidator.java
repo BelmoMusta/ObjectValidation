@@ -66,7 +66,6 @@ public class AnnotationValidator extends CriteriaValidator {
                     .operator(validation.operator())
                     .found(currentValue)
                     .expected(validation.value());
-            cr.setRequired(validation.required());
             criteria.add(cr);
         }
         return criteria;

@@ -22,11 +22,6 @@ public class Criterion {
     private Object expected;
 
     /**
-     * The required field
-     */
-    private boolean required;
-
-    /**
      * The found field
      */
     private Object found;
@@ -47,7 +42,7 @@ public class Criterion {
     public static Criterion of(String fieldName) {
         Criterion rCriteria = new Criterion();
         rCriteria.setFieldName(fieldName);
-        rCriteria.required();
+      //  rCriteria.required();
         return rCriteria;
     }
 
@@ -169,34 +164,6 @@ public class Criterion {
     public Criterion notNull() {
         operator(Operator.NOT_NULL);
         return this;
-    }
-
-    /**
-     * Sets the operator value
-     *
-     * @return Criterion
-     */
-    public Criterion required() {
-        setRequired(true);
-        return this;
-    }
-
-    /**
-     * Sets the operator value
-     *
-     * @return boolean
-     */
-    public boolean isRequired() {
-        return required;
-    }
-
-    /**
-     * Setter of the field required
-     *
-     * @param required { @link boolean}
-     */
-    public void setRequired(boolean required) {
-        this.required = required;
     }
 
     /**

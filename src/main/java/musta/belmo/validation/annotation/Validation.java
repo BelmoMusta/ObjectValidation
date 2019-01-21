@@ -15,13 +15,6 @@ import java.lang.annotation.Target;
 public @interface Validation {
 
     /**
-     * Assign this expected when annotating the wanted field.
-     *
-     * @return true of false
-     */
-    boolean required() default true;
-
-    /**
      * Assign this expected with the wanted operator to validate the field.
      *
      * @return Operator

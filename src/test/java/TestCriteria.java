@@ -29,9 +29,9 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator = new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
-        criteria.add(Criterion.of("name").is("mustapha").required());
+        criteria.add(Criterion.of("name").is("mustapha"));
         criteria.add(Criterion.of("address").notNull());
-        criteria.add(Criterion.of("age").greaterOrEquals(4).required());
+        criteria.add(Criterion.of("age").greaterOrEquals(4));
         criteria.add(Criterion.of("phoneNumber").matches("\\d{10}"));
         student.setName("mustapha");
         student.setAddress("wall street");
@@ -50,7 +50,7 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
-        criteria.add(Criterion.of("age").required().greaterThan(4));
+        criteria.add(Criterion.of("age").greaterThan(4));
         student.setAge(5);
         assertTrue(criteriaValidator.check(criteria));
     }
@@ -64,7 +64,7 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
-        criteria.add(Criterion.of("age").required().lessThan(4));
+        criteria.add(Criterion.of("age").lessThan(4));
         student.setAge(10);
         assertFalse(criteriaValidator.check(criteria));
         student.setAge(1);
@@ -79,7 +79,7 @@ public class TestCriteria extends TestCase {
     public void testEquality() throws ValidationException {
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
-        criteria.add(Criterion.of("age").required().is(4));
+        criteria.add(Criterion.of("age").is(4));
         student.setAge(10);
         criteria.setObject(student);
         assertFalse(criteriaValidator.check(criteria));
@@ -97,7 +97,7 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
-        criteria.add(Criterion.of("mark").required().is(4.5f));
+        criteria.add(Criterion.of("mark").is(4.5f));
         student.setMark(10.01f);
         assertFalse(criteriaValidator.check(criteria));
         student.setMark(4.5f);
@@ -113,7 +113,7 @@ public class TestCriteria extends TestCase {
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
-        criteria.add(Criterion.of("name").required().length(4));
+        criteria.add(Criterion.of("name").length(4));
         student.setName("1");
         assertFalse(criteriaValidator.check(criteria));
         student.setName("1234");
@@ -128,7 +128,7 @@ public class TestCriteria extends TestCase {
     public void testCustomObjectValidation() throws ValidationException {
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(student);
-        criteria.add(Criterion.of("matters.maths").is(20.0).required());
+        criteria.add(Criterion.of("matters.maths").is(20.0));
         Matters matters = new Matters();
         matters.setMaths(20.0);
         student.setMatters(matters);
@@ -140,8 +140,8 @@ public class TestCriteria extends TestCase {
         Book book = new Book();
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(book);
-        criteria.add(Criterion.of("keywords").length(3).required());
-        criteria.add(Criterion.of("isbn").length(11).required());
+        criteria.add(Criterion.of("keywords").length(3));
+        criteria.add(Criterion.of("isbn").length(11));
         int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
         Set<String> keywords = new TreeSet<>();
         keywords.add("science");
@@ -162,7 +162,7 @@ public class TestCriteria extends TestCase {
         Book book = new Book();
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(book);
-        criteria.add(Criterion.of("isbn[1]").is(2).required());
+        criteria.add(Criterion.of("isbn[1]").is(2));
         int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
         book.setIsbn(isbn);
         System.out.println(criteriaValidator.getValidationReport(criteria));
@@ -179,7 +179,7 @@ public class TestCriteria extends TestCase {
         Book book = new Book();
         CriteriaValidator criteriaValidator =  new  CriteriaValidator();
         Criteria criteria = Criteria.of(book);
-        criteria.add(Criterion.of("keywords[1]").length(5).required());
+        criteria.add(Criterion.of("keywords[1]").length(5));
         Set<String> keywords = new LinkedHashSet<>();
         keywords.add("science");
         keywords.add("earth");

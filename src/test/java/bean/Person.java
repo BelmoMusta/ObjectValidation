@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Person {
 
-    @Validation(required = false)
+    @Validation()
     private Date birthDate;
 
     @Validation
@@ -22,8 +22,7 @@ public class Person {
     @Validation
     private String address;
 
-    @Validation(required = true,
-            operator = Operator.GREATER_THAN, value = "1")
+    @Validation(operator = Operator.GREATER_THAN, value = "1")
     private int age;
 
     @Validation(operator = Operator.REGEX, value = "\\d{10}")

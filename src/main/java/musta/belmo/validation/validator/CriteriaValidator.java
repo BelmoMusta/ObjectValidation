@@ -34,9 +34,8 @@ public class CriteriaValidator extends AbstractValidator {
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
-            if (criterion.isRequired()) {
-                valid = checkValidation(currentValue, criterion.getOperator(), expected);
-            }
+            valid = checkValidation(currentValue, criterion.getOperator(), expected);
+
         }
         return valid;
     }
