@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Person {
 
-    @Validation()
+    @Validation
     private Date birthDate;
 
     @Validation
@@ -19,7 +19,7 @@ public class Person {
     @Validation
     private String lastName;
 
-    @Validation
+    @Validation(operator = Operator.NOT_NULL)
     private String address;
 
     @Validation(operator = Operator.GREATER_THAN, value = "1")

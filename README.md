@@ -20,10 +20,10 @@ name be assigned and not left `null` :
  ```JAVA
 class Person {
 
-    @Validation(required = true)
+    @Validation
     private String name;
 
-    @Validation(required = true)
+    @Validation
     private String lastName;
     // .... other fields...
     // .... getters and setters..
@@ -46,7 +46,7 @@ class Person {
 
   ```Console
    true
-  {lastName=|required=true, found=String:Belmokhtar, expected={!=null}:[], valid=true|, name=|required=true, found=String:Mustapha, expected={!=null}:[], valid=true|}
+  {lastName=|found=String:Belmokhtar, expected={!=null}:[], valid=true|, name=|found=String:Mustapha, expected={!=null}:[], valid=true|}
    ```
    
    ##### Validation by Operators: 
@@ -54,7 +54,7 @@ class Person {
 
    class Person{
    // ... others fields 
-   @Validation(required = true, operator = Operator.GREATER_THAN, value = "18")
+   @Validation(operator = Operator.GREATER_THAN, value = "18")
     private int age;
     // ... getters and setters ...
     }
@@ -72,7 +72,7 @@ class Person {
    
    ```Console
    true
-   {age=|required=true, found=Integer:20, expected={>}:[18], valid=true|}
+   {age=|found=Integer:20, expected={>}:[18], valid=true|}
    ```
 
    ##### 2.Using criteria :
@@ -82,9 +82,9 @@ class Person {
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = new Criteria();
         criteria.setObject(student);
-        criteria.add(Criterion.of("name").is("mustapha").required());
+        criteria.add(Criterion.of("name").is("mustapha"));
         criteria.add(Criterion.of("address").notNull());
-        criteria.add(Criterion.of("age").greaterOrEquals(4).required());
+        criteria.add(Criterion.of("age").greaterOrEquals(4));
         criteria.add(Criterion.of("phoneNumber").matches("\\d{10}"));
         
         student.setName("mustapha");
@@ -96,7 +96,7 @@ class Person {
    ```
  ##### Output :
  ```Console 
- address=|required=true, found=String:wall street, expected={!=null}:[null], valid=true|, phoneNumber=|required=true, found=String:1234567890, expected={REGEX}:[\d{10}], valid=true|, name=|required=true, found=String:mustapha, expected={==}:[mustapha], valid=true|, age=|required=true, found=Integer:4, expected={>=}:[4], valid=true|}
+ address=|found=String:wall street, expected={!=null}:[null], valid=true|, phoneNumber=|found=String:1234567890, expected={REGEX}:[\d{10}], valid=true|, name=|found=String:mustapha, expected={==}:[mustapha], valid=true|, age=|found=Integer:4, expected={>=}:[4], valid=true|}
 ```
 ##### Criteria over complex Objects: 
 To perform validation by criteria over complex objects, you only have to specify the filed path of the wanted field, for example: 
@@ -121,7 +121,7 @@ To perform validation by criteria over complex objects, you only have to specify
  ```JAVA 
   CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = Criteria.of(student);
-        criteria.add(Criterion.of("matters.maths").lessThan(20.0).required());
+        criteria.add(Criterion.of("matters.maths").lessThan(20.0));
         Matters matters = new Matters();
         matters.setMaths(19.99);
         student.setMatters(matters);
@@ -130,7 +130,7 @@ To perform validation by criteria over complex objects, you only have to specify
  ```
  ###### Output 
  ```Console 
- {matters.maths=|required=true, found=Double:19.99, expected={<}:[20.0], valid=true|}
+ {matters.maths=|found=Double:19.99, expected={<}:[20.0], valid=true|}
  ```
 
 ##### Validation overs arrays and collections:
@@ -149,8 +149,8 @@ private TreeSet<String> keywords;
         Book book = new Book();
         CriteriaValidator criteriaValidator = CriteriaValidator.getInstance();
         Criteria criteria = Criteria.of(book);
-        criteria.add(Criterion.of("keywords").length(3).required());
-        criteria.add(Criterion.of("isbn").length(11).required());
+        criteria.add(Criterion.of("keywords").length(3));
+        criteria.add(Criterion.of("isbn").length(11));
         int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
         Set<String> keywords = new TreeSet<>();
         keywords.add("science");
@@ -165,6 +165,6 @@ private TreeSet<String> keywords;
 ```
  ##### Output
  ```Console 
- {keywords=|required=true, found=TreeSet:[earth, science, universe], expected={length}:[3], valid=true|, isbn=|required=true, found=int[]:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], expected={length}:[11], valid=true|}
+ {keywords=|found=TreeSet:[earth, science, universe], expected={length}:[3], valid=true|, isbn=|found=int[]:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], expected={length}:[11], valid=true|}
  ```
  

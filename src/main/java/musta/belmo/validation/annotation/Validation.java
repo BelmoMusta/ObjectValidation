@@ -19,7 +19,7 @@ public @interface Validation {
      *
      * @return Operator
      */
-    Operator operator() default Operator.NOT_NULL;
+    Operator operator() default Operator.NONE;
 
     /**
      * Holds the expected value to validate the object against.
