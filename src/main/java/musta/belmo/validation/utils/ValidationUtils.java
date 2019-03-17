@@ -133,7 +133,7 @@ public class ValidationUtils {
     public static boolean checkRegex(Object object, String regex) throws ValidationException {
         boolean valid;
         if (object instanceof CharSequence) {
-            valid = object.toString().matches(regex);
+            valid = String.valueOf(object).matches(regex);
         } else if (object != null) {
             final String message = String.format(ErrorMessage.REGEX_OVER_NON_STRING.getLabel(), object.getClass().getCanonicalName());
             throw new ValidationException(message);

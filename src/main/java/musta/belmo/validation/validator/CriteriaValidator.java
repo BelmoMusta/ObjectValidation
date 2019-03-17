@@ -21,7 +21,7 @@ public class CriteriaValidator extends AbstractValidator {
      * {@inheritDoc}
      */
     @Override
-    public boolean check(Criteria criteria) throws ValidationException {
+    public <T> boolean check(Criteria<T> criteria) throws ValidationException {
         boolean valid = true;
         Iterator<Criterion> iterator = criteria.all().iterator();
         while (iterator.hasNext() && valid) {
@@ -35,7 +35,6 @@ public class CriteriaValidator extends AbstractValidator {
                 throw new ValidationException(e);
             }
             valid = checkValidation(currentValue, criterion.getOperator(), expected);
-
         }
         return valid;
     }
@@ -52,27 +51,28 @@ public class CriteriaValidator extends AbstractValidator {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, ValidationReport> getValidationReport(Criteria criteria) throws ValidationException {
-        final Map<String, ValidationReport> validationReportMap = new LinkedHashMap<>();
+    public <T> ValidationReport getValidationReport(Criteria<T> criteria) throws ValidationException {
+        final ValidationReport validationReportMap = new ValidationReport();
         if (criteria.getObject() == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         List<Criterion> all = criteria.all();
+
         for (Criterion criterion : all) {
             String fieldName = criterion.getFieldName();
             Object currentValue;
             String value = String.valueOf(criterion.getExpected());
-            final ValidationReport validationReport = new ValidationReport();
-            validationReportMap.put(criterion.getFieldName(), validationReport);
-            validationReport.setCriterion(criterion);
+            final ValidationReportItem validationReportItem = new ValidationReportItem();
+            validationReportItem.setCriterion(criterion);
             try {
                 currentValue = ReflectUtils.getFieldValue(criteria.getObject(), fieldName);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 throw new ValidationException(e);
             }
             boolean valid = checkValidation(currentValue, criterion.getOperator(), value);
-            validationReport.setFound(currentValue);
-            validationReport.setValid(valid);
+            validationReportItem.setFound(currentValue);
+            validationReportItem.setValid(valid);
+            validationReportMap.add(validationReportItem);
         }
         return validationReportMap;
     }
@@ -81,7 +81,7 @@ public class CriteriaValidator extends AbstractValidator {
      * {@inheritDoc}
      */
     @Override
-    public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
+    public <T> ValidationReport getValidationReport(T object) throws ValidationException {
         throw new UnsupportedOperationException();
     }
 }

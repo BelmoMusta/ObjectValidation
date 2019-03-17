@@ -9,7 +9,7 @@ public enum ErrorMessage {
     REGEX_OVER_NULL("REGEX validation cannot be applied on a null String"),
     NOT_A_NUMBER("Arithmetic operations cannot be applied on non number field"),
     ARITHMETIC_ON_NULL("Arithmetic operations cannot be applied on a null object"),
-    ARRAY_IS_NULL("The array is null "),
+    ARRAY_IS_NULL("The array is null or empty"),
     LENGTH_ERROR_MSG("length error: ");
 
     /**

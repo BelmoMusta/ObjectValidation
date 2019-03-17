@@ -40,7 +40,7 @@ class Person {
             person.setLastName("Belmokhtar");
 
      boolean isValid = annotationValidator.checkValidation(person);
-     ValidationReport validationReport = annotationValidator.getValidationReport(person); // gives the details of each field
+     ValidationReport validationReportItem = annotationValidator.getValidationReport(person); // gives the details of each field
    ```
    ##### Result :
 
@@ -66,7 +66,7 @@ class Person {
   
      AnnotationValidator annotationValidator = AnnotationValidator.getInstance();
      boolean isValid = annotationValidator.check(person);
-     ValidationReport validationReport = annotationValidator.getValidationReport(person);
+     ValidationReport validationReportItem = annotationValidator.getValidationReport(person);
    ```
    ##### Result :
    

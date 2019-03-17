@@ -23,7 +23,7 @@ public class AnnotationValidator extends CriteriaValidator {
      */
     @Override
     public <T> boolean check(T object) throws ValidationException {
-        Criteria criteria = createCriteria(object);
+        Criteria<T> criteria = createCriteria(object);
         return super.check(criteria);
     }
 
@@ -31,8 +31,8 @@ public class AnnotationValidator extends CriteriaValidator {
      * {@inheritDoc}
      */
     @Override
-    public <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException {
-        Criteria criteria = createCriteria(object);
+    public <T> ValidationReport getValidationReport(T object) throws ValidationException {
+        Criteria<T> criteria = createCriteria(object);
         return super.getValidationReport(criteria);
     }
 
@@ -46,12 +46,12 @@ public class AnnotationValidator extends CriteriaValidator {
      * @throws ValidationException
      */
 
-    private <T> Criteria createCriteria(T object) throws ValidationException {
+    private <T> Criteria<T> createCriteria(T object) throws ValidationException {
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         final List<Field> annotatedFields = ReflectUtils.getAnnotatedFields(object.getClass(), Validation.class);
-        Criteria criteria = new Criteria();
+        Criteria<T> criteria = new Criteria<>();
         criteria.setObject(object);
         for (Field field : annotatedFields) {
             final Object currentValue;
@@ -61,12 +61,12 @@ public class AnnotationValidator extends CriteriaValidator {
                 throw new ValidationException(e);
             }
             final Validation validation = field.getAnnotation(Validation.class);
-            final Criterion cr = Criterion
+            final Criterion criterion = Criterion
                     .of(field.getName())
                     .operator(validation.operator())
                     .found(currentValue)
                     .expected(validation.value());
-            criteria.add(cr);
+            criteria.add(criterion);
         }
         return criteria;
     }

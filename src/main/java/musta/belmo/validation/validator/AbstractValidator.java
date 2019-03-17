@@ -20,7 +20,7 @@ public abstract class AbstractValidator {
      * @return true if the object meets the given criteria, false otherwise.
      * @throws ValidationException when error
      */
-    public abstract boolean check(Criteria criteria) throws ValidationException;
+    public abstract <T> boolean check(Criteria<T> criteria) throws ValidationException;
 
     /**
      * Checks the validity of the given object by criteria
@@ -38,7 +38,7 @@ public abstract class AbstractValidator {
      * @return a validation report containing details for the object fields.
      * @throws ValidationException when error
      */
-    public abstract Map<String, ValidationReport> getValidationReport(Criteria criteria) throws ValidationException;
+    public abstract <T>  ValidationReport getValidationReport(Criteria<T> criteria) throws ValidationException;
 
     /**
      * Method to refactor the validation process.
@@ -56,7 +56,7 @@ public abstract class AbstractValidator {
                     valid = currentValue != null;
                     break;
                 case EQUALS:
-                    if (currentValue != null && currentValue instanceof Number) {
+                    if (currentValue instanceof Number) {
                         valid = ValidationUtils.checkNumber(currentValue, operator, expected);
                     } else {
                         valid = ValidationUtils.safeEquals(currentValue, expected);
@@ -88,6 +88,6 @@ public abstract class AbstractValidator {
      * @return a validation report containing details for the object fields.
      * @throws ValidationException when error
      */
-    public abstract <T> Map<String, ValidationReport> getValidationReport(T object) throws ValidationException;
+    public abstract <T> ValidationReport getValidationReport(T object) throws ValidationException;
 
 }

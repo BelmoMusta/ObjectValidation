@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The Criteria class.
  */
-public class Criteria {
+public class Criteria<T> {
     /**
      * the object to validate
      */
-    private Object object;
+    private T object;
     /**
      * The map of criteria
      */
@@ -30,7 +31,7 @@ public class Criteria {
      *
      * @param object the object
      */
-    public Criteria(Object object) {
+    public Criteria(T object) {
         this();
         this.object = object;
     }
@@ -41,8 +42,8 @@ public class Criteria {
      * @param object the object
      * @return Criteria
      */
-    public static Criteria of(Object object) {
-        return new Criteria(object);
+    public static<R> Criteria of(R object) {
+        return new Criteria<>(object);
     }
 
     public void add(Criterion criterion) {
@@ -61,19 +62,16 @@ public class Criteria {
     }
 
     public List<Criterion> all() {
-        List<Criterion> list = new ArrayList<>();
-        for (Map.Entry<String, List<Criterion>> stringListEntry : map.entrySet()) {
-            List<Criterion> criterionList = stringListEntry.getValue();
-            list.addAll(criterionList);
-        }
-        return list;
+        return map.values().stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 
     public Object getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(T object) {
         this.object = object;
     }
 }

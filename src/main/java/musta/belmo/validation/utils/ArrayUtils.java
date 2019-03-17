@@ -5,6 +5,7 @@ import musta.belmo.validation.exception.ValidationException;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * class of the array utilities
@@ -46,9 +47,9 @@ public class ArrayUtils {
      */
     public static String toString(Object array) {
         List list = castArrayToList(array);
-        if (list == null)
-            return "#null#";
-        return list.toString();
+        return Optional.ofNullable(list)
+                .map(String::valueOf)
+                .orElse("#null#");
     }
 
     /**
@@ -61,15 +62,13 @@ public class ArrayUtils {
     public static Object get(Object array, int index) throws ValidationException {
         Object value;
         List list = castArrayToList(array);
+        value = Optional.ofNullable(list)
+                .filter(lst -> !lst.isEmpty())
+                .filter(lst -> lst.size() > index)
+                .map(lst -> lst.get(index))
+                .orElseThrow(() ->
+                        new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel()));
 
-        if (list != null && !list.isEmpty() && list.size() > index) {
-            value = list.get(index);
-
-        } else if (list == null || list.isEmpty()) {
-            throw new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel());
-        } else {
-            throw new ValidationException(new ArrayIndexOutOfBoundsException());
-        }
         return value;
     }
 
@@ -102,10 +101,9 @@ public class ArrayUtils {
      */
     public static <T> List<T> castArrayToList(Object array) {
         T[] boxedArray = toBoxedArray(array);
-        return boxedArray != null ?
-                Arrays.asList(boxedArray) :
-                null;
-
+        return Optional.ofNullable(boxedArray)
+                .map(Arrays::asList)
+                .orElse(null);
     }
 
     /**
