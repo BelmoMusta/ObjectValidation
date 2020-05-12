@@ -1,4 +1,4 @@
-package musta.belmo.validation.validator;
+package io.github.belmomusta.validation.validator;
 
 import java.util.ArrayList;
 

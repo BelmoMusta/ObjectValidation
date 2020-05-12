@@ -1,6 +1,6 @@
-package musta.belmo.validation.criteria;
+package io.github.belmomusta.validation.criteria;
 
-import musta.belmo.validation.enumeration.Operator;
+import io.github.belmomusta.validation.enumeration.Operator;
 
 /**
  * Criterion class that contains validation attributes

@@ -1,4 +1,4 @@
-package musta.belmo.validation.utils;
+package io.github.belmomusta.validation.utils;
 
 import java.util.Optional;
 

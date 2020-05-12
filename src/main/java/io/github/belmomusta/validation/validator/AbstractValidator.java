@@ -1,11 +1,9 @@
-package musta.belmo.validation.validator;
+package io.github.belmomusta.validation.validator;
 
-import musta.belmo.validation.criteria.Criteria;
-import musta.belmo.validation.enumeration.Operator;
-import musta.belmo.validation.exception.ValidationException;
-import musta.belmo.validation.utils.ValidationUtils;
-
-import java.util.Map;
+import io.github.belmomusta.validation.criteria.Criteria;
+import io.github.belmomusta.validation.enumeration.Operator;
+import io.github.belmomusta.validation.exception.ValidationException;
+import io.github.belmomusta.validation.utils.ValidationUtils;
 
 /**
  * AbstractValidator class to perform validation over objects.

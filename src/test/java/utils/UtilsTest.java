@@ -1,7 +1,7 @@
 package utils;
 
-import musta.belmo.validation.exception.ValidationException;
-import musta.belmo.validation.utils.ArrayUtils;
+import io.github.belmomusta.validation.exception.ValidationException;
+import io.github.belmomusta.validation.utils.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

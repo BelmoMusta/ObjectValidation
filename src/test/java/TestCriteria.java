@@ -2,10 +2,10 @@ import bean.Book;
 import bean.Matters;
 import bean.Student;
 import junit.framework.TestCase;
-import musta.belmo.validation.criteria.Criteria;
-import musta.belmo.validation.criteria.Criterion;
-import musta.belmo.validation.exception.ValidationException;
-import musta.belmo.validation.validator.CriteriaValidator;
+import io.github.belmomusta.validation.criteria.Criteria;
+import io.github.belmomusta.validation.criteria.Criterion;
+import io.github.belmomusta.validation.exception.ValidationException;
+import io.github.belmomusta.validation.validator.CriteriaValidator;
 import org.junit.Test;
 
 import java.util.LinkedHashSet;

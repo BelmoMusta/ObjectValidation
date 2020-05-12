@@ -1,15 +1,14 @@
-package musta.belmo.validation.validator;
+package io.github.belmomusta.validation.validator;
 
-import musta.belmo.validation.annotation.Validation;
-import musta.belmo.validation.criteria.Criteria;
-import musta.belmo.validation.criteria.Criterion;
-import musta.belmo.validation.enumeration.ErrorMessage;
-import musta.belmo.validation.exception.ValidationException;
-import musta.belmo.validation.utils.ReflectUtils;
+import io.github.belmomusta.validation.annotation.Validation;
+import io.github.belmomusta.validation.criteria.Criteria;
+import io.github.belmomusta.validation.criteria.Criterion;
+import io.github.belmomusta.validation.enumeration.ErrorMessage;
+import io.github.belmomusta.validation.exception.ValidationException;
+import io.github.belmomusta.validation.utils.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 
 /**
  * CriteriaValidator class to perform validation over objects.

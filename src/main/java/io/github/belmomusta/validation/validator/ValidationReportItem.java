@@ -1,12 +1,11 @@
-package musta.belmo.validation.validator;
+package io.github.belmomusta.validation.validator;
 
-import musta.belmo.validation.annotation.Validation;
-import musta.belmo.validation.criteria.Criterion;
-import musta.belmo.validation.enumeration.Operator;
-import musta.belmo.validation.utils.ArrayUtils;
+import io.github.belmomusta.validation.annotation.Validation;
+import io.github.belmomusta.validation.criteria.Criterion;
+import io.github.belmomusta.validation.enumeration.Operator;
+import io.github.belmomusta.validation.utils.ArrayUtils;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * The validation Report Item as the result of the Validation process.

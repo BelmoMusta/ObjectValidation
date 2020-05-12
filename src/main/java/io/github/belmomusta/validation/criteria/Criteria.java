@@ -1,4 +1,4 @@
-package musta.belmo.validation.criteria;
+package io.github.belmomusta.validation.criteria;
 
 import java.util.ArrayList;
 import java.util.HashMap;

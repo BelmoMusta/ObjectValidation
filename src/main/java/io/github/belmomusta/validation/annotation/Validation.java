@@ -1,6 +1,6 @@
-package musta.belmo.validation.annotation;
+package io.github.belmomusta.validation.annotation;
 
-import musta.belmo.validation.enumeration.Operator;
+import io.github.belmomusta.validation.enumeration.Operator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

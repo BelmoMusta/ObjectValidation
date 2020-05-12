@@ -1,8 +1,8 @@
 import bean.Book;
 import bean.Person;
 import junit.framework.TestCase;
-import musta.belmo.validation.exception.ValidationException;
-import musta.belmo.validation.validator.AnnotationValidator;
+import io.github.belmomusta.validation.exception.ValidationException;
+import io.github.belmomusta.validation.validator.AnnotationValidator;
 
 import java.util.Arrays;
 import java.util.Date;

@@ -1,11 +1,10 @@
-package musta.belmo.validation.utils;
+package io.github.belmomusta.validation.utils;
 
-import musta.belmo.validation.enumeration.ErrorMessage;
-import musta.belmo.validation.exception.ValidationException;
+import io.github.belmomusta.validation.exception.ValidationException;
+import io.github.belmomusta.validation.enumeration.ErrorMessage;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * class of the array utilities

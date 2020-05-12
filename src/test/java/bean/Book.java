@@ -1,7 +1,7 @@
 package bean;
 
-import musta.belmo.validation.annotation.Validation;
-import musta.belmo.validation.enumeration.Operator;
+import io.github.belmomusta.validation.annotation.Validation;
+import io.github.belmomusta.validation.enumeration.Operator;
 
 import java.util.Date;
 import java.util.List;
