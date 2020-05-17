@@ -4,7 +4,7 @@
 
     <groupId>io.github.belmomusta</groupId>
     <artifactId>validation</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>Java object validation</name>
@@ -43,7 +43,7 @@
         <connection>scm:git:git://github.com/BelmoMusta/ObjectValidation.git</connection>
         <developerConnection>scm:git:git@github.com:ObjectValidation/ObjectValidation.git</developerConnection>
         <url>https://github.com/BelmoMusta/ObjectValidation</url>
-        <tag>validation-1.0</tag>
+        <tag>validation-1.1</tag>
     </scm>
 
     <build>
