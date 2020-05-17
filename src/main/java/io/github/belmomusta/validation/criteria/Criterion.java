@@ -36,7 +36,7 @@ public class Criterion {
     /**
      * Creates an instance of criterion of the field name
      *
-     * @param fieldName { @link String}
+     * @param fieldName {@link String}
      * @return Criterion
      */
     public static Criterion of(String fieldName) {
@@ -49,7 +49,7 @@ public class Criterion {
     /**
      * Sets the field name
      *
-     * @param field { @link String}
+     * @param field {@link String}
      * @return Criterion
      */
     public Criterion field(String field) {
@@ -60,7 +60,7 @@ public class Criterion {
     /**
      * Sets the operator value
      *
-     * @param operator { @link Operator}
+     * @param operator {@link Operator}
      * @return Criterion
      */
     public Criterion operator(Operator operator) {
@@ -71,7 +71,7 @@ public class Criterion {
     /**
      * Sets the expected value
      *
-     * @param value { @link Object}
+     * @param value {@link Object}
      * @return Criterion
      */
     public Criterion expected(Object value) {
@@ -82,7 +82,8 @@ public class Criterion {
     /**
      * Sets the regex value
      *
-     * @param value { @link T}
+     * @param value {@link T}
+     * @param <T> The Generique type
      * @return Criterion
      */
     public <T> Criterion matches(T value) {
@@ -93,7 +94,8 @@ public class Criterion {
     /**
      * Sets the length value
      *
-     * @param value { @link T}
+     * @param value {@link T}
+     * @param <T> The Generique type
      * @return Criterion
      */
     public <T> Criterion length(T value) {
@@ -105,6 +107,7 @@ public class Criterion {
      * Sets the operator value
      *
      * @param value { @link T}
+     * @param <T> The Generique type
      * @return Criterion
      */
     public <T> Criterion lessThan(T value) {
@@ -116,6 +119,7 @@ public class Criterion {
      * Sets the operator value
      *
      * @param value { @link T}
+     * @param <T> The Generique type
      * @return Criterion
      */
     public <T> Criterion is(T value) {
@@ -127,6 +131,7 @@ public class Criterion {
      * Sets the operator value
      *
      * @param value { @link T}
+     * @param <T> The Generique type
      * @return Criterion
      */
     public <T> Criterion greaterThan(T value) {
@@ -138,6 +143,7 @@ public class Criterion {
      * Sets the operator value
      *
      * @param value { @link T}
+     * @param <T> The Generique type
      * @return Criterion
      */
     public <T> Criterion lessOrEquals(T value) {
@@ -149,6 +155,7 @@ public class Criterion {
      * Sets the operator value
      *
      * @param value { @link T}
+     * @param <T> The Generique type
      * @return Criterion
      */
     public <T> Criterion greaterOrEquals(T value) {

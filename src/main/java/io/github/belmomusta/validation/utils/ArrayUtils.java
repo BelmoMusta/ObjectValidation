@@ -96,6 +96,7 @@ public class ArrayUtils {
      * Casts the array to list
      *
      * @param array the array
+     * @param <T> The Generique type
      * @return List
      */
     public static <T> List<T> castArrayToList(Object array) {

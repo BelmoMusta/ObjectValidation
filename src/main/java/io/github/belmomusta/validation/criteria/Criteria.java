@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * The Criteria class.
+ * @param <T> The Generique type
  */
 public class Criteria<T> {
     /**
@@ -39,6 +40,7 @@ public class Criteria<T> {
     /**
      * creates an instance of criteria of the given object
      *
+     * @param <R> The Generique type
      * @param object the object
      * @return Criteria
      */
