@@ -4,12 +4,12 @@
 
     <groupId>io.github.belmomusta</groupId>
     <artifactId>validation</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Dependent Tasks Executor Core</name>
-    <description>Executing dependent/Independent tasks in a reliable way, is made so easy that even your grandma can do it.</description>
-    <url>https://github.com/dexecutor/dexecutor-core</url>
+    <name>Java object validation/name>
+    <description>Validation of java objects using criteria and annotations</description>
+    <url>https://github.com/BelmoMusta/ObjectValidation</url>
 
     <organization>
         <url>https://github.com/BelmoMusta/ObjectValidation</url>
