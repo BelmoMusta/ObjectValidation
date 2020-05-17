@@ -4,8 +4,36 @@
 
     <groupId>io.github.belmomusta</groupId>
     <artifactId>validation</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <name>Dependent Tasks Executor Core</name>
+    <description>Executing dependent/Independent tasks in a reliable way, is made so easy that even your grandma can do it.</description>
+    <url>https://github.com/dexecutor/dexecutor-core</url>
+
+    <organization>
+        <url>https://github.com/BelmoMusta/ObjectValidation</url>
+        <name>ObjectValidation</name>
+    </organization>
+    <inceptionYear>2020</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Mustapha Belmokhtar</name>
+            <email>belmokhtar.91@gmail.com</email>
+            <organization>mustabelmo</organization>
+            <organizationUrl>https://github.com/mustabelmo</organizationUrl>
+            <timezone>UTC+01:00</timezone>
+        </developer>
+    </developers>
+
     <properties>
         <version.maven-source-plugin>3.0.1</version.maven-source-plugin>
         <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
