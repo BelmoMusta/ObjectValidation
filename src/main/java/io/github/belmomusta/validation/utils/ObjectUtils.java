@@ -17,9 +17,9 @@ public class ObjectUtils {
 
     /**
      * get a value if a condition is veirifed
-     * @param condition
-     * @param defaultValue
-     * @param <T>
+     * @param condition the condition param
+     * @param defaultValue the default value
+     * @param <T> generic type
      * @return T
      */
     public static <T> T getIf(boolean condition, T defaultValue) {

@@ -15,6 +15,7 @@ public abstract class AbstractValidator {
      * Checks the validity of the given object by criteria
      *
      * @param criteria the criteria to be respected
+     * @param <T> the generic type
      * @return true if the object meets the given criteria, false otherwise.
      * @throws ValidationException when error
      */
@@ -24,6 +25,7 @@ public abstract class AbstractValidator {
      * Checks the validity of the given object by criteria
      *
      * @param object the to be validated
+     * @param <T> the generic type
      * @return true if the object meets the given criteria, false otherwise.
      * @throws ValidationException when error
      */
@@ -34,6 +36,7 @@ public abstract class AbstractValidator {
      *
      * @param criteria the {@link Criteria} to validate to object against
      * @return a validation report containing details for the object fields.
+     * @param <T> the generic type
      * @throws ValidationException when error
      */
     public abstract <T>  ValidationReport getValidationReport(Criteria<T> criteria) throws ValidationException;
@@ -44,6 +47,7 @@ public abstract class AbstractValidator {
      * @param currentValue the current expected of the field.
      * @param operator     the wanted operator.
      * @param expected     the expected value
+     * @throws ValidationException
      * @return true if the object mustEqual valid, false otherwise.
      */
     protected boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {

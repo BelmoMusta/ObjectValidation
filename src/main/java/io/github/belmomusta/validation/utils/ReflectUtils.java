@@ -18,11 +18,11 @@ public class ReflectUtils {
     }
 
     /**
-     * @param aClass          the class to check that it has annotated by the {@param annotationClass}
+     * @param aClass          the class to check that it has annotated by the annotation class
      * @param <T>             the generic type of the object
      * @param annotationClass the annotation class
-     * @return <tt> List&lt;Field&gt;</tt> a list of the annotated fields with
-     * <tt> Validation annotation </tt> in the given class
+     * @return <code> List&lt;Field&gt;</code> a list of the annotated fields with
+     * <code> Validation annotation </code> in the given class
      */
     @SuppressWarnings("unchecked")
     public static <T> List<Field> getAnnotatedFields(Class<? extends T> aClass, Class annotationClass) {
@@ -44,6 +44,7 @@ public class ReflectUtils {
      * @return Object
      * @throws NoSuchFieldException   if the field path leads to a field that does'nt exist
      * @throws IllegalAccessException if the reflection throws an illegal access exception
+     * @throws ValidationException if the reflection throws an illegal access exception
      */
     public static Object getFieldValue(Object object, String fieldPath) throws NoSuchFieldException, IllegalAccessException, ValidationException {
         Object next = object;
