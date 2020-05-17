@@ -57,7 +57,7 @@ public class ArrayUtils {
      * @param array the array
      * @param index the index
      * @return Object
-     * @throws ValidationException
+     * @throws ValidationException if validation is not successful
      */
     public static Object get(Object array, int index) throws ValidationException {
         Object value;

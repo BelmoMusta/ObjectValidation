@@ -24,7 +24,7 @@ public class ValidationUtils {
      * @param operator     The binary operator.
      * @param value        the expected to validate against
      * @return true if the number is valid, false otherwise.
-     * @throws ValidationException
+     * @throws ValidationException if validation is not successful
      */
     public static boolean checkNumber(Object currentValue, Operator operator, String value) throws ValidationException {
         boolean valid = true;

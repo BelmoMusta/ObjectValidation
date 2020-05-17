@@ -47,7 +47,7 @@ public abstract class AbstractValidator {
      * @param currentValue the current expected of the field.
      * @param operator     the wanted operator.
      * @param expected     the expected value
-     * @throws ValidationException
+     * @throws ValidationException if validation is not successful
      * @return true if the object mustEqual valid, false otherwise.
      */
     protected boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {
