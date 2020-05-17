@@ -4,7 +4,7 @@
 
     <groupId>io.github.belmomusta</groupId>
     <artifactId>validation</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <version.maven-source-plugin>3.0.1</version.maven-source-plugin>
