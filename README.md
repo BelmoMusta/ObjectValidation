@@ -1,5 +1,5 @@
 # Java Object Validation
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.belmomusta/validation/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/io.github.belmomusta/validation)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.belmomusta/validation/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.belmomusta/validation)
 
 
 Developed in order to check if an instance of a class is valid according to the predicates
