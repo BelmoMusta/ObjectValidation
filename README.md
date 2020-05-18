@@ -1,5 +1,7 @@
 # Java Object Validation
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.belmomusta/validation/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/io.github.belmomusta/validation)
+
+
 Developed in order to check if an instance of a class is valid according to the predicates
 given as annotations on its fields.
 
@@ -10,6 +12,17 @@ It prevents the classic control flow like the if-else blocks.
 Validation process can be done using two ways:  
 1. Using annotations.
 2. Using customized criteria.
+
+
+## Use it as a maven dependency  :
+
+```XML
+   <dependency>
+            <groupId>io.github.belmomusta</groupId>
+            <artifactId>validation</artifactId>
+            <version>1.0</version>
+   </dependency>
+```
 
 ## Examples of use :
 ##### 1. Using annotations
