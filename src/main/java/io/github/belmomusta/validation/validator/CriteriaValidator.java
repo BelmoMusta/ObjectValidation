@@ -2,9 +2,9 @@ package io.github.belmomusta.validation.validator;
 
 import io.github.belmomusta.validation.criteria.Criteria;
 import io.github.belmomusta.validation.criteria.Criterion;
+import io.github.belmomusta.validation.enumeration.ErrorMessage;
 import io.github.belmomusta.validation.exception.ValidationException;
 import io.github.belmomusta.validation.utils.ReflectUtils;
-import io.github.belmomusta.validation.enumeration.ErrorMessage;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,12 +14,30 @@ import java.util.List;
  *
  * @author Belmokhtar
  */
-public class CriteriaValidator extends AbstractValidator {
+public class CriteriaValidator<R> extends AbstractValidator<R> {
+
+    private final Criteria<R> mCriteria = new Criteria<>();
+
     /**
-     * {@inheritDoc}
+     * Adds a criterion to the validation process
+     *
+     * @param criterion the criterion to be added
+     * @return
      */
-    @Override
-    public <T> boolean check(Criteria<T> criteria) throws ValidationException {
+    public CriteriaValidator<R> add(Criterion criterion) {
+        mCriteria.add(criterion);
+        return this;
+    }
+
+    /**
+     * Checks the validity of the given object by criteria
+     *
+     * @param criteria the criteria to be respected
+     * @return true if the object meets the given criteria, false otherwise.
+     * @throws ValidationException when error
+     */
+
+    protected boolean check(Criteria<R> criteria) throws ValidationException {
         boolean valid = true;
         Iterator<Criterion> iterator = criteria.all().iterator();
         while (iterator.hasNext() && valid) {
@@ -41,15 +59,19 @@ public class CriteriaValidator extends AbstractValidator {
      * {@inheritDoc}
      */
     @Override
-    public <T> boolean check(T object) throws ValidationException {
-        throw new UnsupportedOperationException();
+    public boolean check(R object) throws ValidationException {
+        mCriteria.setObject(object);
+        return check(mCriteria);
     }
 
     /**
-     * {@inheritDoc}
+     * Constructs a validation report of the object according to the criteria in params.
+     *
+     * @param criteria the {@link Criteria} to validate to object against
+     * @return a validation report containing details for the object fields.
+     * @throws ValidationException when error
      */
-    @Override
-    public <T> ValidationReport getValidationReport(Criteria<T> criteria) throws ValidationException {
+    protected ValidationReport getValidationReport(Criteria<R> criteria) throws ValidationException {
         final ValidationReport validationReportMap = new ValidationReport();
         if (criteria.getObject() == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
@@ -79,7 +101,8 @@ public class CriteriaValidator extends AbstractValidator {
      * {@inheritDoc}
      */
     @Override
-    public <T> ValidationReport getValidationReport(T object) throws ValidationException {
-        throw new UnsupportedOperationException();
+    public ValidationReport getValidationReport(R object) throws ValidationException {
+        mCriteria.setObject(object);
+        return getValidationReport(mCriteria);
     }
 }

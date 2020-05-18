@@ -11,13 +11,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class TestCriteria extends TestCase {
+public class TestClassValidator extends TestCase {
     private Student student;
     private final CriteriaValidator<Student> studentCriteriaValidator;
     private final CriteriaValidator<Book> bookCriteriaValidator;
     private final Book book;
 
-    public TestCriteria() {
+    public TestClassValidator() {
         super();
         studentCriteriaValidator = new CriteriaValidator<>();
         bookCriteriaValidator = new CriteriaValidator<>();
