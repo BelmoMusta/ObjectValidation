@@ -1,28 +1,33 @@
 package io.github.belmomusta.validation.utils;
 
-import io.github.belmomusta.validation.exception.ValidationException;
 import io.github.belmomusta.validation.enumeration.ErrorMessage;
 import io.github.belmomusta.validation.enumeration.Operator;
-
+import io.github.belmomusta.validation.exception.ValidationException;
 import java.util.Collection;
 import java.util.List;
 
 /**
  * class of validation utilities
+ *
+ * @since 0.0.0.SNAPSHOT
+ * @author default author
+ * @version 0.0.0
  */
 public class ValidationUtils {
+
     /**
      * The default constructor
      */
     private ValidationUtils() {
+    // Default Constructor.
     }
 
     /**
      * Checks the validity of a number against the given operator and expected.
      *
      * @param currentValue the number to check validity for.
-     * @param operator     The binary operator.
-     * @param value        the expected to validate against
+     * @param operator The binary operator.
+     * @param value the expected to validate against
      * @return true if the number is valid, false otherwise.
      * @throws ValidationException if validation is not successful
      */
@@ -30,7 +35,7 @@ public class ValidationUtils {
         boolean valid = true;
         if (currentValue != null && currentValue instanceof Number) {
             Number number = (Number) currentValue;
-            switch (operator) {
+            switch(operator) {
                 case NOT_NULL:
                     break;
                 case EQUALS:
@@ -64,7 +69,7 @@ public class ValidationUtils {
     /**
      * checks if the current object mustEqual of the expected length
      *
-     * @param currentValue   the value to check length of
+     * @param currentValue the value to check length of
      * @param expectedLength the expected length
      * @return true if object mustEqual of length the expected length.
      * @throws ValidationException when error
@@ -84,11 +89,9 @@ public class ValidationUtils {
             isValid = collection.size() == length;
         } else if (isArray(currentValue)) {
             int tempLength = 0;
-
             List list = ArrayUtils.castArrayToList(currentValue);
             if (list != null)
                 tempLength = list.size();
-
             isValid = length == tempLength;
         } else {
             String strObject = String.valueOf(currentValue);
@@ -110,8 +113,8 @@ public class ValidationUtils {
     /**
      * checks if two objects are equal
      *
-     * @param t   the first object
-     * @param r   the second object
+     * @param t the first object
+     * @param r the second object
      * @param <T> the first object's type
      * @param <R> the second object's type
      * @return boolean
@@ -127,7 +130,7 @@ public class ValidationUtils {
      * checks the object string format against the
      *
      * @param object the object
-     * @param regex  the regex
+     * @param regex the regex
      * @return boolean
      * @throws ValidationException if error
      */

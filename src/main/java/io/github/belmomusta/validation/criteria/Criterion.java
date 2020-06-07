@@ -4,25 +4,30 @@ import io.github.belmomusta.validation.enumeration.Operator;
 
 /**
  * Criterion class that contains validation attributes
+ *
+ * @since 0.0.0.SNAPSHOT
+ * @author default author
+ * @version 0.0.0
  */
 public class Criterion {
+
     /**
-     * The fieldName field
+     * The {@link #fieldName} attribute.
      */
     private String fieldName;
 
     /**
-     * The operator field
+     * The {@link #operator} attribute.
      */
     private Operator operator;
 
     /**
-     * The expected field
+     * The {@link #expected} attribute.
      */
     private Object expected;
 
     /**
-     * The found field
+     * The {@link #found} attribute.
      */
     private Object found;
 
@@ -36,25 +41,13 @@ public class Criterion {
     /**
      * Creates an instance of criterion of the field name
      *
-     * @param fieldName {@link String}
+     * @param fieldName @link String}
      * @return Criterion
      */
     public static Criterion of(String fieldName) {
         Criterion rCriteria = new Criterion();
         rCriteria.setFieldName(fieldName);
-      //  rCriteria.required();
         return rCriteria;
-    }
-
-    /**
-     * Sets the field name
-     *
-     * @param field {@link String}
-     * @return Criterion
-     */
-    public Criterion field(String field) {
-        setFieldName(field);
-        return this;
     }
 
     /**
@@ -83,7 +76,7 @@ public class Criterion {
      * Sets the regex value
      *
      * @param value {@link T}
-     * @param <T> The Generique type
+     * @param <T> The Generic type
      * @return Criterion
      */
     public <T> Criterion matches(T value) {
@@ -95,7 +88,7 @@ public class Criterion {
      * Sets the length value
      *
      * @param value {@link T}
-     * @param <T> The Generique type
+     * @param <T> The Generic type
      * @return Criterion
      */
     public <T> Criterion length(T value) {
@@ -106,8 +99,8 @@ public class Criterion {
     /**
      * Sets the operator value
      *
-     * @param value { @link T}
-     * @param <T> The Generique type
+     * @param value {@link T}
+     * @param <T> The Generic type
      * @return Criterion
      */
     public <T> Criterion lessThan(T value) {
@@ -118,8 +111,8 @@ public class Criterion {
     /**
      * Sets the operator value
      *
-     * @param value { @link T}
-     * @param <T> The Generique type
+     * @param value {@link T}
+     * @param <T> The Generic type
      * @return Criterion
      */
     public <T> Criterion is(T value) {
@@ -130,8 +123,8 @@ public class Criterion {
     /**
      * Sets the operator value
      *
-     * @param value { @link T}
-     * @param <T> The Generique type
+     * @param value {@link T}
+     * @param <T> The Generic type
      * @return Criterion
      */
     public <T> Criterion greaterThan(T value) {
@@ -143,7 +136,7 @@ public class Criterion {
      * Sets the operator value
      *
      * @param value { @link T}
-     * @param <T> The Generique type
+     * @param <T> The Generic type
      * @return Criterion
      */
     public <T> Criterion lessOrEquals(T value) {
@@ -155,7 +148,7 @@ public class Criterion {
      * Sets the operator value
      *
      * @param value { @link T}
-     * @param <T> The Generique type
+     * @param <T> The Generic type
      * @return Criterion
      */
     public <T> Criterion greaterOrEquals(T value) {

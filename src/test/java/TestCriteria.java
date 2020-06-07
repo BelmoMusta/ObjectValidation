@@ -1,11 +1,10 @@
 import bean.Book;
 import bean.Matters;
 import bean.Student;
-import junit.framework.TestCase;
-import io.github.belmomusta.validation.criteria.Criteria;
 import io.github.belmomusta.validation.criteria.Criterion;
 import io.github.belmomusta.validation.exception.ValidationException;
 import io.github.belmomusta.validation.validator.CriteriaValidator;
+import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.util.LinkedHashSet;
@@ -14,10 +13,16 @@ import java.util.TreeSet;
 
 public class TestCriteria extends TestCase {
     private Student student;
+    private final CriteriaValidator<Student> studentCriteriaValidator;
+    private final CriteriaValidator<Book> bookCriteriaValidator;
+    private final Book book;
 
     public TestCriteria() {
         super();
+        studentCriteriaValidator = new CriteriaValidator<>();
+        bookCriteriaValidator = new CriteriaValidator<>();
         student = new Student();
+        book = new Book();
     }
 
     /**
@@ -26,19 +31,17 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testValidation() throws ValidationException {
-        CriteriaValidator criteriaValidator = new  CriteriaValidator();
-        Criteria criteria = new Criteria();
-        criteria.setObject(student);
-        criteria.add(Criterion.of("name").is("mustapha"));
-        criteria.add(Criterion.of("address").notNull());
-        criteria.add(Criterion.of("age").greaterOrEquals(4));
-        criteria.add(Criterion.of("phoneNumber").matches("\\d{10}"));
+        studentCriteriaValidator.add(Criterion.of("name").is("mustapha"))
+                .add(Criterion.of("address").notNull())
+                .add(Criterion.of("age").greaterOrEquals(4))
+                .add(Criterion.of("phoneNumber").matches("\\d{10}"));
+
         student.setName("mustapha");
         student.setAddress("wall street");
         student.setAge(4);
         student.setPhoneNumber("1234567890");
-        System.out.println(criteriaValidator.getValidationReport(criteria));
-        assertTrue(criteriaValidator.check(criteria));
+        System.out.println(studentCriteriaValidator.getValidationReport(student));
+        assertTrue(studentCriteriaValidator.check(student));
     }
 
     /**
@@ -46,13 +49,10 @@ public class TestCriteria extends TestCase {
      *
      * @throws ValidationException if error
      */
-    public void testGreatherThan() throws ValidationException {
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = new Criteria();
-        criteria.setObject(student);
-        criteria.add(Criterion.of("age").greaterThan(4));
+    public void testGreaterThan() throws ValidationException {
+        studentCriteriaValidator.add(Criterion.of("age").greaterThan(4));
         student.setAge(5);
-        assertTrue(criteriaValidator.check(criteria));
+        assertTrue(studentCriteriaValidator.check(student));
     }
 
     /**
@@ -61,14 +61,11 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testLessThan() throws ValidationException {
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = new Criteria();
-        criteria.setObject(student);
-        criteria.add(Criterion.of("age").lessThan(4));
+        studentCriteriaValidator.add(Criterion.of("age").lessThan(4));
         student.setAge(10);
-        assertFalse(criteriaValidator.check(criteria));
+        assertFalse(studentCriteriaValidator.check(student));
         student.setAge(1);
-        assertTrue(criteriaValidator.check(criteria));
+        assertTrue(studentCriteriaValidator.check(student));
     }
 
     /**
@@ -77,15 +74,11 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testEquality() throws ValidationException {
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = new Criteria();
-        criteria.add(Criterion.of("age").is(4));
+        studentCriteriaValidator.add(Criterion.of("age").is(4));
         student.setAge(10);
-        criteria.setObject(student);
-        assertFalse(criteriaValidator.check(criteria));
+        assertFalse(studentCriteriaValidator.check(student));
         student.setAge(4);
-        criteria.setObject(student);
-        assertTrue(criteriaValidator.check(criteria));
+        assertTrue(studentCriteriaValidator.check(student));
     }
 
     /**
@@ -94,14 +87,12 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testFloatEquality() throws ValidationException {
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = new Criteria();
-        criteria.setObject(student);
-        criteria.add(Criterion.of("mark").is(4.5f));
+
+        studentCriteriaValidator.add(Criterion.of("mark").is(4.5f));
         student.setMark(10.01f);
-        assertFalse(criteriaValidator.check(criteria));
+        assertFalse(studentCriteriaValidator.check(student));
         student.setMark(4.5f);
-        assertTrue(criteriaValidator.check(criteria));
+        assertTrue(studentCriteriaValidator.check(student));
     }
 
     /**
@@ -110,14 +101,11 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testLength() throws ValidationException {
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = new Criteria();
-        criteria.setObject(student);
-        criteria.add(Criterion.of("name").length(4));
+        studentCriteriaValidator.add(Criterion.of("name").length(4));
         student.setName("1");
-        assertFalse(criteriaValidator.check(criteria));
+        assertFalse(studentCriteriaValidator.check(student));
         student.setName("1234");
-        assertTrue(criteriaValidator.check(criteria));
+        assertTrue(studentCriteriaValidator.check(student));
     }
 
     /**
@@ -126,22 +114,19 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testCustomObjectValidation() throws ValidationException {
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = Criteria.of(student);
-        criteria.add(Criterion.of("matters.maths").is(20.0));
+
+        studentCriteriaValidator.add(Criterion.of("matters.maths").is(20.0));
         Matters matters = new Matters();
         matters.setMaths(20.0);
         student.setMatters(matters);
-        System.out.println(criteriaValidator.getValidationReport(criteria));
-        assertTrue(criteriaValidator.check(criteria));
+        System.out.println(studentCriteriaValidator.getValidationReport(student));
+        assertTrue(studentCriteriaValidator.check(student));
     }
 
     public void testArraysAndCollections() throws ValidationException {
-        Book book = new Book();
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = Criteria.of(book);
-        criteria.add(Criterion.of("keywords").length(3));
-        criteria.add(Criterion.of("isbn").length(11));
+        bookCriteriaValidator.add(Criterion.of("keywords").length(3))
+                .add(Criterion.of("isbn").length(11));
+
         int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
         Set<String> keywords = new TreeSet<>();
         keywords.add("science");
@@ -149,8 +134,8 @@ public class TestCriteria extends TestCase {
         keywords.add("universe");
         book.setKeywords(keywords);
         book.setIsbn(isbn);
-        System.out.println(criteriaValidator.getValidationReport(criteria));
-        assertTrue(criteriaValidator.check(criteria));
+        System.out.println(bookCriteriaValidator.getValidationReport(book));
+        assertTrue(bookCriteriaValidator.check(book));
     }
 
     /**
@@ -159,14 +144,11 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testArrayAccess() throws ValidationException {
-        Book book = new Book();
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = Criteria.of(book);
-        criteria.add(Criterion.of("isbn[1]").is(2));
+        bookCriteriaValidator.add(Criterion.of("isbn[1]").is(2));
         int[] isbn = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
         book.setIsbn(isbn);
-        System.out.println(criteriaValidator.getValidationReport(criteria));
-        assertTrue(criteriaValidator.check(criteria));
+        System.out.println(bookCriteriaValidator.getValidationReport(book));
+        assertTrue(bookCriteriaValidator.check(book));
     }
 
     /**
@@ -176,16 +158,13 @@ public class TestCriteria extends TestCase {
      */
     @Test(expected = ValidationException.class)
     public void testListAccess() throws ValidationException {
-        Book book = new Book();
-        CriteriaValidator criteriaValidator =  new  CriteriaValidator();
-        Criteria criteria = Criteria.of(book);
-        criteria.add(Criterion.of("keywords[1]").length(5));
+        bookCriteriaValidator.add(Criterion.of("keywords[1]").length(5));
         Set<String> keywords = new LinkedHashSet<>();
         keywords.add("science");
         keywords.add("earth");
         keywords.add("universe");
         book.setKeywords(keywords);
-        System.out.println(criteriaValidator.getValidationReport(criteria));
-        assertTrue(criteriaValidator.check(criteria));
+        System.out.println(bookCriteriaValidator.getValidationReport(book));
+        assertTrue(bookCriteriaValidator.check(book));
     }
 }

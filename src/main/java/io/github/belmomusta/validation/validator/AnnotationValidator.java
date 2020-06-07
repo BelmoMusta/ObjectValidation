@@ -6,7 +6,6 @@ import io.github.belmomusta.validation.criteria.Criterion;
 import io.github.belmomusta.validation.enumeration.ErrorMessage;
 import io.github.belmomusta.validation.exception.ValidationException;
 import io.github.belmomusta.validation.utils.ReflectUtils;
-
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -14,14 +13,16 @@ import java.util.List;
  * CriteriaValidator class to perform validation over objects.
  *
  * @author Belmokhtar
+ * @since 0.0.0.SNAPSHOT
+ * @version 0.0.0
  */
-public class AnnotationValidator extends CriteriaValidator {
+public class AnnotationValidator<T> extends CriteriaValidator<T> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> boolean check(T object) throws ValidationException {
+    public boolean check(T object) throws ValidationException {
         Criteria<T> criteria = createCriteria(object);
         return super.check(criteria);
     }
@@ -30,22 +31,19 @@ public class AnnotationValidator extends CriteriaValidator {
      * {@inheritDoc}
      */
     @Override
-    public <T> ValidationReport getValidationReport(T object) throws ValidationException {
+    public ValidationReport getValidationReport(T object) throws ValidationException {
         Criteria<T> criteria = createCriteria(object);
         return super.getValidationReport(criteria);
     }
-
 
     /**
      * Creates a {@link Criteria } object from the object in parameters
      *
      * @param object
-     * @param <T> the generic type
-     * @return {@link Criteria}
+     * @return @link Criteria}
      * @throws ValidationException if validation is not successful
      */
-
-    private <T> Criteria<T> createCriteria(T object) throws ValidationException {
+    private Criteria<T> createCriteria(T object) throws ValidationException {
         if (object == null) {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
@@ -60,11 +58,7 @@ public class AnnotationValidator extends CriteriaValidator {
                 throw new ValidationException(e);
             }
             final Validation validation = field.getAnnotation(Validation.class);
-            final Criterion criterion = Criterion
-                    .of(field.getName())
-                    .operator(validation.operator())
-                    .found(currentValue)
-                    .expected(validation.value());
+            final Criterion criterion = Criterion.of(field.getName()).operator(validation.operator()).found(currentValue).expected(validation.value());
             criteria.add(criterion);
         }
         return criteria;

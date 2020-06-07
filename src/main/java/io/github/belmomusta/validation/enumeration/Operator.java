@@ -2,8 +2,13 @@ package io.github.belmomusta.validation.enumeration;
 
 /**
  * Enumeration of the operators
+ *
+ * @since 0.0.0.SNAPSHOT
+ * @author default author
+ * @version 0.0.0
  */
 public enum Operator {
+
     NOT_NULL("{!=null}"),
     EQUALS("{==}"),
     GREATER_THAN("{>}"),
@@ -13,8 +18,9 @@ public enum Operator {
     REGEX("{REGEX}"),
     NONE("NONE"),
     LENGTH("{length}");
+
     /**
-     * The label field
+     * The {@link #label} attribute.
      */
     private String label;
 

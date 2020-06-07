@@ -1,17 +1,27 @@
 package io.github.belmomusta.validation.utils;
 
-import io.github.belmomusta.validation.exception.ValidationException;
 import io.github.belmomusta.validation.enumeration.ErrorMessage;
-
-import java.util.*;
+import io.github.belmomusta.validation.exception.ValidationException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
  * class of the array utilities
+ *
+ * @since 0.0.0.SNAPSHOT
+ * @author default author
+ * @version 0.0.0
  */
 public class ArrayUtils {
+
     /**
-     * Each type has its converting function.
+     * The {@link #mapper} attribute.
      */
     private static Map<Class<?>, Function> mapper;
 
@@ -19,10 +29,10 @@ public class ArrayUtils {
      * The default constructor
      */
     private ArrayUtils() {
+    // Default Constructor.
     }
 
     /**
-     *
      */
     private static void createMapper() {
         if (mapper == null) {
@@ -46,9 +56,7 @@ public class ArrayUtils {
      */
     public static String toString(Object array) {
         List list = castArrayToList(array);
-        return Optional.ofNullable(list)
-                .map(String::valueOf)
-                .orElse("#null#");
+        return Optional.ofNullable(list).map(String::valueOf).orElse("#null#");
     }
 
     /**
@@ -62,13 +70,7 @@ public class ArrayUtils {
     public static Object get(Object array, int index) throws ValidationException {
         Object value;
         List list = castArrayToList(array);
-        value = Optional.ofNullable(list)
-                .filter(lst -> !lst.isEmpty())
-                .filter(lst -> lst.size() > index)
-                .map(lst -> lst.get(index))
-                .orElseThrow(() ->
-                        new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel()));
-
+        value = Optional.ofNullable(list).filter(lst -> !lst.isEmpty()).filter(lst -> lst.size() > index).map(lst -> lst.get(index)).orElseThrow(() -> new ValidationException(ErrorMessage.ARRAY_IS_NULL.getLabel()));
         return value;
     }
 
@@ -76,7 +78,7 @@ public class ArrayUtils {
      * Converts an array of primitive type to its respective boxed one.
      *
      * @param array the array
-     * @param <T>   the type of the target array
+     * @param <T> the type of the target array
      * @return T[]
      */
     @SuppressWarnings("all")
@@ -102,9 +104,7 @@ public class ArrayUtils {
      */
     public static <T> List<T> castArrayToList(Object array) {
         T[] boxedArray = toBoxedArray(array);
-        return Optional.ofNullable(boxedArray)
-                .map(Arrays::asList)
-                .orElse(null);
+        return Optional.ofNullable(boxedArray).map(Arrays::asList).orElse(null);
     }
 
     /**
