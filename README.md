@@ -90,8 +90,7 @@ class Person {
    ##### 2.Using criteria :
    You can also perform validation  over objects using `Criteria`:
    ```JAVA
-        CriteriaValidator<Student> studentCriteriaValidator
-       = new CriteriaValidator<>();
+        CriteriaValidator<Student> studentCriteriaValidator = new CriteriaValidator<>();
 
        studentCriteriaValidator
                        .add(Criterion.of("name").is("mustapha"))
