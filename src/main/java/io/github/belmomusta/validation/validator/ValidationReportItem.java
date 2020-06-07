@@ -4,32 +4,34 @@ import io.github.belmomusta.validation.annotation.Validation;
 import io.github.belmomusta.validation.criteria.Criterion;
 import io.github.belmomusta.validation.enumeration.Operator;
 import io.github.belmomusta.validation.utils.ArrayUtils;
-
 import java.util.Objects;
 
 /**
  * The validation Report Item as the result of the Validation process.
+ *
+ * @since 0.0.0.SNAPSHOT
+ * @author default author
+ * @version 0.0.0
  */
 public class ValidationReportItem {
 
     /**
-     * The valid field
+     * The {@link #valid} attribute.
      */
     private boolean valid;
 
-
     /**
-     * the found object
+     * The {@link #found} attribute.
      */
     private Object found;
 
     /**
-     * The validation assertions
+     * The {@link #validation} attribute.
      */
     private Validation validation;
 
     /**
-     * The criterion assertion
+     * The {@link #criterion} attribute.
      */
     private Criterion criterion;
 
@@ -52,12 +54,11 @@ public class ValidationReportItem {
     /**
      * Setter of the field valid
      *
-     * @param valid {@link boolean}
+     * @param valid @link boolean}
      */
     public void setValid(boolean valid) {
         this.valid = valid;
     }
-
 
     /**
      * Getter of the field found
@@ -71,16 +72,14 @@ public class ValidationReportItem {
     /**
      * Setter of the field found
      *
-     * @param found {@link Object}
+     * @param found @link Object}
      */
     public void setFound(Object found) {
         this.found = found;
     }
 
     /**
-     * the toString method
-     *
-     * @return String
+     * {@inheritDoc}
      */
     @Override
     public String toString() {
@@ -105,31 +104,18 @@ public class ValidationReportItem {
         } else {
             foundVal = "{null}";
         }
-        stringBuilder
-                .append("field=")
-                .append(criterion.getFieldName())
-                .append('|')
-                .append("found=")
-                .append(stringify(foundVal))
-                .append(", expected=");
+        stringBuilder.append("field=").append(criterion.getFieldName()).append('|').append("found=").append(stringify(foundVal)).append(", expected=");
         if (operator != null) {
-            stringBuilder
-                    .append(operator.getLabel());
+            stringBuilder.append(operator.getLabel());
         }
-        stringBuilder.append(':')
-                .append('[')
-                .append(value)
-                .append(']')
-                .append(", valid=")
-                .append(valid)
-                .append('|');
+        stringBuilder.append(':').append('[').append(value).append(']').append(", valid=").append(valid).append('|');
         return stringBuilder.toString();
     }
 
     /**
      * Converts an object to its string format
      *
-     * @param object {@link Object}
+     * @param object @link Object}
      * @return String
      */
     private String stringify(Object object) {
@@ -138,18 +124,14 @@ public class ValidationReportItem {
             sb.append("#null#");
         } else {
             String simpleName = object.getClass().getSimpleName();
-
             sb.append(simpleName).append(':');
             if (object.getClass().isArray()) {
                 sb.append(ArrayUtils.toString(object));
             } else if ("String".equals(simpleName)) {
-                sb.append('"')
-                        .append(object)
-                        .append('"');
+                sb.append('"').append(object).append('"');
             } else {
                 sb.append(object);
             }
-
         }
         return sb.toString();
     }
@@ -166,7 +148,7 @@ public class ValidationReportItem {
     /**
      * Setter of the field validation
      *
-     * @param validation {@link Validation}
+     * @param validation @link Validation}
      */
     public void setValidation(Validation validation) {
         this.validation = validation;
@@ -184,13 +166,12 @@ public class ValidationReportItem {
     /**
      * Setter of the field criterion
      *
-     * @param criterion {@link Criterion}
+     * @param criterion @link Criterion}
      */
     public void setCriterion(Criterion criterion) {
         this.criterion = criterion;
         if (criterion != null) {
-            //setRequired(criterion.isRequired());
+        // setRequired(criterion.isRequired());
         }
     }
-
 }

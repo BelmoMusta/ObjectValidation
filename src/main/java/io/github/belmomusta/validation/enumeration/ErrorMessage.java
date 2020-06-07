@@ -2,8 +2,13 @@ package io.github.belmomusta.validation.enumeration;
 
 /**
  * The enumeration of the error messages
+ *
+ * @since 0.0.0.SNAPSHOT
+ * @author default author
+ * @version 0.0.0
  */
 public enum ErrorMessage {
+
     NULL_OBJECT_MSG("Object is null, cannot validate its fields!"),
     REGEX_OVER_NON_STRING("REGEX validation cannot be applied on this field of type %s"),
     REGEX_OVER_NULL("REGEX validation cannot be applied on a null String"),
@@ -13,7 +18,7 @@ public enum ErrorMessage {
     LENGTH_ERROR_MSG("length error: ");
 
     /**
-     * the label field
+     * The {@link #label} attribute.
      */
     private String label;
 

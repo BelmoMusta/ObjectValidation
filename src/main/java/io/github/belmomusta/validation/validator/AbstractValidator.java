@@ -1,6 +1,5 @@
 package io.github.belmomusta.validation.validator;
 
-import io.github.belmomusta.validation.criteria.Criteria;
 import io.github.belmomusta.validation.enumeration.Operator;
 import io.github.belmomusta.validation.exception.ValidationException;
 import io.github.belmomusta.validation.utils.ValidationUtils;
@@ -9,6 +8,8 @@ import io.github.belmomusta.validation.utils.ValidationUtils;
  * AbstractValidator class to perform validation over objects.
  *
  * @author Belmokhtar
+ * @since 0.0.0.SNAPSHOT
+ * @version 0.0.0
  */
 public abstract class AbstractValidator<R> {
 
@@ -25,15 +26,15 @@ public abstract class AbstractValidator<R> {
      * Method to refactor the validation process.
      *
      * @param currentValue the current expected of the field.
-     * @param operator     the wanted operator.
-     * @param expected     the expected value
+     * @param operator the wanted operator.
+     * @param expected the expected value
      * @throws ValidationException if validation is not successful
      * @return true if the object mustEqual valid, false otherwise.
      */
     protected boolean checkValidation(Object currentValue, Operator operator, String expected) throws ValidationException {
         boolean valid = true;
         if (operator != null) {
-            switch (operator) {
+            switch(operator) {
                 case NOT_NULL:
                     valid = currentValue != null;
                     break;
@@ -70,5 +71,4 @@ public abstract class AbstractValidator<R> {
      * @throws ValidationException when error
      */
     public abstract ValidationReport getValidationReport(R object) throws ValidationException;
-
 }

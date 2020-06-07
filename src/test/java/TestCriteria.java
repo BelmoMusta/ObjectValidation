@@ -49,7 +49,7 @@ public class TestCriteria extends TestCase {
      *
      * @throws ValidationException if error
      */
-    public void testGreatherThan() throws ValidationException {
+    public void testGreaterThan() throws ValidationException {
         studentCriteriaValidator.add(Criterion.of("age").greaterThan(4));
         student.setAge(5);
         assertTrue(studentCriteriaValidator.check(student));

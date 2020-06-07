@@ -5,7 +5,6 @@ import io.github.belmomusta.validation.criteria.Criterion;
 import io.github.belmomusta.validation.enumeration.ErrorMessage;
 import io.github.belmomusta.validation.exception.ValidationException;
 import io.github.belmomusta.validation.utils.ReflectUtils;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,10 +12,15 @@ import java.util.List;
  * CriteriaValidator class to perform validation over objects.
  *
  * @author Belmokhtar
+ * @since 0.0.0.SNAPSHOT
+ * @version 0.0.0
  */
 public class CriteriaValidator<R> extends AbstractValidator<R> {
 
-    private final Criteria<R> mCriteria = new Criteria<>();
+    /**
+     * The {@link #mCriteria} attribute.
+     */
+    protected final Criteria<R> mCriteria = new Criteria<>();
 
     /**
      * Adds a criterion to the validation process
@@ -36,7 +40,6 @@ public class CriteriaValidator<R> extends AbstractValidator<R> {
      * @return true if the object meets the given criteria, false otherwise.
      * @throws ValidationException when error
      */
-
     protected boolean check(Criteria<R> criteria) throws ValidationException {
         boolean valid = true;
         Iterator<Criterion> iterator = criteria.all().iterator();
@@ -77,7 +80,6 @@ public class CriteriaValidator<R> extends AbstractValidator<R> {
             throw new ValidationException(ErrorMessage.NULL_OBJECT_MSG.getLabel());
         }
         List<Criterion> all = criteria.all();
-
         for (Criterion criterion : all) {
             String fieldName = criterion.getFieldName();
             Object currentValue;
