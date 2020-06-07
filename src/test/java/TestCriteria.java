@@ -114,7 +114,6 @@ public class TestCriteria extends TestCase {
      * @throws ValidationException if error
      */
     public void testCustomObjectValidation() throws ValidationException {
-
         studentCriteriaValidator.add(Criterion.of("matters.maths").is(20.0));
         Matters matters = new Matters();
         matters.setMaths(20.0);
