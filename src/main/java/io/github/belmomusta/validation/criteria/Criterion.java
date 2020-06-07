@@ -41,7 +41,7 @@ public class Criterion {
     /**
      * Creates an instance of criterion of the field name
      *
-     * @param fieldName @link String}
+     * @param fieldName {@link String}
      * @return Criterion
      */
     public static Criterion of(String fieldName) {
@@ -135,7 +135,7 @@ public class Criterion {
     /**
      * Sets the operator value
      *
-     * @param value { @link T}
+     * @param value  {@link T}
      * @param <T> The Generic type
      * @return Criterion
      */
@@ -147,7 +147,7 @@ public class Criterion {
     /**
      * Sets the operator value
      *
-     * @param value { @link T}
+     * @param value  {@link T}
      * @param <T> The Generic type
      * @return Criterion
      */
@@ -169,7 +169,7 @@ public class Criterion {
     /**
      * Sets the operator value
      *
-     * @param found { @link Object}
+     * @param found  {@link Object}
      * @return Criterion
      */
     public Criterion found(Object found) {
@@ -189,7 +189,7 @@ public class Criterion {
     /**
      * Setter of the field fieldname
      *
-     * @param fieldName { @link String}
+     * @param fieldName  {@link String}
      */
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
@@ -207,7 +207,7 @@ public class Criterion {
     /**
      * Setter of the field found
      *
-     * @param found { @link Object}
+     * @param found  {@link Object}
      */
     public void setFound(Object found) {
         this.found = found;
@@ -225,7 +225,7 @@ public class Criterion {
     /**
      * Setter of the field operator
      *
-     * @param operator { @link Operator}
+     * @param operator  {@link Operator}
      */
     public void setOperator(Operator operator) {
         this.operator = operator;
@@ -243,7 +243,7 @@ public class Criterion {
     /**
      * Setter of the field expected
      *
-     * @param expected { @link Object}
+     * @param expected  {@link Object}
      */
     public void setExpected(Object expected) {
         this.expected = expected;

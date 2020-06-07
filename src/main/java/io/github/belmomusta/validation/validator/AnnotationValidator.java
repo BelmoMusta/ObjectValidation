@@ -40,7 +40,7 @@ public class AnnotationValidator<T> extends CriteriaValidator<T> {
      * Creates a {@link Criteria } object from the object in parameters
      *
      * @param object
-     * @return @link Criteria}
+     * @return {@link Criteria}
      * @throws ValidationException if validation is not successful
      */
     private Criteria<T> createCriteria(T object) throws ValidationException {

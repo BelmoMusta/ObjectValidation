@@ -54,7 +54,7 @@ public class ValidationReportItem {
     /**
      * Setter of the field valid
      *
-     * @param valid @link boolean}
+     * @param valid {@link boolean}
      */
     public void setValid(boolean valid) {
         this.valid = valid;
@@ -72,7 +72,7 @@ public class ValidationReportItem {
     /**
      * Setter of the field found
      *
-     * @param found @link Object}
+     * @param found {@link Object}
      */
     public void setFound(Object found) {
         this.found = found;
@@ -115,7 +115,7 @@ public class ValidationReportItem {
     /**
      * Converts an object to its string format
      *
-     * @param object @link Object}
+     * @param object {@link Object}
      * @return String
      */
     private String stringify(Object object) {
@@ -148,7 +148,7 @@ public class ValidationReportItem {
     /**
      * Setter of the field validation
      *
-     * @param validation @link Validation}
+     * @param validation {@link Validation}
      */
     public void setValidation(Validation validation) {
         this.validation = validation;
@@ -166,7 +166,7 @@ public class ValidationReportItem {
     /**
      * Setter of the field criterion
      *
-     * @param criterion @link Criterion}
+     * @param criterion {@link Criterion}
      */
     public void setCriterion(Criterion criterion) {
         this.criterion = criterion;
